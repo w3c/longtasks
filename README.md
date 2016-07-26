@@ -48,8 +48,8 @@ var observer = new PerformanceObserver(function(list) {
 observer.observe({entryTypes: ["longtask"]});
 ```
 
-### Long-task threshold 
-We propose 50ms. That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
+**Long-task threshold: we propose 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
+
 ### The "name" attribute
 Work in a browser is sometimes very frame specific, for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
 
