@@ -46,6 +46,9 @@ var observer = new PerformanceObserver(function(list) {
 
 // register observer for long task notifications
 observer.observe({entryTypes: ["longtask"]});
+
+// Long script execution after this will result in queueing 
+// and receiving “longtask” entries in the observer.
 ```
 
 **Long-task threshold: we propose 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
