@@ -77,3 +77,10 @@ Applications can already observe discontinuities in scheduling of periodic timer
 We think that the triggering of long task notifications does not expose any additional security or privacy risks -- given that timing info is more granular (50ms instead of 10ms), along with adherence of cross-origin policy.
 
 Document-level attribution enables application to identify and attribute the source of the long task. The exposed URL is either self, the URL of the embedded context (at most one level deep -- if cross origin), or the URL of the parent subject to cross-origin and Referer policies. These URLs are already accessible to the application and do not expose new information.
+
+Detailed Security & Privacy doc is here:
+https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit#
+
+## V2 API Sketch
+See: https://docs.google.com/document/d/125d69JAC7nyx-Ob0a9Z31d1uHUGu4myYQ3os9EnGfdU/edit
+
