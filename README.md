@@ -81,6 +81,17 @@ Document-level attribution enables application to identify and attribute the sou
 Detailed Security & Privacy doc is here:
 https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit#
 
-## V2 API Sketch
+# V2 API Sketch
 See: https://docs.google.com/document/d/125d69JAC7nyx-Ob0a9Z31d1uHUGu4myYQ3os9EnGfdU/edit
+
+# Alternatives Considered
+### Why not just show sub-tasks vs. top-level tasks with attribution?
+This API will show toplevel long tasks along with attribution for specific sub-tasks which were problematic.
+For instance, within a 50ms toplevel task, sub-tasks such as a 20ms script execution or a 30ms style & layout update -- will be attributed.
+This raises the question -- why show the toplevel task at all? Why not only show long sub-tasks such as script, style & layout etc that are directly actionable by the user? The top level task may contain some un-attributable segments such as browser work eg. GC or browser events etc.
+
+The rationale here is that showing the toplevel task is good for web developers, even though they will actively consume the actionable sub-tasks such as long scripts and act on them. Over time the sub-task attribution will keep expanding, making more of the long task actionable.
+Showing the top-level task gives developers a direct indication of main thread busy-ness, and since this directly impacts the user experience, it is appropriate for them to know about it as a problem signal -- even if they cannot have complete visibility or full actionability for the entire length of the long task. 
+In many cases the developers may be able to repro in lab or locally and glean additional insights and get to the root cause. 
+Long tasks provide context to long sub-tasks, for instance, a 20ms style and layout or a 25ms script execution may not be terrible by themselves, but if they happen consecutively (eg. script started from rAF) and cause a long 50ms task, then this is a problem for user responsiveness.
 
