@@ -71,7 +71,7 @@ The name field on long tasks is meant to disambiguate which kind of work is happ
 * undefined, if we believe the long task was due to something global, for instance some global GC event that is running that isn't reasonably attributed to one frame or another
 
 
-# Privacy & Security
+## Privacy & Security
 Applications can already observe discontinuities in scheduling of periodic timers and use this to infer potential problems due to long executing tasks or excessive number of tasks. For instance, one can create a setTimeout(,10) and observe whether it fires within ~10ms. If it is delayed, your thread was busy. This is a technique facebook uses to detect long tasks already.
 
 We think that the triggering of long task notifications does not expose any additional security or privacy risks -- given that timing info is more granular (50ms instead of 10ms), along with adherence of cross-origin policy.
@@ -81,10 +81,10 @@ Document-level attribution enables application to identify and attribute the sou
 Detailed Security & Privacy doc is here:
 https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit#
 
-# V2 API Sketch
+## V2 API Sketch
 See: https://docs.google.com/document/d/125d69JAC7nyx-Ob0a9Z31d1uHUGu4myYQ3os9EnGfdU/edit
 
-# Alternatives Considered
+## Alternatives Considered
 ### Why not just show sub-tasks vs. top-level tasks with attribution?
 This API will show toplevel long tasks along with attribution for specific sub-tasks which were problematic.
 For instance, within a 50ms toplevel task, sub-tasks such as a 20ms script execution or a 30ms style & layout update -- will be attributed.
