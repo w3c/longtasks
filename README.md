@@ -54,7 +54,7 @@ observer.observe({entryTypes: ["longtask"]});
 **Long-task threshold: we propose 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
 
 ### Demo
-For a quick demo, in Chrome Canary go to chrome://flags and enable the flag: "Experimental Web Platform features".
+For a quick demo, in the latest (version 55.0.2867.0 or up) Chrome Canary go to chrome://flags and enable the flag: "Experimental Web Platform features".
 Then visit this link:
 https://x20web.corp.google.com/~panicker/longtask/demo/demo.html
 
