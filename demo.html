@@ -1,0 +1,37 @@
+
+<!DOCTYPE HTML>
+<meta charset=utf-8>
+<title>Long Task Demo</title>
+
+<head>
+<script src="slow.js"></script>
+
+</head>
+
+<body>
+<button id="1" onClick="handleClick(event, this.id)">[Parent] Make Slow Task</button>
+
+<div id="eventlog" class="eventLog" style="width: 90%; height: 200px;  border: 1px solid;"></div>
+
+<iframe src="https://x20web.corp.google.com/~panicker/longtask/demo/childA.html" style="width: 90%; height: 300px" name="childA"></iframe>
+
+<iframe src="https://en.wikipedia.org/wiki/Kitten" style="width: 90%; height: 300px" name="wikiKitty"></iframe>
+
+<script>
+    var observer = new PerformanceObserver(function(entryList) {
+      var entry = entryList.getEntries()[0];
+      var logBox = document.getElementById('eventlog');
+      if (logBox && entry.entryType == "longtask") {
+        logBox.innerHTML += "long task: " + entry.name + " start: " + entry.startTime + " duration: " + entry.duration + " <br>"
+      };
+    });
+
+    observer.observe({entryTypes: ["longtask"]});
+</script>
+
+<script>
+    var begin = window.performance.now();
+    while (window.performance.now() < begin + 400);
+</script>
+
+</body>
