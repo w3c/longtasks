@@ -56,7 +56,7 @@ observer.observe({entryTypes: ["longtask"]});
 ### Demo
 For a quick demo, in the latest (version 55.0.2867.0 or up) Chrome Canary go to chrome://flags and enable the flag: "Experimental Web Platform features".
 Then visit this link:
-https://x20web.corp.google.com/~panicker/longtask/demo/demo.html
+https://spanicker.github.io/longtasks/demo.html
 
 
 ### The "name" attribute
