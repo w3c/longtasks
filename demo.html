@@ -16,14 +16,15 @@
 
 <iframe src="demo-child.html" style="width: 90%; height: 300px" name="childA"></iframe>
 
-<iframe src="https://en.wikipedia.org/wiki/Kitten" style="width: 90%; height: 300px" name="wikiKitty"></iframe>
+<iframe src="https://w3.org" style="width: 90%; height: 300px" name="wikiKitty"></iframe>
 
 <script>
     var observer = new PerformanceObserver(function(entryList) {
       var entry = entryList.getEntries()[0];
       var logBox = document.getElementById('eventlog');
       if (logBox && entry.entryType == "longtask") {
-        logBox.innerHTML += "long task: " + entry.name + " start: " + entry.startTime + " duration: " + entry.duration + " <br>"
+        var logLine = "long task! " + " duration: " + entry.duration.toLocaleString() + " start: " + entry.startTime.toLocaleString() +  " name: "  + entry.name + " <br>";
+        logBox.innerHTML = logLine + logBox.innerHTML;
       };
     });
 
