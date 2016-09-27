@@ -28,7 +28,6 @@ Attribute definitions of PerformanceTaskTiming:
 * startTime: DOMHighResTimeStamp of when long task started
 * duration: elapsed time (as DOMHighResTimeStamp) between start and finish of task
 * name: resolved URL of the document to whom the long task is attributed.
-* indirect: boolean indicating whether the implicated frame is directly responsible (name refers to culprit frame URL) or indirectly responsible (name refers to a parent or child of the culprit frame that is viewable by observer).
 
 Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The name attribute provides minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the name attribute is set, see the processing section.
 
