@@ -8,5 +8,5 @@ var observer = new PerformanceObserver(function(entryList) {
   };
 });
 
-bserver.observe({entryTypes: ["longtask"]});
+observer.observe({entryTypes: ["longtask"]});
 
