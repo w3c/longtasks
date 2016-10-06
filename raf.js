@@ -1,7 +1,7 @@
 var globalID;
 
 function repeatOften() {
-  $("<div class="animate" />").appendTo("body");
+  $("<div />").appendTo("body");
   globalID = requestAnimationFrame(repeatOften);
 }
 
