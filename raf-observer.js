@@ -6,6 +6,7 @@ var observer = new PerformanceObserver(function(entryList) {
     var newItem = "long task! " + "start: " + entry.startTime + ", duration: " + (entry.duration / 1000) + "ms, name: " + entry.name + "<br>";
     logBox.innerHTML = newItem + logBox.innerHTML;
   };
- );
- observer.observe({entryTypes: ["longtask"]});
+});
+
+bserver.observe({entryTypes: ["longtask"]});
 
