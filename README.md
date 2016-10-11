@@ -27,9 +27,10 @@ Attribute definitions of PerformanceTaskTiming:
 * entryType: “longtask”
 * startTime: DOMHighResTimeStamp of when long task started
 * duration: elapsed time (as DOMHighResTimeStamp) between start and finish of task
-* name: resolved URL of the document to whom the long task is attributed.
+* name: type of attribution, eg. "same-origin", "cross-origin", "unknown" etc.
+* culprit: domWindow pointer to the frame that is responsible
 
-Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The name attribute provides minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the name attribute is set, see the processing section.
+Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The culprit attribute provides minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the attribute is set, see the processing section.
 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
@@ -59,22 +60,22 @@ Then visit this link:
 https://spanicker.github.io/longtasks/demo.html
 
 
-### The "name" attribute
+### The "culprit" attribute
 Work in a browser is sometimes very frame specific, for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
 
 Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about which URLs to disclose each frame.
 
-The name field on long tasks is meant to disambiguate which kind of work is happening, so that observing frames can minimally understand where the blame rests for a long task. Currently, we propose setting "name" to different values depending on the case under consideration:
+The culprit field on long tasks is meant to enable observing frames to minimally understand where the blame rests for a long task. Currently, we propose setting "culprit" to different Window values depending on the case under consideration:
 
-* the name of the observing frame's document URL, if we believe the long task to be due to this frame's work
+* the Window of the observing frame, if we believe the long task to be due to this frame's work
 
-* the name of the parent document's URL if we believe the work to be related to the  parent context. If the parent is cross origin then the name is the Referrer - subject to Referer policy.
+* the Window of the parent document if we believe the work to be related to the  parent context (showing parent context is subject to Referer policy).
 
-* If the long task came from a “culprit” descendant frame:
-  * If the culprit frame is nested inside a child frame that is cross origin - then the name is the child's frame's URL 
-  * If the culprit frame is same-origin and nested inside a same-origin child frame - then the name is the culprit frame’s URL
+* If the long task came from a misbehaving descendant frame:
+  * If the misbehaving frame is nested inside a child frame that is cross origin - then the culprit is the child frame's Window. 
+  * If the misbehaving frame is same-origin and nested inside a same-origin child frame - then the culprit is the responsible frame’s Window.
 
-* undefined, if we believe the long task was due to something global, for instance some global GC event that is running that isn't reasonably attributed to one frame or another
+* null, if we believe the long task was due to something global, for instance some global GC event that is running that isn't reasonably attributed to one frame or another
 
 
 ## Privacy & Security
@@ -82,7 +83,7 @@ Applications can already observe discontinuities in scheduling of periodic timer
 
 We think that the triggering of long task notifications does not expose any additional security or privacy risks -- given that timing info is more granular (50ms instead of 10ms), along with adherence of cross-origin policy.
 
-Document-level attribution enables application to identify and attribute the source of the long task. The exposed URL is either self, the URL of the embedded context (at most one level deep -- if cross origin), or the URL of the parent subject to cross-origin and Referer policies. These URLs are already accessible to the application and do not expose new information.
+Document-level attribution enables application to identify and attribute the source of the long task. The exposed culprit Window is either self, the Window of the embedded context (at most one level deep -- if cross origin), or the Window of the parent subject to cross-origin and Referer policies. These Window pointers are already accessible to the application and do not expose new information.
 
 Detailed Security & Privacy doc is here:
 https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit#
