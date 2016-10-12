@@ -13,7 +13,7 @@ function stopAnimating() {
 
 function addJank() {
  var begin = window.performance.now();
- while (window.performance.now() < begin + 750);
+ while (window.performance.now() < begin + 950);
 };
 
 function init() {
@@ -25,12 +25,12 @@ function init() {
 
   console.log('Make observer');
   var observer = new PerformanceObserver(function(entryList) {
+    console.log('In observer');
     var entry = entryList.getEntries()[0];
     var newItem = "long task! " + "start: " + entry.startTime + ", duration: " + (entry.duration / 1000) + "ms, name: " + entry.name;
     console.log(newItem);
     var logBox = document.getElementById('eventlog');
     if (logBox && entry.entryType == "longtask") {
-      
       logBox.innerHTML = newItem + "<br>" + logBox.innerHTML;
     };
   });
