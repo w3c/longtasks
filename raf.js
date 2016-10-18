@@ -26,13 +26,15 @@ function init() {
   console.log('Make observer');
   var observer = new PerformanceObserver(function(entryList) {
     console.log('In observer');
-    var entry = entryList.getEntries()[0];
-    var newItem = "long task! " + "start: " + entry.startTime + ", duration: " + (entry.duration / 1000) + "ms, name: " + entry.name;
-    console.log(newItem);
-    var logBox = document.getElementById('eventlog');
-    if (logBox && entry.entryType == "longtask") {
-      logBox.innerHTML = newItem + "<br>" + logBox.innerHTML;
-    };
+    var entries = entryList.getEntries();
+    for (var i = 0; i < entries.length; i++) {
+      var newItem = "long task! " + "start: " + entries[i].startTime + ", duration: " + (entries[i].duration / 1000) + "ms, name: " + entries[i].name;
+      console.log(newItem);
+      var logBox = document.getElementById('eventlog');
+      if (logBox && entries[i].entryType == "longtask") {
+        logBox.innerHTML = newItem + "<br>" + logBox.innerHTML;
+      }
+    }
   });
   console.log('Observe longtask');
   observer.observe({entryTypes: ["longtask"]});
