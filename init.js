@@ -21,7 +21,9 @@ function init() {
   p.onclick = addJank;
 
   var q = document.getElementById("stop");
-  q.onclick = stopAnimating;
+  if (q) {
+    q.onclick = stopAnimating;
+  }
 
   console.log('Make observer');
   var observer = new PerformanceObserver(function(entryList) {
