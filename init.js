@@ -13,7 +13,7 @@ function stopAnimating() {
 
 function addJank() {
  var begin = window.performance.now();
- while (window.performance.now() < begin + 950);
+ while (window.performance.now() < begin + 450);
 };
 
 function init() {
