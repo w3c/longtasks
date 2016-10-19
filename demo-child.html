@@ -5,26 +5,15 @@
 <title>child frame A</title>
 <link rel=stylesheet href=style.css>
 <script src="slow.js"></script>
+<script src="init.js"></script>
 </head>
 
-<body>
+<body  onload="init();>
 <h3>child iframe</h3>
-<button id="2" onClick="handleClick(event, this.id)">[Child] Make Slow Task</button>
+<button id="jank">[Child] Make Slow Task</button>
 
 <div id="eventlog" class="eventLog" style="width: 90%; height: 300px; border: 1px solid;"></div>
 
-<script>
-    var observer = new PerformanceObserver(function(entryList) {
-      var entry = entryList.getEntries()[0];
-      var logBox = document.getElementById('eventlog');
-      if (logBox && entry.entryType == "longtask") {
-        var newItem = "long task! " + "start: " + entry.startTime + ", duration: " + (entry.duration / 1000) + "ms, name: " + entry.name + "<br>";
-        logBox.innerHTML = newItem + logBox.innerHTML;
-      };
-    });
-
-    observer.observe({entryTypes: ["longtask"]});
-</script>
 </body>
 
 </html>
