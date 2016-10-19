@@ -10,29 +10,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 
-<body>
-<button id="1" onClick="handleClick(event, this.id)">[Parent] Make Slow Task</button>
+<body onload="init();">
+<button id="jank">[Parent] Make Slow Task</button>
 
 <div id="eventlog" class="eventLog" style="width: 90%; height: 200px;  border: 1px solid;"></div>
 
 <iframe src="demo-child.html" style="width: 90%; height: 300px" name="childA"></iframe>
 
 <iframe src="https://en.wikipedia.org/wiki/Xyzzy" style="width: 90%; height: 300px" name="wikiKitty"></iframe>
-
-<script>
-    var observer = new PerformanceObserver(function(entryList) {
-      var entries = entryList.getEntries();
-      for (var i = 0; i < entries.length; i++) {
-        var logBox = document.getElementById('eventlog');
-        if (logBox && entries[i].entryType == "longtask") {
-          var newItem = "long task! " + "start: " + entries[i].startTime + ", duration: " + (entries[i].duration / 1000) + "ms, name: " + entries[i].name + "<br>";
-          logBox.innerHTML = newItem + logBox.innerHTML;
-        }
-      }
-    });
-
-    observer.observe({entryTypes: ["longtask"]});
-</script>
 
 <script>
     var begin = window.performance.now();
