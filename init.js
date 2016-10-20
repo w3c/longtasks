@@ -39,5 +39,5 @@ function init() {
     }
   });
   console.log('Observe longtask');
-  observer.observe({entryTypes: ["longtask"]});
+  window._observer.observe({entryTypes: ["longtask"]});
 };
