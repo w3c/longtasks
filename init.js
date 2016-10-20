@@ -26,7 +26,7 @@ function init() {
   }
 
   console.log('Make observer');
-  var window._observer = new PerformanceObserver(function(entryList) {
+  window._observer = new PerformanceObserver(function(entryList) {
     console.log('In observer');
     var entries = entryList.getEntries();
     for (var i = 0; i < entries.length; i++) {
