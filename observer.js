@@ -1,5 +1,6 @@
 
-    var observer = new PerformanceObserver(function(entryList) {
+function init() {
+      window._observer = new PerformanceObserver(function(entryList) {
       console.log('In PerformanceObserver');
       var i = 0;
       for (i = 0; i < entryList.getEntries().length; i++) {
@@ -11,4 +12,5 @@
       }
     });
 
-    observer.observe({entryTypes: ["longtask"]});
+    window._observer.observe({entryTypes: ["longtask"]});
+};
