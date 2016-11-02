@@ -51,7 +51,8 @@ function init() {
       // console.log(newItem);
       var logBox = document.getElementById('eventlog');
       if (logBox && entries[i].entryType == "longtask") {
-        logBox.innerHTML = newItem + "<br>" + logBox.innerHTML;
+        // TODO: Uncomment
+        //logBox.innerHTML = newItem + "<br>" + logBox.innerHTML;
       }
     }
   });
