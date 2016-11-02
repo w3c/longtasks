@@ -1,4 +1,5 @@
 function makeSlowTask(ms) {
+  console.log(ms);
   var begin = window.performance.now();
   while (window.performance.now() < begin + ms);
 }
