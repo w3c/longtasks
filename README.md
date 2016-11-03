@@ -57,7 +57,7 @@ observer.observe({entryTypes: ["longtask"]});
 ### Demo
 For a quick demo of a partial implementation, in the latest Chrome Canary (version 55.0.2867.0 or up) go to [chrome://flags](chrome://flags) and enable the flag: "Experimental Web Platform features".
 Then visit this link:
-https://spanicker.github.io/longtasks/demo.html
+https://wicg.github.io/longtasks/render-jank-demo.html
 
 
 ### The "culprit" attribute
