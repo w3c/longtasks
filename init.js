@@ -48,7 +48,7 @@ function init() {
     var entries = entryList.getEntries();
     for (var i = 0; i < entries.length; i++) {
       var newItem = "long task! " + "start: " + entries[i].startTime + ", duration: " + (entries[i].duration / 1000) + "ms, name: " + entries[i].name;
-      console.log(newItem);
+      //console.log(newItem);
       var logBox = document.getElementById('eventlog');
       if (logBox && entries[i].entryType == "longtask") {
         // TODO: Uncomment
