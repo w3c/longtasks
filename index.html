@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Long Tasks Observer</title>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+    <script class='remove'>
+      // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
+      var respecConfig = {
+        specStatus: "CG-DRAFT",
+        shortName: "longtasks",
+        editors: [{
+          name: "Shubhie Panicker",
+          mailto: "panicker@chromium.org",
+          company: "Google Inc.",
+          companyURL: "https://google.com/",
+          w3cid: "xyz"
+        }, {
+          name: "Add 2nd author here",
+          mailto: "author@chromium.org",
+          company: "Google Inc.",
+          companyURL: "https://google.com/",
+          w3cid: "xyz"
+        }],
+        wg: "Web Performance Working Group",
+        wgURI: "http://www.w3.org/webperf/",
+        license: 'w3c-software-doc',
+        wgPublicList: "public-web-perf",
+        subjectPrefix: "[LongTasks]",
+        format: "markdown",
+        otherLinks: [{
+          key: 'Repository',
+          data: [{
+            value: 'We are on Github.',
+            href: 'https://github.com/wicg/longtasks'
+          }, {
+          value: 'File a bug.',
+          href: 'https://github.com/WICG/longtasks/issues'
+      }, {
+        value: 'Commit history.',
+        href: 'addme.html'
+      }, {
+        value: 'Tests.',
+        href: 'addme'
+      }]
+      };
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+        This document defines an API that web page authors can use to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
+
+      </p>
+    </section>
+    <section id="sotd">
+      <p>This is a <strong>work in progress</strong> and may change without any
+        notices.</p>
+      <p id="unstable"><strong class="redNote">Implementers SHOULD be aware that this document is not stable.</strong> Implementers who are not taking part in the discussions are likely to find the specification changing out from under them in incompatible ways. Vendors interested in implementing this document before it eventually reaches the Candidate Recommendation stage SHOULD join the mailing lists below and take part in the discussions.</p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        As the page is loading and while the user is interacting with the page afterwards, both the application and browser, queue various events that are then executed by the browser -- e.g. user agent schedules input events based on user’s activity, the application schedules callbacks for requestAnimationFrame and other callbacks etc. Once in the queue, these events are then dequeued one-by-one by the browser and executed — e.g. see <a href="">“the anatomy of a frame”</a> for a high-level overview of this process in Blink.</p>
+      <p>
+        However, some task can take a long time (multiple frames), and if and when that happens, the UI thread is locked and all other tasks are blocked as well. To the user this is commonly visible as a “locked up” page where the browser is unable to respond to user input; this is a major source of bad user experience on the web today:
+        <ul>
+          <li><strong>Delayed “time to Interactive”</strong>: while the page is loading long tasks often tie up the main thread and prevent the user from interactive with the page even though the page is visually rendered. Poorly designed third-party content is a frequent culprit.</li>
+          <li><strong>High/variable input latency</strong>: critical user interaction events (tap, click, scroll, wheel, etc) are queued behind long tasks, which yields janky and unpredictable user experience.</li>
+          <li><strong>High/variable event handling latency</strong>: similar to input, but for processing event callbacks (e.g. onload events, and so on), which delay application updates.</li>
+          <li><strong>Janky animations and scrolling</strong>: some animation and scrolling interactions require coordination between compositor and main threads; if the main thread is blocked due to a long task, it can affect responsiveness of animations and scrolling.</li>
+        </ul>
+      </p>
+      <p>
+        Some applications (and RUM vendors) are already attempting to identify and track cases where “long tasks” happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive calls: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the timer. This mostly works, but it has several bad performance implications: the application is polling to detect long tasks, which prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know who caused the delay (e.g. first party vs third party code)
+      </p>
+      <p>
+        RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
+      </p>
+      
+    </section>
+  </body>
+</html>
