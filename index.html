@@ -78,7 +78,44 @@
       <p>
         RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
       </p>
-      
+    
+      <p>Example of using the API to capture long tasks.</p>
+      <pre class='example highlight'>
+      var observer = new PerformanceObserver(function(list) {
+        var perfEntries = list.getEntries();
+        for (var i = 0; i < perfEntries.length; i++) {
+          // Process long task notifications:
+          // report back for analytics and monitoring
+          // ...
+        }
+      });
+
+      // register observer for long task notifications
+      observer.observe({entryTypes: ["longtask"]});
+
+      // Long script execution after this will result in queueing 
+      // and receiving “longtask” entries in the observer.
+      </pre>
     </section>
+
+    <section id="sec-longtask-timing">
+    <h2>Long Task Timing</h2>
+    <section id='performanceentry'>
+      <h3>Relation with the <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface</h3>
+      <p><a>PerformanceLongTaskTiming</a> interface extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
+      <ul>
+      <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return high level frame attribution from the following list:
+        <ul>
+          <li><code>same-origin-self</code></li>
+          <li><code>cross-origin-descendant</code></li>
+          <li> ... </li>
+        </ul>
+      <li>The <dfn id='dom-PerformanceLongTaskTiming-entryType'><code>entryType</code></dfn> attribute must return <code>"longtask"</code></li>
+      <li>The <dfn id='dom-PerformanceLongTaskTiming-startTime'><code>startTime</code></dfn> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> of when the task started.</li>
+      <li>The <dfn id='dom-PerformanceLongTaskTiming-duration'><code>duration</code></dfn> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> equal to the elapsed time between the start and end of task</li>
+      </ul>
+    </section>
+  
+  
   </body>
 </html>
