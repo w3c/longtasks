@@ -1,6 +1,6 @@
 # Long Task API
 
-We’d like to propose a new real user measurement (RUM) performance API to enable applications to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
+Long Tasks is a new real user measurement (RUM) performance API to enable applications to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
 
 ## Background
 As the page is loading and while the user is interacting with the page afterwards, both the application and browser, queue various events that are then executed by the browser -- e.g. user agent schedules input events based on user’s activity, the application schedules callbacks for requestAnimationFrame and other callbacks etc. Once in the queue, these events are then dequeued one-by-one by the browser and executed — e.g. see [“the anatomy of a frame”](https://aerotwist.com/blog/the-anatomy-of-a-frame) for a high-level overview of this process in Blink.
@@ -17,18 +17,36 @@ Some applications (and RUM vendors) are already attempting to identify and track
 [RAIL performance model](https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en#response-respond-in-under-100ms) suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
 
 ## API Sketch (v1)
-Introduce new PerformanceEntry object, which will report instances of long tasks:
+Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
 ```javascript
-interface PerformanceTaskTiming : PerformanceEntry {};
+interface PerformanceTaskTiming : PerformanceEntry {
+  readonly attribute sequence<TaskAttributionTiming> attribution;
+};
 ```
 
 Attribute definitions of PerformanceTaskTiming:
-
 * entryType: “longtask”
 * startTime: DOMHighResTimeStamp of when long task started
 * duration: elapsed time (as DOMHighResTimeStamp) between start and finish of task
 * name: type of attribution, eg. "same-origin", "cross-origin", "unknown" etc.
-* culprit: domWindow pointer to the frame that is responsible
+* attribution: sequence of TaskAttributionTiming, a new PerformanceEntry object to report attribution within long tasks.
+```javascript
+interface TaskAttributionTiming : PerformanceEntry {
+  readonly attribute DOMString frameSrc;
+  readonly attribute DOMString frameId;
+  readonly attribute DOMString frameName;
+};
+```
+
+Attribute definitions of TaskAttributionTiming:
+* entryType: “taskattribution”
+* startTime: 0
+* duration: 0
+* name: type of attribution, eg. "Frame", "TaskScript"
+* frame-name: DOMString, culprit frame’s name attribute
+* frame-id: DOMString, culprit frame’s id attribute
+* frame-src: DOMString, culprit frame’s src attribute
+
 
 Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The culprit attribute provides minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the attribute is set, see the processing section.
 
@@ -60,22 +78,26 @@ Then visit this link:
 https://wicg.github.io/longtasks/render-jank-demo.html
 
 
-### The "culprit" attribute
+### Pointing to the culprit
 Work in a browser is sometimes very frame specific, for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
 
-Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about which URLs to disclose each frame.
+Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
 
-The culprit field on long tasks is meant to enable observing frames to minimally understand where the blame rests for a long task. Currently, we propose setting "culprit" to different Window values depending on the case under consideration:
+The "name" and "attribution" fields on PerformanceLongTaskTiming together, minimally point to where the blame rests for a long task. The TaskAttributionTiming entry in "attribution" is populated based on the "name" field.
+Currently the values of "name" and corresponsing "attribution" are:
 
-* the Window of the observing frame, if we believe the long task to be due to this frame's work
-
-* the Window of the parent document if we believe the work to be related to the  parent context (showing parent context is subject to Referer policy).
-
-* If the long task came from a misbehaving descendant frame:
-  * If the misbehaving frame is nested inside a child frame that is cross origin - then the culprit is the child frame's Window. 
-  * If the misbehaving frame is same-origin and nested inside a same-origin child frame - then the culprit is the responsible frame’s Window.
-
-* null, if we believe the long task was due to something global, for instance some global GC event that is running that isn't reasonably attributed to one frame or another
+* "same-origin-self": long task is from within my own frame context
+* "same-origin-ancestor": long task is from a same-origin ancestor context; 
+  * "attribution" points to same-origin culprit frame
+* "same-origin-descendant": long task is from a same-origin descendant context
+  * "attribution" points to same-origin culprit frame
+* "same-origin": long task is from an unreachable same-origin context
+* "cross-origin-ancestor": long task is from a cross-origin ancestor context
+* "cross-origin-descendant": long task is from a cross-origin descendant context
+  * "attribution" points to first cross-origin child frame between my own frame and culprit frame
+* "cross-origin-unreachable": long task is from a cross-origin unreachable context
+* "multiple-contexts": multiple frame contexts were involved in the long task
+* "unknown": unknown indicates none of the above, long task could be due to something that is not captured yet (eg. layout) or something global such as GC.
 
 
 ## Privacy & Security
