@@ -79,7 +79,7 @@ https://wicg.github.io/longtasks/render-jank-demo.html
 
 
 ### Pointing to the culprit
-Work in a browser is sometimes very frame specific, for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
+Work in a browser is sometimes specific to a frame context (i.e. document frame or iframe), for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
 
 Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
 
