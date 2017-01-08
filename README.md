@@ -16,7 +16,7 @@ Some applications (and RUM vendors) are already attempting to identify and track
 
 [RAIL performance model](https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en#response-respond-in-under-100ms) suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
 
-## API Sketch (v1)
+## V1 API
 Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
 ```javascript
 interface PerformanceTaskTiming : PerformanceEntry {
