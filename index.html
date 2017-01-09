@@ -21,6 +21,13 @@
           company: "Google Inc.",
           companyURL: "https://google.com/",
           w3cid: "xyz"
+        }, {
+          {
+          name: "Add 3rd author here",
+          mailto: "author@chromium.org",
+          company: "Google Inc.",
+          companyURL: "https://google.com/",
+          w3cid: "xyz"
         }],
         wg: "Web Performance Working Group",
         wgURI: "http://www.w3.org/webperf/",
@@ -78,7 +85,7 @@
       <p>
         RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
       </p>
-    
+
       <p>Example of using the API to capture long tasks.</p>
       <pre class='example highlight'>
       var observer = new PerformanceObserver(function(list) {
@@ -97,25 +104,73 @@
       // and receiving “longtask” entries in the observer.
       </pre>
     </section>
-
+  
     <section id="sec-longtask-timing">
     <h2>Long Task Timing</h2>
     <section id='performanceentry'>
-      <h3>Relation with the <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface</h3>
-      <p><a>PerformanceLongTaskTiming</a> interface extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
+     </section>
+
+   <section id="sec-PerformanceLongTaskTiming">
+      <h3>The <code>PerformanceLongTaskTiming</code> interface:</h3>
+      <pre class="def idl">
+       interface PerformanceTaskTiming : PerformanceEntry {
+        readonly attribute sequence<<code>TaskAttributionTiming</code>> attribution;
+       };
+      </pre>
+
+      <p>PerformanceLongTaskTiming extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
       <ul>
-      <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return high level frame attribution from the following list:
+      <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return <code>DOMString</code> for minimal frame attribution. Possible values of name are:
         <ul>
-          <li><code>same-origin-self</code></li>
-          <li><code>cross-origin-descendant</code></li>
-          <li> ... </li>
+          <li><code>same-origin-self</code>: long task is from within my own frame context</li>
+          <li><code>same-origin-ancestor</code>: long task is from a same-origin ancestor context</li>
+          <li><code>same-origin-descendant</code>: long task is from a same-origin descendant context</li>
+          <li><code>same-origin</code>: long task is from an unreachable same-origin context</li>
+          <li><code>cross-origin-ancestor</code>: long task is from a cross-origin ancestor context</li>
+          <li><code>cross-origin-descendant</code>: long task is from a cross-origin descendant context</li>
+          <li><code>cross-origin-unreachable</code>: long task is from a cross-origin unreachable context</li>
+          <li><code>multiple-contexts</code>: multiple frame contexts were involved in the long task</li>
+          <li><code>unknown</code>: none of the above</li>
         </ul>
-      <li>The <dfn id='dom-PerformanceLongTaskTiming-entryType'><code>entryType</code></dfn> attribute must return <code>"longtask"</code></li>
-      <li>The <dfn id='dom-PerformanceLongTaskTiming-startTime'><code>startTime</code></dfn> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> of when the task started.</li>
-      <li>The <dfn id='dom-PerformanceLongTaskTiming-duration'><code>duration</code></dfn> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> equal to the elapsed time between the start and end of task</li>
+ 
+      <li>The <code>entryType</code> attribute must return <code>"longtask"</code></li>
+      <li>The <code>startTime</code> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> of when the task started.</li>
+      <li>The <code>duration</code> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> equal to the elapsed time between the start and end of task</li>
+      <!--li>The <dfn id='dom-PerformanceLongTaskTiming-attribution'><code>attribution</code></dfn> attribute MUST return a sequence of<a href="TODO">TaskAttributionTiming</a> 
+       entries, a new PerformanceEntry type to report attribution within long tasks.</li-->
       </ul>
-    </section>
-  
-  
+
+      <p>PerformanceLongTaskTiming adds the following attributes:
+      <ul>
+      <li> The <code>attribution</code> field returns a sequence of <code>TaskAttributionTiming<</code> entries.</li>
+      </ul>
+      <p>
+
+      <section id="sec-TaskAttributionTiming">
+        <h3>The <code>TaskAttributionTiming</code> interface:</h3>
+        <pre class="def idl">
+          interface TaskAttributionTiming : PerformanceEntry {
+            readonly attribute DOMString frameSrc;
+            readonly attribute DOMString frameId;
+            readonly attribute DOMString frameName;
+         };
+        </pre>
+        <p>
+        TaskAttributionTiming extends the following attributes of PerformanceEntry interface:
+        <ul>
+          <li>The <code>name</code> attribute must return <code>DOMString</code> indicating type of attribution. Currently this can <code>"frame"</code>.</li>
+          <li>The <code>entryType</code> attribute must return <code>DOMString</code> <code>"taskattribution"</code></li>
+          <li>The <code>startTime</code> attribute MUST return 0.</li>
+          <li>The <code>duration</code> attribute MUST return 0.</li>
+        </ul>
+        </p>
+        <p>TaskAttributionTiming adds the following attributes:
+        <ul>
+          <li>The <code>frame-name</code> attribute must return <code>DOMString</code> with culprit iframe's <code>name</code> attribute.</li>
+          <li>The <code>frame-id</code> attribute must return <code>DOMString</code> with culprit iframe's <code>id</code> attribute.</li>
+          <li>The <code>frame-src</code> attribute must return <code>DOMString</code> with culprit iframe's <code>src</code> attribute.</li>
+        </ul>
+        </p>
+      </section>
   </body>
 </html>
