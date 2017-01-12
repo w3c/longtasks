@@ -19,7 +19,7 @@ Some applications (and RUM vendors) are already attempting to identify and track
 ## V1 API
 Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
 ```javascript
-interface PerformanceTaskTiming : PerformanceEntry {
+interface PerformanceLongTaskTiming : PerformanceEntry {
   readonly attribute sequence<TaskAttributionTiming> attribution;
 };
 ```
@@ -43,12 +43,12 @@ Attribute definitions of TaskAttributionTiming:
 * startTime: 0
 * duration: 0
 * name: type of attribution, eg. "Frame", "TaskScript"
-* frame-name: DOMString, culprit frame’s name attribute
-* frame-id: DOMString, culprit frame’s id attribute
-* frame-src: DOMString, culprit frame’s src attribute
+* frameName: DOMString, culprit frame’s name attribute
+* frameId: DOMString, culprit frame’s id attribute
+* frameSrc: DOMString, culprit frame’s src attribute
 
 
-Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frame-name`, `frame-id` and `frame-src` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the attribute is set, see the "Pointing to the culprit" section.
+Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the attribute is set, see the "Pointing to the culprit" section.
 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
