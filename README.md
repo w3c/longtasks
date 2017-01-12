@@ -1,6 +1,6 @@
 # Long Task API
 
-Long Tasks is a new real user measurement (RUM) performance API to enable applications to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
+Long Tasks is a new real user measurement (RUM) performance API to enable applications to measure responsiveness. It enables detecting presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
 
 ## Background
 As the page is loading and while the user is interacting with the page afterwards, both the application and browser queue various events that are then executed by the browser -- e.g. the user agent schedules input events based on user’s activity, the application schedules callbacks for requestAnimationFrame and other callbacks etc. Once in the queue, these events are then dequeued one-by-one by the browser and executed — see [“the anatomy of a frame”](https://aerotwist.com/blog/the-anatomy-of-a-frame) for a high-level overview of this process in Blink.
@@ -28,7 +28,17 @@ Attribute definitions of PerformanceTaskTiming:
 * entryType: “longtask”
 * startTime: DOMHighResTimeStamp of when long task started
 * duration: elapsed time (as DOMHighResTimeStamp) between start and finish of task
-* name: type of attribution, eg. "same-origin", "cross-origin", "unknown" etc.
+* name: minimal attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
+ * "same-origin-self"
+ * "same-origin-ancestor"
+ * "same-origin-descendant"
+ * "same-origin"
+ * "cross-origin-ancestor"
+ * "cross-origin-descendant"
+ * "cross-origin-unreachable"
+ * "multiple-contexts"
+ * "unknown"
+
 * attribution: sequence of TaskAttributionTiming, a new PerformanceEntry object to report attribution within long tasks.
 ```javascript
 interface TaskAttributionTiming : PerformanceEntry {
