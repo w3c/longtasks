@@ -24,7 +24,7 @@ interface PerformanceLongTaskTiming : PerformanceEntry {
 };
 ```
 
-Attribute definitions of PerformanceTaskTiming:
+Attribute definitions of PerformanceLongTaskTiming:
 * entryType: "longtask"
 * startTime: `DOMHighResTimeStamp` of when long task started
 * duration: elapsed time (as `DOMHighResTimeStamp`) between start and finish of task
