@@ -117,8 +117,8 @@
       <section id="sec-PerformanceLongTaskTiming">
         <h3><code>PerformanceLongTaskTiming</code> interface</h3>
         <pre class="def idl">
-         interface PerformanceTaskTiming : PerformanceEntry {
-          <!-- TODO(panicker): respec is not accepting sequence<TaskAttributionTiming> -->
+         interface PerformanceLongTaskTiming : PerformanceEntry {
+          <!-- TODO(panicker): should this be sequence for consistency ? -->
           readonly attribute <code>FrozenArray</code><<code>TaskAttributionTiming</code>> attribution;
          };
         </pre>
