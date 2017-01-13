@@ -16,6 +16,12 @@ Some applications (and RUM vendors) are already attempting to identify and track
 
 [RAIL performance model](https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en#response-respond-in-under-100ms) suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
 
+## Terminology
+Major terms:
+* **frame** refers to the browsing context or iframe (not animation frame)
+* **culprit** frame* refers to the frame that is being implicated for the long task
+* **attribution** refers to identifying which type of work (such as script) caused the long task AND which browsing context or iframe is responsible for that work.
+
 ## V1 API
 Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
 ```javascript
@@ -59,7 +65,7 @@ Attribute definitions of TaskAttributionTiming:
 * frameSrc: `DOMString`, culprit frame’s src attribute
 
 
-Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the `attribution` is set, see the "Pointing to the culprit" section.
+Long tasks events will be delivered to all observers (in frames within the page or tab) regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the `attribution` is set, see the "Pointing to the culprit" section.
 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
