@@ -18,7 +18,7 @@ Some applications (and RUM vendors) are already attempting to identify and track
 
 ## Terminology
 Major terms:
-* **frame** refers to the browsing context or iframe (not animation frame)
+* **frame** or **frame context** refers to the browsing context or iframe (not animation frame)
 * **culprit frame** refers to the frame that is being implicated for the long task
 * **attribution** refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task AND which browsing context or iframe is responsible for that work.
 * **minimal frame attribution** refers to the browsing context or iframe that is being implicated overall for the long task
@@ -66,7 +66,9 @@ Attribute definitions of TaskAttributionTiming:
 * frameSrc: `DOMString`, culprit frame’s src attribute
 
 
-Long tasks events will be delivered to all observers (in frames within the page or tab) regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the `attribution` is set, see the "Pointing to the culprit" section.
+Long tasks events will be delivered to all observers (in frames within the page or tab) regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. 
+
+The `name` field provides minimal frame attribution so that the observing frame can respond to the issue in the proper way. In addition, the `attribution` field provides further insight into the type of work (script, layout etc) that caused the long task as well as which frame is responsible for that work. For more details on how the `attribution` is set, see the "Pointing to the culprit" section.
 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
@@ -88,7 +90,7 @@ observer.observe({entryTypes: ["longtask"]});
 // and receiving “longtask” entries in the observer.
 ```
 
-**Long-task threshold: we propose 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
+**Long-task threshold is 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
 
 ### Demo
 For a quick demo of a partial implementation, in the latest Chrome Canary (version 55.0.2867.0 or up) go to [chrome://flags](chrome://flags) and enable the flag: "Experimental Web Platform features".
@@ -100,11 +102,16 @@ https://wicg.github.io/longtasks/demo.html
 
 
 ### Pointing to the culprit
-Work in a browser is sometimes specific to a frame context (i.e. document frame or iframe), for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
+Long task represents the top level event loop task. Within this task, different types of work (such as script, layout, style etc) may be done, and they could be executed within different frame contexts. The type of work could also be global in nature such as a long GC that is process or frame-tree wide.
 
-Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
+Thus pointing to the culprit has couple of facets:
+* Pointing to the overall frame to blame: this is called minimal frame attribution and is captured in the `name` attribute
+* Pointing to the type of work, and its associated frame context: this is captured in `TaskAttributionTiming` objects in the `attribution` field of `PerformanceLongTaskTiming` 
+Therefore, `name` and `attribution` fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
 
-The `name` and `attribution` fields on PerformanceLongTaskTiming together, minimally point to where the blame rests for a long task. The TaskAttributionTiming entry in `attribution` is populated pointing to the culprit frame, depending on the `name` as shown below:
+The security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
+
+Currently the TaskAttributionTiming entry in `attribution` is populated with "script" work (in the future layout, style etc will be added). The frame implicated in `attribution` should match up with the `name` as follows:
 
 | value of `name`         | frame implicated in `attribution`| 
 | ----------------------- |:-------------------------:| 
@@ -113,7 +120,7 @@ The `name` and `attribution` fields on PerformanceLongTaskTiming together, minim
 | same-origin-descendant  | same-origin culprit frame | 
 | same-origin             | same-origin culprit frame | 
 | cross-origin-ancestor   | empty                     |
-| cross-origin-descendant |  first cross-origin child frame between my own frame and culprit frame|
+| cross-origin-descendant | first cross-origin child frame between my own frame and culprit frame|
 | cross-origin-unreachable| empty                     |
 | multiple-contexts       | empty                     |
 | unknown                 | empty                     |
