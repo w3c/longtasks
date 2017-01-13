@@ -100,6 +100,17 @@
       </pre>
     </section>
   
+    <section id="sec-terminology">
+      <h2>Terminology</h2>
+      <p><dfn data-dfn-type="dfn" id="dfn-long-task">long task</dfn> refers to an event loop task that exceeds 50ms.
+      </p>
+      <p><dfn data-dfn-type="dfn" id="dfn-attribution">attribution</dfn> refers to identifying which browsing context or iframe is responsible for the long task. For simplicity, in the V1 API, only script execution is considered for attribution.
+      </p>
+      <p><dfn data-dfn-type="dfn" id="dfn-culprit-frame">culprit frame</dfn> refers to the browsing context or iframe that is being implicated for a long task.
+      </p>
+    </section>
+
+ 
     <section id="sec-longtask-timing">
       <h2>Long Task Timing</h2>
 
@@ -115,7 +126,7 @@
         <ul>
         <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return <code>DOMString</code> for minimal frame attribution. Possible values of name are:
         <ul>
-          <li><code>same-origin-self</code>: long task is from within my own frame context</li>
+          <li><code>self</code>: long task is from within my own frame context</li>
           <li><code>same-origin-ancestor</code>: long task is from a same-origin ancestor context</li>
           <li><code>same-origin-descendant</code>: long task is from a same-origin descendant context</li>
           <li><code>same-origin</code>: long task is from an unreachable same-origin context</li>
@@ -175,7 +186,7 @@
            </thead>
            <tbody>
              <tr>
-             <td><code>same-origin-self</code></td>
+             <td><code>self</code></td>
              <td>empty</td>
              <tr>
              <td><code>same-origin-ancestor</code></td>
@@ -224,9 +235,39 @@
 
       <section id="sec-security">
       <h2>Security and Privacy Considerations</h2>
-        <p>Detailed security review doc is available <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
+        <p>Long Tasks API adheres to cross-origin policy by including origin-safe attribution information about the source of the long task. 
+        There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.<br>
+        However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
+        </p>
+      </section>
+      
+
+      <section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart">
+      <h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno"></span>References</span>
+      </h2>
+
+      <section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" property="bibo:hasPart">
+        <h3 id="h-normative-references" resource="#h-normative-references">Normative references</span>
+        </h3>
+        <dl class="bibliography" resource="">
+          <dt id="biblio-html">[HTML]</dt>
+          <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+          </dd>
+          <dt id="bib-RFC6454">[RFC6454]</dt>
+          <dd>A. Barth. IETF. <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires"><cite>The Web Origin Concept</cite></a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires">https://tools.ietf.org/html/rfc6454</a></dd>
+        </dl>
+        </section>
+
+        <section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart">
+        <h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading">Informative references</span>
+        </h3>
+        <dl class="bibliography" resource="">
+          <dt id="bib-PERFORMANCE-TIMELINE-2">[PERFORMANCE-TIMELINE-2]</dt>
+          <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. W3C. <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references"><cite>Performance Timeline Level 2</cite></a>. 8 December 2016. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references">https://www.w3.org/TR/performance-timeline-2/</a>
+          </dd>
+        </dl>
         </section>
       </section>
-
+      
   </body>
 </html>
