@@ -16,14 +16,14 @@
           companyURL: "https://google.com/",
           w3cid: "xyz"
         }, {
-          name: "Add 2nd author here",
-          mailto: "author@chromium.org",
+          name: "Domenic Denicola",
+          mailto: "domenic@chromium.org",
           company: "Google Inc.",
           companyURL: "https://google.com/",
           w3cid: "xyz"
         }, {
-          name: "Add 3rd author here",
-          mailto: "author@chromium.org",
+          name: "Ilya Grigorik",
+          mailto: "igrigorik@chromium.org",
           company: "Google Inc.",
           companyURL: "https://google.com/",
           w3cid: "xyz"
@@ -49,7 +49,7 @@
           value: 'Tests.',
           href: 'addme'
          }],
-        }],
+        }]
       };
     </script>
   </head>
@@ -57,7 +57,6 @@
     <section id="abstract">
       <p>
         This document defines an API that web page authors can use to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
-
       </p>
     </section>
     <section id="sotd">
@@ -65,11 +64,10 @@
         notices.</p>
       <p id="unstable"><strong class="redNote">Implementers SHOULD be aware that this document is not stable.</strong> Implementers who are not taking part in the discussions are likely to find the specification changing out from under them in incompatible ways. Vendors interested in implementing this document before it eventually reaches the Candidate Recommendation stage SHOULD join the mailing lists below and take part in the discussions.</p>
     </section>
-
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        As the page is loading and while the user is interacting with the page afterwards, both the application and browser, queue various events that are then executed by the browser -- e.g. user agent schedules input events based on user’s activity, the application schedules callbacks for requestAnimationFrame and other callbacks etc. Once in the queue, these events are then dequeued one-by-one by the browser and executed — e.g. see <a href="">“the anatomy of a frame”</a> for a high-level overview of this process in Blink.</p>
+        As the page is loading and while the user is interacting with the page afterwards, both the application and browser, queue various events that are then executed by the browser -- e.g. user agent schedules input events based on user’s activity, the application schedules callbacks for requestAnimationFrame and other callbacks etc. Once in the queue, these events are then dequeued one-by-one by the browser and executed.</p>
       <p>
         However, some task can take a long time (multiple frames), and if and when that happens, the UI thread is locked and all other tasks are blocked as well. To the user this is commonly visible as a “locked up” page where the browser is unable to respond to user input; this is a major source of bad user experience on the web today:
         <ul>
@@ -85,9 +83,8 @@
       <p>
         RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
       </p>
-
       <p>Example of using the API to capture long tasks.</p>
-      <pre class='example highlight'>
+      <pre class="example highlight">
       var observer = new PerformanceObserver(function(list) {
         var perfEntries = list.getEntries();
         for (var i = 0; i < perfEntries.length; i++) {
@@ -96,31 +93,27 @@
           // ...
         }
       });
-
       // register observer for long task notifications
       observer.observe({entryTypes: ["longtask"]});
-
-      // Long script execution after this will result in queueing 
+      // Long script execution after this will result in queueing
       // and receiving “longtask” entries in the observer.
       </pre>
     </section>
   
     <section id="sec-longtask-timing">
-    <h2>Long Task Timing</h2>
-    <section id='performanceentry'>
-     </section>
+      <h2>Long Task Timing</h2>
 
-   <section id="sec-PerformanceLongTaskTiming">
-      <h3>The <code>PerformanceLongTaskTiming</code> interface:</h3>
-      <pre class="def idl">
-       interface PerformanceTaskTiming : PerformanceEntry {
-        readonly attribute sequence<<code>TaskAttributionTiming</code>> attribution;
-       };
-      </pre>
-
-      <p>PerformanceLongTaskTiming extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
-      <ul>
-      <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return <code>DOMString</code> for minimal frame attribution. Possible values of name are:
+      <section id="sec-PerformanceLongTaskTiming">
+        <h3><code>PerformanceLongTaskTiming</code> interface</h3>
+        <pre class="def idl">
+         interface PerformanceTaskTiming : PerformanceEntry {
+          <!-- TODO(panicker): respec is not accepting sequence<TaskAttributionTiming> -->
+          readonly attribute <code>TaskAttributionTiming</code>[] attribution;
+         };
+        </pre>
+        <p>PerformanceLongTaskTiming extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
+        <ul>
+        <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return <code>DOMString</code> for minimal frame attribution. Possible values of name are:
         <ul>
           <li><code>same-origin-self</code>: long task is from within my own frame context</li>
           <li><code>same-origin-ancestor</code>: long task is from a same-origin ancestor context</li>
@@ -139,15 +132,15 @@
       <!--li>The <dfn id='dom-PerformanceLongTaskTiming-attribution'><code>attribution</code></dfn> attribute MUST return a sequence of<a href="TODO">TaskAttributionTiming</a> 
        entries, a new PerformanceEntry type to report attribution within long tasks.</li-->
       </ul>
-
       <p>PerformanceLongTaskTiming adds the following attributes:
       <ul>
-      <li> The <code>attribution</code> field returns a sequence of <code>TaskAttributionTiming<</code> entries.</li>
+      <li> The <code>attribution</code> field returns a sequence of <code>TaskAttributionTiming</code> entries.</li>
       </ul>
-      <p>
+      </p>
+      </section>
 
       <section id="sec-TaskAttributionTiming">
-        <h3>The <code>TaskAttributionTiming</code> interface:</h3>
+        <h3><code>TaskAttributionTiming</code> interface</h3>
         <pre class="def idl">
           interface TaskAttributionTiming : PerformanceEntry {
             readonly attribute DOMString frameSrc;
@@ -166,11 +159,74 @@
         </p>
         <p>TaskAttributionTiming adds the following attributes:
         <ul>
-          <li>The <code>frame-name</code> attribute must return <code>DOMString</code> with culprit iframe's <code>name</code> attribute.</li>
-          <li>The <code>frame-id</code> attribute must return <code>DOMString</code> with culprit iframe's <code>id</code> attribute.</li>
-          <li>The <code>frame-src</code> attribute must return <code>DOMString</code> with culprit iframe's <code>src</code> attribute.</li>
+          <li>The <code>frameName</code> attribute must return <code>DOMString</code> with culprit iframe's <code>name</code> attribute.</li>
+          <li>The <code>frameId</code> attribute must return <code>DOMString</code> with culprit iframe's <code>id</code> attribute.</li>
+          <li>The <code>frameSrc</code> attribute must return <code>DOMString</code> with culprit iframe's <code>src</code> attribute.</li>
         </ul>
         </p>
+
+        <p> The <code>TaskAttributionTiming</code> entry in <code>attribution</code> is populated pointing to the culprit frame, depending on the <code>name</code> as shown below:
+         <table>
+           <thead>
+             <tr>
+             <th>value of <code>name</code></th>
+             <th>culprit frame implicated in <code>attribution</code></th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+             <td><code>same-origin-self</code></td>
+             <td>empty</td>
+             <tr>
+             <td><code>same-origin-ancestor</code></td>
+             <td>same-origin culprit frame</td>
+             </tr>
+             <tr>
+             <td><code>same-origin-descendant</code></td>
+             <td>same-origin culprit frame</td>
+             </tr>
+             <tr>
+             <td><code>same-origin</code></td>
+             <td>same-origin culprit frame</td>
+             </tr>
+             <tr>
+             <td><code>cross-origin-ancestor</code></td>
+             <td>empty</td>
+             </tr>
+             <tr>
+             <td><code>cross-origin-descendant</code></td>
+             <td>empty</td>
+             </tr>
+             <tr>
+             <td><code>cross-origin-unreachable</code></td>
+             <td>empty</td>
+             </tr>
+             <tr>
+             <td><code>multiple-contexts</code></td>
+             <td>empty</td>
+             </tr>
+             <tr>
+             <td><code>unknown</code></td>
+             <td>empty</td>
+             </tr>
+           </tbody>
+         </table>
       </section>
+      </section>
+
+      <section id="sec-process">
+      <h2>Process</h2>
+        <section id="sec-processing-model">
+        <h3>Processing Model</h3>
+        <p>In-progress draft of the Processing Model is available <a href="https://docs.google.com/document/d/1g4TpqTK1d5YxL82bYPHcZtMYJo1R07FoIRje_pXlmJc/edit#">in this document.</a>
+        </section>
+      </section>
+
+      <section id="sec-security">
+      <h2>Security and Privacy Considerations</h2>
+        <p>Detailed security review doc is available <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
+        </section>
+      </section>
+
   </body>
 </html>
