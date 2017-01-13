@@ -29,7 +29,7 @@ Attribute definitions of PerformanceTaskTiming:
 * startTime: `DOMHighResTimeStamp` of when long task started
 * duration: elapsed time (as `DOMHighResTimeStamp`) between start and finish of task
 * name: minimal attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
- * "same-origin-self"
+ * "self"
  * "same-origin-ancestor"
  * "same-origin-descendant"
  * "same-origin"
@@ -101,7 +101,7 @@ The `name` and `attribution` fields on PerformanceLongTaskTiming together, minim
 
 | value of `name`         | frame implicated in `attribution`| 
 | ----------------------- |:-------------------------:| 
-| same-origin-self        | empty                     | 
+| self                    | empty                     | 
 | same-origin-ancestor    | same-origin culprit frame |
 | same-origin-descendant  | same-origin culprit frame | 
 | same-origin             | same-origin culprit frame | 
