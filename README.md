@@ -53,7 +53,7 @@ Attribute definitions of TaskAttributionTiming:
 * entryType: “taskattribution”
 * startTime: 0
 * duration: 0
-* name: type of attribution, eg. "Frame", "TaskScript"
+* name: type of attribution, eg. "TaskScript" or "TaskLayout"
 * frameName: `DOMString`, culprit frame’s name attribute
 * frameId: `DOMString`, culprit frame’s id attribute
 * frameSrc: `DOMString`, culprit frame’s src attribute
