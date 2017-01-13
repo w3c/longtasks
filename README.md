@@ -39,7 +39,7 @@ Attribute definitions of PerformanceTaskTiming:
  * "multiple-contexts"
  * "unknown"
 
-* attribution: `sequence` of `TaskAttributionTiming`, a new `PerformanceEntry` object to report attribution within long tasks. To see how `attribute` is populated for different values of `name` see the section below: [Pointing to the culprit](###Pointing-to-the-culprit)
+* attribution: `sequence` of `TaskAttributionTiming`, a new `PerformanceEntry` object to report attribution within long tasks. To see how `attribute` is populated for different values of `name` see the section below: [Pointing to the culprit](#pointing-to-the-culprit)
 
 ```javascript
 interface TaskAttributionTiming : PerformanceEntry {
