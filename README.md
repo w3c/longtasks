@@ -20,7 +20,8 @@ Some applications (and RUM vendors) are already attempting to identify and track
 Major terms:
 * **frame** refers to the browsing context or iframe (not animation frame)
 * **culprit frame** refers to the frame that is being implicated for the long task
-* **attribution** refers to identifying which type of work (such as script) caused the long task AND which browsing context or iframe is responsible for that work.
+* **attribution** refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task AND which browsing context or iframe is responsible for that work.
+* **minimal frame attribution** refers to the browsing context or iframe that is being implicated overall for the long task
 
 ## V1 API
 Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
@@ -34,7 +35,7 @@ Attribute definitions of PerformanceLongTaskTiming:
 * entryType: "longtask"
 * startTime: `DOMHighResTimeStamp` of when long task started
 * duration: elapsed time (as `DOMHighResTimeStamp`) between start and finish of task
-* name: minimal attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
+* name: minimal frame attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
  * "self"
  * "same-origin-ancestor"
  * "same-origin-descendant"
