@@ -107,6 +107,7 @@ Long task represents the top level event loop task. Within this task, different 
 Thus pointing to the culprit has couple of facets:
 * Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the `name` field
 * Pointing to the type of work involved in the task, and its associated frame context: this is captured in `TaskAttributionTiming` objects in the `attribution` field of `PerformanceLongTaskTiming` 
+
 Therefore, `name` and `attribution` fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
 
 The security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
