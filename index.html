@@ -119,7 +119,7 @@
         <pre class="def idl">
          interface PerformanceTaskTiming : PerformanceEntry {
           <!-- TODO(panicker): respec is not accepting sequence<TaskAttributionTiming> -->
-          readonly attribute <code>TaskAttributionTiming</code>[] attribution;
+          readonly attribute <code>FrozenArray</code><<code>TaskAttributionTiming</code>> attribution;
          };
         </pre>
         <p>PerformanceLongTaskTiming extends the following attributes of <a href="http://www.w3.org/TR/performance-timeline-2/#idl-def-PerformanceEntry">PerformanceEntry</a> interface:</p>
