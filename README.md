@@ -99,7 +99,7 @@ Also, the security model of the web means that sometimes a long task will happen
 
 The `name` and `attribution` fields on PerformanceLongTaskTiming together, minimally point to where the blame rests for a long task. The TaskAttributionTiming entry in `attribution` is populated pointing to the culprit frame, depending on the `name` as shown below:
 
-| value of `name`         | frame in `attribution`    | 
+| value of `name`         | frame implicated in `attribution`| 
 | ----------------------- |:-------------------------:| 
 | same-origin-self        | empty                     | 
 | same-origin-ancestor    | same-origin culprit frame |
