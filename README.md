@@ -19,7 +19,7 @@ Some applications (and RUM vendors) are already attempting to identify and track
 ## Terminology
 Major terms:
 * **frame** refers to the browsing context or iframe (not animation frame)
-* **culprit** frame* refers to the frame that is being implicated for the long task
+* **culprit frame** refers to the frame that is being implicated for the long task
 * **attribution** refers to identifying which type of work (such as script) caused the long task AND which browsing context or iframe is responsible for that work.
 
 ## V1 API
