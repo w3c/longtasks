@@ -25,9 +25,9 @@ interface PerformanceLongTaskTiming : PerformanceEntry {
 ```
 
 Attribute definitions of PerformanceTaskTiming:
-* entryType: “longtask”
-* startTime: DOMHighResTimeStamp of when long task started
-* duration: elapsed time (as DOMHighResTimeStamp) between start and finish of task
+* entryType: "longtask"
+* startTime: `DOMHighResTimeStamp` of when long task started
+* duration: elapsed time (as `DOMHighResTimeStamp`) between start and finish of task
 * name: minimal attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
  * "same-origin-self"
  * "same-origin-ancestor"
@@ -39,7 +39,8 @@ Attribute definitions of PerformanceTaskTiming:
  * "multiple-contexts"
  * "unknown"
 
-* attribution: sequence of TaskAttributionTiming, a new PerformanceEntry object to report attribution within long tasks.
+* attribution: `sequence` of `TaskAttributionTiming`, a new `PerformanceEntry` object to report attribution within long tasks. To see how `attribute` is populated for different values of `name` see the section below: [Pointing to the culprit](###Pointing-to-the-culprit)
+
 ```javascript
 interface TaskAttributionTiming : PerformanceEntry {
   readonly attribute DOMString frameSrc;
@@ -53,12 +54,12 @@ Attribute definitions of TaskAttributionTiming:
 * startTime: 0
 * duration: 0
 * name: type of attribution, eg. "Frame", "TaskScript"
-* frameName: DOMString, culprit frame’s name attribute
-* frameId: DOMString, culprit frame’s id attribute
-* frameSrc: DOMString, culprit frame’s src attribute
+* frameName: `DOMString`, culprit frame’s name attribute
+* frameId: `DOMString`, culprit frame’s id attribute
+* frameSrc: `DOMString`, culprit frame’s src attribute
 
 
-Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the attribute is set, see the "Pointing to the culprit" section.
+Long tasks events will be delivered to the observer regardless of which frame was responsible for the long task. The goal is to allow all pages on the web to know if and who (first party content or third party content) is causing disruptions. The `frameName`, `frameId` and `frameSrc` attributes provide minimal attribution so that the observing frame can respond to the issue in the proper way. For more details on how the `attribution` is set, see the "Pointing to the culprit" section.
 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
@@ -96,29 +97,26 @@ Work in a browser is sometimes specific to a frame context (i.e. document frame 
 
 Also, the security model of the web means that sometimes a long task will happen in an iframe that is unreachable from the observing frame. For instance, a long task might happen in a deeply nested iframe that is different from my origin. Or similarly, I might be an iframe doubly embedded in a document, and a long task will happen in the top-level browsing context. In the web security model, I can know from which direction the issue came, one of my ancestors or descendants, but to preserve the frame origin model, we must be careful about pointing to the specific iframe.
 
-The "name" and "attribution" fields on PerformanceLongTaskTiming together, minimally point to where the blame rests for a long task. The TaskAttributionTiming entry in "attribution" is populated based on the "name" field.
-Currently the values of "name" and corresponsing "attribution" are:
+The `name` and `attribution` fields on PerformanceLongTaskTiming together, minimally point to where the blame rests for a long task. The TaskAttributionTiming entry in `attribution` is populated pointing to the culprit frame, depending on the `name` as shown below:
 
-* "same-origin-self": long task is from within my own frame context
-* "same-origin-ancestor": long task is from a same-origin ancestor context; 
-  * "attribution" points to same-origin culprit frame
-* "same-origin-descendant": long task is from a same-origin descendant context
-  * "attribution" points to same-origin culprit frame
-* "same-origin": long task is from an unreachable same-origin context
-* "cross-origin-ancestor": long task is from a cross-origin ancestor context
-* "cross-origin-descendant": long task is from a cross-origin descendant context
-  * "attribution" points to first cross-origin child frame between my own frame and culprit frame
-* "cross-origin-unreachable": long task is from a cross-origin unreachable context
-* "multiple-contexts": multiple frame contexts were involved in the long task
-* "unknown": unknown indicates none of the above, long task could be due to something that is not captured yet (eg. layout) or something global such as GC.
+| value of `name`         | frame in `attribution`    | 
+| ----------------------- |:-------------------------:| 
+| same-origin-self        | empty                     | 
+| same-origin-ancestor    | same-origin culprit frame |
+| same-origin-descendant  | same-origin culprit frame | 
+| same-origin             | same-origin culprit frame | 
+| cross-origin-ancestor   | empty                     |
+| cross-origin-descendant |  first cross-origin child frame between my own frame and culprit frame|
+| cross-origin-unreachable| empty                     |
+| multiple-contexts       | empty                     |
+| unknown                 | empty                     |
 
 
 ## Privacy & Security
-Applications can already observe discontinuities in scheduling of periodic timers and use this to infer potential problems due to long executing tasks or excessive number of tasks. For instance, one can create a setTimeout(,10) and observe whether it fires within ~10ms. If it is delayed, your thread was busy. This is a technique facebook uses to detect long tasks already.
+Long Tasks API surfaces long tasks greater than a threshold (50ms) to developers via Javascript (Performance Observer API). It includes origin-safe attribution information about the source of the long task.
+There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.
 
-We think that the triggering of long task notifications does not expose any additional security or privacy risks -- given that timing info is more granular (50ms instead of 10ms), along with adherence of cross-origin policy.
-
-Document-level attribution enables application to identify and attribute the source of the long task. The exposed culprit Window is either self, the Window of the embedded context (at most one level deep -- if cross origin), or the Window of the parent subject to cross-origin and Referer policies. These Window pointers are already accessible to the application and do not expose new information.
+However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could expedite existing privacy attacks. If this were to become an concern, additional mitigations can be implemented to address this such as dropping "culprit" after a per-target origin threshold is exceeded, or limiting to 10 origins per minute etc.
 
 Detailed Security & Privacy doc is here:
 https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit#
