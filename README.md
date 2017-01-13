@@ -87,9 +87,9 @@ For a quick demo of a partial implementation, in the latest Chrome Canary (versi
 Then visit this link:
 https://wicg.github.io/longtasks/render-jank-demo.html
 
-For a demo of long tasks from same-origin & cross-origin frames see this demo:
+For a demo of long tasks from same-origin & cross-origin frames see the demo below. Interacting with the iframed wikipedia page will generate cross-origin long task notifications.
 https://wicg.github.io/longtasks/demo.html
-Here, interacting with the iframed wikipedia page should generate cross-origin long task notifications.
+
 
 ### Pointing to the culprit
 Work in a browser is sometimes specific to a frame context (i.e. document frame or iframe), for instance a long running script. But sometimes, long tasks can happen due to more global things: a long GC that is process or frame-tree wide, for instance.
