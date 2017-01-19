@@ -83,6 +83,9 @@
       <p>
         RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
       </p>
+    
+    <section id="example">
+      <h3>Usage Example</h3>
       <p>Example of using the API to capture long tasks.</p>
       <pre class="example highlight">
       var observer = new PerformanceObserver(function(list) {
@@ -98,6 +101,7 @@
       // Long script execution after this will result in queueing
       // and receiving “longtask” entries in the observer.
       </pre>
+    </section>
     </section>
   
     <section id="sec-terminology">
