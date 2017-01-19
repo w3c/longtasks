@@ -104,9 +104,11 @@
       <h2>Terminology</h2>
       <p><dfn data-dfn-type="dfn" id="dfn-long-task">long task</dfn> refers to an event loop task that exceeds 50ms.
       </p>
-      <p><dfn data-dfn-type="dfn" id="dfn-attribution">attribution</dfn> refers to identifying which browsing context or iframe is responsible for the long task. For simplicity, in the V1 API, only script execution is considered for attribution.
+      <p><dfn data-dfn-type="dfn" id="dfn-frame">frame</dfn> or <dfn data-dfn-type="dfn" id="dfn-frame-context">frame context</dfn> refers to the browsing context, such as iframe (not animation frame), embed or object in which some work (such as script or layout) occurs.
+      </p>  
+      <p><dfn data-dfn-type="dfn" id="dfn-culprit-frame">culprit frame</dfn> refers to the browsing context (iframe, embed or object etc) that is being implicated for a long task.
       </p>
-      <p><dfn data-dfn-type="dfn" id="dfn-culprit-frame">culprit frame</dfn> refers to the browsing context or iframe that is being implicated for a long task.
+      <p><dfn data-dfn-type="dfn" id="dfn-attribution">attribution</dfn> refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task AND which browsing context is responsible for that work.
       </p>
     </section>
 
@@ -126,13 +128,13 @@
         <ul>
         <li>The <dfn id='dom-PerformanceLongTaskTiming-name'><code>name</code></dfn> attribute must return <code>DOMString</code> for minimal frame attribution. Possible values of name are:
         <ul>
-          <li><code>self</code>: long task is from within my own frame context</li>
-          <li><code>same-origin-ancestor</code>: long task is from a same-origin ancestor context</li>
-          <li><code>same-origin-descendant</code>: long task is from a same-origin descendant context</li>
-          <li><code>same-origin</code>: long task is from an unreachable same-origin context</li>
-          <li><code>cross-origin-ancestor</code>: long task is from a cross-origin ancestor context</li>
-          <li><code>cross-origin-descendant</code>: long task is from a cross-origin descendant context</li>
-          <li><code>cross-origin-unreachable</code>: long task is from a cross-origin unreachable context</li>
+          <li><code>self</code>: long task is from within my own frame</li>
+          <li><code>same-origin-ancestor</code>: long task is from a same-origin ancestor frame</li>
+          <li><code>same-origin-descendant</code>: long task is from a same-origin descendant frame</li>
+          <li><code>same-origin</code>: long task is from an unreachable same-origin frame</li>
+          <li><code>cross-origin-ancestor</code>: long task is from a cross-origin ancestor frame</li>
+          <li><code>cross-origin-descendant</code>: long task is from a cross-origin descendant frame</li>
+          <li><code>cross-origin-unreachable</code>: long task is from a cross-origin unreachable frame</li>
           <li><code>multiple-contexts</code>: multiple frame contexts were involved in the long task</li>
           <li><code>unknown</code>: none of the above</li>
         </ul>
@@ -154,9 +156,10 @@
         <h3><code>TaskAttributionTiming</code> interface</h3>
         <pre class="def idl">
           interface TaskAttributionTiming : PerformanceEntry {
-            readonly attribute DOMString frameSrc;
-            readonly attribute DOMString frameId;
-            readonly attribute DOMString frameName;
+            readonly attribute DOMString containerType;
+            readonly attribute DOMString containerSrc;
+            readonly attribute DOMString containerId;
+            readonly attribute DOMString containerName;
          };
         </pre>
         <p>
@@ -170,14 +173,27 @@
         </p>
         <p>TaskAttributionTiming adds the following attributes:
         <ul>
-          <li>The <code>frameName</code> attribute must return <code>DOMString</code> with culprit iframe's <code>name</code> attribute.</li>
-          <li>The <code>frameId</code> attribute must return <code>DOMString</code> with culprit iframe's <code>id</code> attribute.</li>
-          <li>The <code>frameSrc</code> attribute must return <code>DOMString</code> with culprit iframe's <code>src</code> attribute.</li>
+          <li>The <code>containerType</code> attribute must return <code>DOMString</code> with type of frame container, such as <code>"iframe"</code>, <code>"embed"</code>, <code>"object"</code>.</li>
+          <li>The <code>containerName</code> attribute must return <code>DOMString</code> with container's<code>name</code> attribute.</li>
+          <li>The <code>containerId</code> attribute must return <code>DOMString</code> with container's<code>id</code> attribute.</li>
+          <li>The <code>containerSrc</code> attribute must return <code>DOMString</code> with container's<code>src</code> attribute.</li>
         </ul>
         </p>
 
-        <p> The <code>TaskAttributionTiming</code> entry in <code>attribution</code> is populated pointing to the culprit frame, depending on the <code>name</code> as shown below:
-         <table>
+        <section id="sec-PointingToCulprit">
+          <h3>Pointing to the culprit</h3>
+          <p>Long task represents the top level event loop task. Within this task, different types of work (such as script, layout, style etc) may be done, and they could be executed within different frame contexts. The type of work could also be global in nature such as a long GC that is process or frame-tree wide.<br>
+            Thus pointing to the culprit has couple of facets:
+            <ul>
+              <li>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the name field</li>
+              <li>Pointing to the type of work involved in the task, and its associated frame context: this is captured in TaskAttributionTiming objects in the attribution field of PerformanceLongTaskTiming</li>
+            </ul>
+            Therefore, name and attribution fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
+            When delivering this information the web origin-policy must be adhered to.
+          </p>
+          <p>
+            As an illustration, the <code>TaskAttributionTiming</code> entry in <code>attribution</code> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code>name</code> as follows:
+           <table>
            <thead>
              <tr>
              <th>value of <code>name</code></th>
