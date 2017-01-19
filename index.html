@@ -185,10 +185,10 @@
           <p>Long task represents the top level event loop task. Within this task, different types of work (such as script, layout, style etc) may be done, and they could be executed within different frame contexts. The type of work could also be global in nature such as a long GC that is process or frame-tree wide.<br>
             Thus pointing to the culprit has couple of facets:
             <ul>
-              <li>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the name field</li>
-              <li>Pointing to the type of work involved in the task, and its associated frame context: this is captured in TaskAttributionTiming objects in the attribution field of PerformanceLongTaskTiming</li>
+              <li>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the <code>name</code> field</li>
+              <li>Pointing to the type of work involved in the task, and its associated frame context: this is captured in <code>TaskAttributionTiming</code> objects in the <code>attribution</code> field of <code>PerformanceLongTaskTiming</code></li>
             </ul>
-            Therefore, name and attribution fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
+          Therefore, <code>name</code> and <code>attribution</code> fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
             When delivering this information the web origin-policy must be adhered to.
           </p>
           <p>
