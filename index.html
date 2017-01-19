@@ -149,11 +149,10 @@
       <!--li>The <dfn id='dom-PerformanceLongTaskTiming-attribution'><code>attribution</code></dfn> attribute MUST return a sequence of<a href="TODO">TaskAttributionTiming</a> 
       entries, a new PerformanceEntry type to report attribution within long tasks.</li-->
     </ul>
-    <p>PerformanceLongTaskTiming adds the following attributes:
-      <ul>
-        <li> The <code>attribution</code> field returns a sequence of <code>TaskAttributionTiming</code> entries.</li>
-      </ul>
-    </p>
+    <p>PerformanceLongTaskTiming adds the following attributes:</p>
+    <ul>
+      <li> The <code>attribution</code> field returns a sequence of <code>TaskAttributionTiming</code> entries.</li>
+    </ul>
   </section>
 
   <section id="sec-TaskAttributionTiming">
@@ -243,146 +242,147 @@
          </tbody>
        </table>
      </section>
-     </section>
-     </section>
+   </section>
+ </section>
 
-     <section id="sec-processing-model">
-      <h2>Processing Model</h2>
-      <section id="sec-other-spec-modifications">
-        <h3>Modifications to other specifications</h3>
-        
-        <h4>HTML: <a href="https://html.spec.whatwg.org/#definitions-3">event loop definitions</a></h4>
-        <p>Each task gets an associated <i>start time</i>, <i>end time</i>, and a <i>script evaluation environment settings object set</i>.</p>
+ <section id="sec-processing-model">
+  <h2>Processing Model</h2>
+  <section id="sec-other-spec-modifications">
+    <h3>Modifications to other specifications</h3>
 
-        <h4>HTML: <a href>event loop processing model</a></h4>
-        Before Step #3:
-        <ul><li>Set the selected task's start time to the value be the value that would be returned by the Performance object's now() method.</li></ul>
+    <h4>HTML: <a href="https://html.spec.whatwg.org/#definitions-3">event loop definitions</a></h4>
+    <p>Each task gets an associated <i>start time</i>, <i>end time</i>, and a <i>script evaluation environment settings object set</i>.</p>
 
-        After Step #3:
-        <ul>
-          <li>Set the selected task's end time to the value be the value that would be returned by the Performance object's now() method.</li>
-          <li>Execute the report long tasks algorithm (below), passing in the selected task.</li>
-        </ul>
+    <h4>HTML: <a href>event loop processing model</a></h4>
+    Before Step #3:
+    <ul><li>Set the selected task's start time to the value be the value that would be returned by the Performance object's now() method.</li></ul>
 
-        <h4>HTML: <a href="https://html.spec.whatwg.org/#calling-scripts">calling scripts</a></h4>
-        <p>In prepare to run script, add a step at the end to add settings to the currently running task's script evaluation environment settings object set.</p>
-      </section>
+    After Step #3:
+    <ul>
+      <li>Set the selected task's end time to the value be the value that would be returned by the Performance object's now() method.</li>
+      <li>Execute the report long tasks algorithm (below), passing in the selected task.</li>
+    </ul>
 
-      <section id="sec-additions-to-spec">
-        <h3>Additions to the Long Task Spec</h3>
-        
-        <h4>Report Long Tasks</h4>
-        <p>Given a task task, perform the following algorithm:
-          <ol>
-            <li>If end time minus start time is less than the long tasks threshold of 50 ms, abort these steps.</li>
-            <li>Let destinationRealms be an empty set.</li>
-            <li>Determine the set of JavaScript Realms to which reports will be delivered:</li>
-              <p>For each environment settings object settings in task's script evaluation environment settings object set:
-              <ol>
-              <li>Let topmostBC be settings's responsible browsing context's top-level browsing context.</li>
-              <li>Add topmostBC's Window's relevant Realm to destinationRealms.</li>
-              <li>Let descendantBCs be topmostBC's active document's list of descendant browsing contexts.</li>
-              <li>For each descendantBC in descendantBCs, add descendantBC's Window's relevant Realm to destinationRealms.</li>
-              </ol>
-              </p>
-            <li>For each destinationRealm in destinationRealms:</li>
-              <ol>
-                <li>Let name be the empty string. This will be used to report minimal frame attribution, below.</li>
-                <li>Let culpritSettings be null.</li>
-                <li>Process task's script evaluation environment settings object set to determine name and culpritSettings as follows:
-                  <ol>
-                  <li>If task's script evaluation environment settings object set is empty: set name to “unknown” and culpritSettings to null.</li>
-                  <li>If task's script evaluation environment settings object set's length is greater than one: set name to "multiple-contexts” and culpritSettings to null.</li>
-                  <li>If task's script evaluation environment settings object set's length is one:
-                    <ol>
-                    <li>Set culpritSettings to the single item in task's script evaluation environment settings object set.</li>
-                    <li>Let destinationOrigin be destinationRealm's relevant settings object's origin.</li>
-                    <li>Let destinationBC be destinationRealm's relevant settings object's responsible browsing context.</li>
-                    <li>If culpritSettings's origin and destinationOrigin are [same origin]:
-                      <ol>
-                      <li>If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “same-origin-ancestor”.</li>
-                      <li>If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “same-origin-descendant”.</li>
-                      </ol>
-                    </li>
-                    <li>Otherwise:
-                      <ol>
-                      <li>If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “cross-origin-ancestor” and set culpritSettings to null.<br>
-                      NOTE: this is not reported because of security. Developers should look this up themselves.
-                      </li>
-                      <li>If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “cross-origin-descendant”.</li>
-                      </ol>
-                    </li>
-                    </ol>
-                  </li>
-                  </ol>
-                </li>
-                <li>Create a new TaskAttributionTiming object attribution and set its attributes as follows:
-                  <ol>
-                  <li>Set attribution's name attribute to "TaskScript".</li>
-                  <li>Set attribution's entryType attribute to “taskattribution”</li>
-                  <li>Set attribution's  startTime and duration to 0.</li>
-                  <li>If culpritSettings is not null, and culpritSettings's responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
-                    <ol>
-                    <li>Set attribution's frameName attribute to the value of iframe's name content attribute, or null if the attribute is absent.</li>
-                    <li>Set attribution's frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.<br>
-                    NOTE: it is intentional that we record the frame's src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</li>
-                    <li>Set attribution's frameId attribute to the value of iframe's id content attribute, or null if the attribute is absent.</li>
-                    </ol>
-                  </ol>
+    <h4>HTML: <a href="https://html.spec.whatwg.org/#calling-scripts">calling scripts</a></h4>
+    <p>In prepare to run script, add a step at the end to add settings to the currently running task's script evaluation environment settings object set.</p>
+  </section>
 
-                </li>
-                <li>Create a new PerformanceLongTaskTiming object newEntry and set its attributes as follows:
-                  <ol>
-                  <li>Set newEntry's name attribute to name.</li>
-                  <li>Set newEntry's entryType attribute to “longtask”</li>
-                  <li>Set newEntry's startTime attribute to start time</li>
-                  <li>Set newEntry's duration attribute to end time minus start time</li>
-                  <li>Set newEntry's attribution attribute to a new frozen array containing the single value attribution.<br>
-                  NOTE: future iterations of this API may add more values to the attribution attribute, but for now it only contains a single value.</li>
-                  </ol>
-                <li><a href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> newEntry on destinationRealm.<br>
-                NOTE: the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.</li>
-            </ol>
+  <section id="sec-additions-to-spec">
+    <h3>Additions to the Long Task Spec</h3>
 
-        </p>
-      </section>
-    </section>
-
-    <section id="sec-security">
-      <h2>Security and Privacy Considerations</h2>
-      <p>Long Tasks API adheres to cross-origin policy by including origin-safe attribution information about the source of the long task. 
-        There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.<br>
-        However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
+    <h4>Report Long Tasks</h4>
+    <p>Given a task task, perform the following algorithm:</p>
+    <ol>
+      <li>If end time minus start time is less than the long tasks threshold of 50 ms, abort these steps.</li>
+      <li>Let destinationRealms be an empty set.</li>
+      <li>Determine the set of JavaScript Realms to which reports will be delivered:</li>
+      <p>For each environment settings object settings in task's script evaluation environment settings object set:
+        <ol>
+          <li>Let topmostBC be settings's responsible browsing context's top-level browsing context.</li>
+          <li>Add topmostBC's Window's relevant Realm to destinationRealms.</li>
+          <li>Let descendantBCs be topmostBC's active document's list of descendant browsing contexts.</li>
+          <li>For each descendantBC in descendantBCs, add descendantBC's Window's relevant Realm to destinationRealms.</li>
+        </ol>
       </p>
-    </section>
+      <li>For each destinationRealm in destinationRealms:</li>
+      <ol>
+        <li>Let name be the empty string. This will be used to report minimal frame attribution, below.</li>
+        <li>Let culpritSettings be null.</li>
+        <li>Process task's script evaluation environment settings object set to determine name and culpritSettings as follows:
+          <ol>
+            <li>If task's script evaluation environment settings object set is empty: set name to “unknown” and culpritSettings to null.</li>
+            <li>If task's script evaluation environment settings object set's length is greater than one: set name to "multiple-contexts” and culpritSettings to null.</li>
+            <li>If task's script evaluation environment settings object set's length is one:
+              <ol>
+                <li>Set culpritSettings to the single item in task's script evaluation environment settings object set.</li>
+                <li>Let destinationOrigin be destinationRealm's relevant settings object's origin.</li>
+                <li>Let destinationBC be destinationRealm's relevant settings object's responsible browsing context.</li>
+                <li>If culpritSettings's origin and destinationOrigin are [same origin]:
+                  <ol>
+                    <li>If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “same-origin-ancestor”.</li>
+                    <li>If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “same-origin-descendant”.</li>
+                  </ol>
+                </li>
+                <li>Otherwise:
+                  <ol>
+                    <li>If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “cross-origin-ancestor” and set culpritSettings to null.<br>
+                      NOTE: this is not reported because of security. Developers should look this up themselves.
+                    </li>
+                    <li>If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “cross-origin-descendant”.</li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>Create a new TaskAttributionTiming object attribution and set its attributes as follows:
+          <ol>
+            <li>Set attribution's name attribute to "TaskScript".</li>
+            <li>Set attribution's entryType attribute to “taskattribution”</li>
+            <li>Set attribution's  startTime and duration to 0.</li>
+            <li>If culpritSettings is not null, and culpritSettings's responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
+              <ol>
+                <li>Set attribution's frameName attribute to the value of iframe's name content attribute, or null if the attribute is absent.</li>
+                <li>Set attribution's frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.<br>
+                  NOTE: it is intentional that we record the frame's src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</li>
+                  <li>Set attribution's frameId attribute to the value of iframe's id content attribute, or null if the attribute is absent.</li>
+                </ol>
+              </ol>
+
+            </li>
+            <li>Create a new PerformanceLongTaskTiming object newEntry and set its attributes as follows:
+              <ol>
+                <li>Set newEntry's name attribute to name.</li>
+                <li>Set newEntry's entryType attribute to “longtask”</li>
+                <li>Set newEntry's startTime attribute to start time</li>
+                <li>Set newEntry's duration attribute to end time minus start time</li>
+                <li>Set newEntry's attribution attribute to a new frozen array containing the single value attribution.<br>
+                  NOTE: future iterations of this API may add more values to the attribution attribute, but for now it only contains a single value.</li>
+                </ol>
+                <li><a href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> newEntry on destinationRealm.<br>
+                  NOTE: the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.</li>
+                </ol>
+
+              </p>
+            </section>
+          </section>
+
+          <section id="sec-security">
+            <h2>Security and Privacy Considerations</h2>
+            <p>Long Tasks API adheres to cross-origin policy by including origin-safe attribution information about the source of the long task. 
+              There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.<br>
+              However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
+            </p>
+          </section>
 
 
-    <section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart">
-      <h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno"></span>References</span>
-      </h2>
+          <section id="references" class="appendix" typeof="bibo:Chapter" resource="#references" property="bibo:hasPart">
+            <h2 id="h-references" resource="#h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno"></span>References</span>
+            </h2>
 
-      <section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" property="bibo:hasPart">
-        <h3 id="h-normative-references" resource="#h-normative-references">Normative references
-        </h3>
-        <dl class="bibliography" resource="">
-          <dt id="biblio-html">[HTML]</dt>
-          <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
-          </dd>
-          <dt id="bib-RFC6454">[RFC6454]</dt>
-          <dd>A. Barth. IETF. <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires"><cite>The Web Origin Concept</cite></a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires">https://tools.ietf.org/html/rfc6454</a></dd>
-        </dl>
-      </section>
+            <section id="normative-references" typeof="bibo:Chapter" resource="#normative-references" property="bibo:hasPart">
+              <h3 id="h-normative-references" resource="#h-normative-references">Normative references
+              </h3>
+              <dl class="bibliography" resource="">
+                <dt id="biblio-html">[HTML]</dt>
+                <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+                </dd>
+                <dt id="bib-RFC6454">[RFC6454]</dt>
+                <dd>A. Barth. IETF. <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires"><cite>The Web Origin Concept</cite></a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454" property="dc:requires">https://tools.ietf.org/html/rfc6454</a></dd>
+              </dl>
+            </section>
 
-      <section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart">
-        <h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading">Informative references</span>
-        </h3>
-        <dl class="bibliography" resource="">
-          <dt id="bib-PERFORMANCE-TIMELINE-2">[PERFORMANCE-TIMELINE-2]</dt>
-          <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. W3C. <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references"><cite>Performance Timeline Level 2</cite></a>. 8 December 2016. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references">https://www.w3.org/TR/performance-timeline-2/</a>
-          </dd>
-        </dl>
-      </section>
-    </section>
+            <section id="informative-references" typeof="bibo:Chapter" resource="#informative-references" property="bibo:hasPart">
+              <h3 id="h-informative-references" resource="#h-informative-references"><span property="xhv:role" resource="xhv:heading">Informative references</span>
+              </h3>
+              <dl class="bibliography" resource="">
+                <dt id="bib-PERFORMANCE-TIMELINE-2">[PERFORMANCE-TIMELINE-2]</dt>
+                <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. W3C. <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references"><cite>Performance Timeline Level 2</cite></a>. 8 December 2016. W3C Candidate Recommendation. URL: <a href="https://www.w3.org/TR/performance-timeline-2/" property="dc:references">https://www.w3.org/TR/performance-timeline-2/</a>
+                </dd>
+              </dl>
+            </section>
+          </section>
+        </section>
 
-  </body>
-  </html>
+      </body>
+      </html>
