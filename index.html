@@ -168,7 +168,7 @@
 
     <p>TaskAttributionTiming extends the following attributes of PerformanceEntry interface:</p>
     <ul>
-      <li>The <code>name</code> attribute must return <code>DOMString</code> indicating type of attribution. Currently this can <code>"task-script"</code>.</li>
+      <li>The <code>name</code> attribute must return <code>DOMString</code> indicating type of attribution. Currently this can <code>"script"</code>.</li>
       <li>The <code>entryType</code> attribute must return <code>DOMString</code> <code>"taskattribution"</code></li>
       <li>The <code>startTime</code> attribute MUST return 0.</li>
       <li>The <code>duration</code> attribute MUST return 0.</li>
@@ -319,7 +319,7 @@
       </li>
       <li>Create a new TaskAttributionTiming object attribution and set its attributes as follows:
         <ol>
-          <li>Set attribution's name attribute to "task-script".</li>
+          <li>Set attribution's name attribute to "script".</li>
           <li>Set attribution's entryType attribute to “taskattribution”</li>
           <li>Set attribution's  startTime and duration to 0.</li>
           <li>If culpritSettings is not null, and culpritSettings's responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
