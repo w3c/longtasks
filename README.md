@@ -61,7 +61,7 @@ Attribute definitions of TaskAttributionTiming:
 * entryType: “taskattribution”
 * startTime: 0
 * duration: 0
-* name: type of attribution, eg. "TaskScript" or "TaskLayout"
+* name: type of attribution, eg. "script" or "layout"
 * containerType: type of container for culprit frame eg. "iframe" (most common), "embed", "object".
 * containerName: `DOMString`, container’s name attribute
 * containerId: `DOMString`, container’s id attribute
