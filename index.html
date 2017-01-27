@@ -1,4 +1,4 @@
-  <!doctype html>
+<!doctype html>
   <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -120,7 +120,7 @@
       <section id="sec-longtask-timing">
         <h2>Long Task Timing</h2>
         <p>Long Task timing involves the following new interfaces</p>
-        <section id="sec-PerformanceLongTaskTiming" data-dfn-for="PerformanceLongTaskTiming" data-link-for="PerformanceLongTaskTiming">
+        <section id="sec-PerformanceLongTaskTiming" data-dfn-for="PerformanceLongTaskTiming" data-link-for="PerformanceLongTaskTiming" data-link-for="TaskAttributionTiming">
           <h3><dfn>PerformanceLongTaskTiming</dfn> interface</h3>
           <pre class="def idl">
            interface PerformanceLongTaskTiming : PerformanceEntry {
@@ -146,12 +146,10 @@
         <li>The <code>entryType</code> attribute must return <code>"longtask"</code></li>
         <li>The <code>startTime</code> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> of when the task started.</li>
         <li>The <code>duration</code> attribute MUST return a <a href="http://www.w3.org/TR/hr-time/#dom-domhighrestimestamp">DOMHighResTimeStamp</a> equal to the elapsed time between the start and end of task</li>
-        <!--li>The <dfn id='dom-PerformanceLongTaskTiming-attribution'><code>attribution</code></dfn> attribute MUST return a sequence of<a href="TODO">TaskAttributionTiming</a> 
-        entries, a new PerformanceEntry type to report attribution within long tasks.</li-->
       </ul>
       PerformanceLongTaskTiming adds the following attributes:
       <ul>
-        <li> The <dfn>attribution</dfn> field returns a sequence of <code>TaskAttributionTiming</code> entries.</li>
+        <li> The <dfn>attribution</dfn> field returns a sequence of <a>TaskAttributionTiming</a> entries.</li>
       </ul>
     </section>
     <p></p>
@@ -183,19 +181,19 @@
     </ul>
   </section>
   <p></p>
-  <section id="sec-PointingToCulprit">
+  <section id="sec-PointingToCulprit" data-link-for="PerformanceLongTaskTiming" data-link-for="TaskAttributionTiming">
     <h3>Pointing to the culprit</h3>
     <p>
       Long task represents the top level event loop task. Within this task, different types of work (such as script, layout, style etc) may be done, and they could be executed within different frame contexts. The type of work could also be global in nature such as a long GC that is process or frame-tree wide.</p>
       Thus pointing to the culprit has couple of facets:
       <ul>
         <li>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the <code>name</code> field</li>
-        <li>Pointing to the type of work involved in the task, and its associated frame context: this is captured in <code>TaskAttributionTiming</code> objects in the <code>attribution</code> field of <code>PerformanceLongTaskTiming</code></li>
+        <li>Pointing to the type of work involved in the task, and its associated frame context: this is captured in <a>TaskAttributionTiming</a> objects in the <a>attribution</a> field of <a>PerformanceLongTaskTiming</a></li>
       </ul>
       <p>
-        Therefore, <code>name</code> and <code>attribution</code> fields on PerformanceLongTaskTiming together paint the picture for where the blame rests for a long task.
+        Therefore, <code>name</code> and <a>attribution</a> fields on <a>PerformanceLongTaskTiming</a> together paint the picture for where the blame rests for a long task.
         When delivering this information the web origin-policy must be adhered to.<br>
-        As an illustration, the <code>TaskAttributionTiming</code> entry in <code>attribution</code> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code>name</code> as follows:
+        As an illustration, the <a>TaskAttributionTiming</a> entry in <a>attribution</a> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code>name</code> as follows:
       </p>
       <table>
        <thead>
@@ -246,7 +244,7 @@
    </section>
  </section>
 
- <section id="sec-processing-model">
+ <section id="sec-processing-model" data-link-for="PerformanceLongTaskTiming" data-link-for="TaskAttributionTiming">
   <h2>Processing Model</h2>
   <section id="sec-other-spec-modifications">
     <h3>Modifications to other specifications</h3>
@@ -317,7 +315,7 @@
           </li>
         </ol>
       </li>
-      <li>Create a new TaskAttributionTiming object attribution and set its attributes as follows:
+      <li>Create a new <a>TaskAttributionTiming</a> object attribution and set its attributes as follows:
         <ol>
           <li>Set attribution's name attribute to "script".</li>
           <li>Set attribution's entryType attribute to “taskattribution”</li>
@@ -331,7 +329,7 @@
           </li>
         </ol>
       </li>
-      <li>Create a new PerformanceLongTaskTiming object newEntry and set its attributes as follows:
+      <li>Create a new <a>PerformanceLongTaskTiming</a> object newEntry and set its attributes as follows:
         <ol>
           <li>Set newEntry's name attribute to name.</li>
           <li>Set newEntry's entryType attribute to “longtask”</li>
