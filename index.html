@@ -1776,7 +1776,8 @@ When delivering this information the web origin-policy must be adhered to.</p>
         <li data-md="">
          <p>Set attribution’s frameName attribute to the value of iframe’s name content attribute, or null if the attribute is absent.</p>
         <li data-md="">
-         <p>Set attribution’s frameSrc attribute to the value of iframe’s src content attribute, or null if the attribute is absent.<br>NOTE: it is intentional that we record the frame’s src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
+         <p>Set attribution’s frameSrc attribute to the value of iframe’s src content attribute, or null if the attribute is absent.</p>
+         <p class="note" role="note"><span>NOTE:</span> it is intentional that we record the frame’s src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
         <li data-md="">
          <p>Set attribution’s frameId attribute to the value of iframe’s id content attribute, or null if the attribute is absent.</p>
        </ol>

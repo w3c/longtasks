@@ -265,7 +265,9 @@ Given a task task, perform the following algorithm:
     3. Set attribution's  startTime and duration to 0.
     4. If culpritSettings is not null, and culpritSettings's responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
         1. Set attribution's frameName attribute to the value of iframe's name content attribute, or null if the attribute is absent.
-        2. Set attribution's frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.<br>NOTE: it is intentional that we record the frame's src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
+        2. Set attribution's frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.
+
+            NOTE: it is intentional that we record the frame's src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
         3. Set attribution's frameId attribute to the value of iframe's id content attribute, or null if the attribute is absent.
 
 6. Create a new {{PerformanceLongTaskTiming}} object newEntry and set its attributes as follows:
