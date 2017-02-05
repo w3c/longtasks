@@ -17,14 +17,14 @@ Default Highlight: js
 </pre>
 
 <pre class=anchors>
-urlPrefix: https://www.w3.org/TR/performance-timeline-2/
+urlPrefix: https://www.w3.org/TR/performance-timeline-2/; spec: PERFORMANCE-TIMELINE-2;
     type: interface; url: #the-performanceentry-interface; text: PerformanceEntry;
     type: attribute; for: PerformanceEntry;
         text: name; url: #dom-performanceentry-name
         text: entryType; url: #dom-performanceentry-entrytype
         text: startTime; url: #dom-performanceentry-starttime
         text: duration; url: #dom-performanceentry-duration
-urlPrefix: https://www.w3.org/TR/hr-time-2/#idl-def-domhighrestimestamp; type: typedef; text: DOMHighResTimeStamp
+urlPrefix: https://www.w3.org/TR/hr-time-2/#idl-def-domhighrestimestamp; spec: HR-TIME-2; type: typedef; text: DOMHighResTimeStamp
 </pre>
 
 Introduction {#intro}
