@@ -1704,22 +1704,22 @@ When delivering this information the web origin-policy must be adhered to.</p>
     <li data-md="">
      <p>If end time minus start time is less than the long tasks threshold of 50 ms, abort these steps.</p>
     <li data-md="">
-     <p>Let destinationRealms be an empty set.</p>
+     <p>Let |destinationRealms| be an empty set.</p>
     <li data-md="">
      <p>Determine the set of JavaScript Realms to which reports will be delivered:</p>
      <p>For each environment settings object settings in task’s script evaluation environment settings object set:</p>
      <ol>
       <li data-md="">
-       <p>Let topmostBC be settings’s responsible browsing context’s top-level browsing context.</p>
+       <p>Let |topmostBC| be settings’s responsible browsing context’s top-level browsing context.</p>
       <li data-md="">
-       <p>Add topmostBC’s Window’s relevant Realm to destinationRealms.</p>
+       <p>Add |topmostBC|’s Window’s relevant Realm to |destinationRealms|.</p>
       <li data-md="">
-       <p>Let descendantBCs be topmostBC’s active document’s list of descendant browsing contexts.</p>
+       <p>Let |descendantBCs| be |topmostBC|’s active document’s list of descendant browsing contexts.</p>
       <li data-md="">
-       <p>For each descendantBC in descendantBCs, add descendantBC’s Window’s relevant Realm to destinationRealms.</p>
+       <p>For each |descendantBC| in |descendantBCs|, add descendantBC’s Window’s relevant Realm to |destinationRealms|.</p>
      </ol>
     <li data-md="">
-     <p>For each destinationRealm in destinationRealms:</p>
+     <p>For each |destinationRealm| in |destinationRealms|:</p>
      <ol>
       <li data-md="">
        <p>Let name be the empty string. This will be used to report minimal frame attribution, below.</p>
