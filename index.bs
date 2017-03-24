@@ -1,14 +1,14 @@
 <pre class=metadata>
 Title: Long Tasks API
-Group: wicg
-Status: CG-DRAFT
+Group: webperf
+Status: ED
 Shortname: longtasks
 Level: 1
 URL: https://wicg.github.io/longtasks/
 Editor: Shubhie Panicker, Google (https://google.com), panicker@chromium.org
 Editor: Ilya Grigorik, Google (https://google.com), igrigorik@chromium.org
 Editor: Domenic Denicola, Google (https://google.com), domenic@chromium.org
-Repository: wicg/longtasks
+Repository: w3c/longtasks
 !Tests: FIXME
 Abstract: This document defines an API that web page authors can use to detect presence of “long tasks” that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
 Status Text: If you wish to make comments regarding this document, please send them to  <a href="mailto:public-web-perf@w3.org?subject=%5BLongTasks%5D">public-web-perf@w3.org</a> (<a href="mailto:public-web-perf-request@w3.org?subject=subscribe">subscribe</a>, <a href="https://lists.w3.org/Archives/Public/public-web-perf/">archives</a>) with <code nohighlight>[LongTasks]</code> at the start of your email's subject.
