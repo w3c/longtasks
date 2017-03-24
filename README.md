@@ -97,10 +97,10 @@ observer.observe({entryTypes: ["longtask"]});
 ### Demo
 For a quick demo of a partial implementation, in the latest Chrome Canary (version 55.0.2867.0 or up) go to [chrome://flags](chrome://flags) and enable the flag: "Experimental Web Platform features".
 Then visit this link:
-https://wicg.github.io/longtasks/render-jank-demo.html
+https://w3c.github.io/longtasks/render-jank-demo.html
 
 For a demo of long tasks from same-origin & cross-origin frames see the demo below. Interacting with the iframed wikipedia page will generate cross-origin long task notifications.
-https://wicg.github.io/longtasks/demo.html
+https://w3c.github.io/longtasks/demo.html
 
 
 ### Pointing to the culprit

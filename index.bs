@@ -4,7 +4,7 @@ Group: webperf
 Status: ED
 Shortname: longtasks
 Level: 1
-URL: https://wicg.github.io/longtasks/
+URL: https://w3c.github.io/longtasks/
 Editor: Shubhie Panicker, Google (https://google.com), panicker@chromium.org
 Editor: Ilya Grigorik, Google (https://google.com), igrigorik@chromium.org
 Editor: Domenic Denicola, Google (https://google.com), domenic@chromium.org
