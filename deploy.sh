@@ -7,7 +7,7 @@ SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 
 function doCompile {
-  ./compile.sh
+  bikeshed spec
 }
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
@@ -34,6 +34,8 @@ rm -rf out/**/* || exit 0
 
 # Run our compile script
 doCompile
+
+cp index.html out/index.html
 
 # Now let's go have some fun with the cloned repo
 cd out
