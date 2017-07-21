@@ -7,7 +7,7 @@ As the page is loading and while the user is interacting with the page afterward
 
 However, some tasks can take a long time (multiple frames), and if and when that happens, the UI thread is locked and all other tasks are blocked as well. To the user this is commonly visible as a “locked up” page where the browser is unable to respond to user input; this is a major source of bad user experience on the web today:
 
-* _Delayed “time to Interactive”_:  while the page is loading long tasks often tie up the main thread and prevent the user from interacting with the page even though the page is visually rendered. Poorly designed third-party content is a frequent culprit.
+* _Delayed [“time to Interactive”](https://github.com/tdresser/time-to-interactive)_:  while the page is loading long tasks often tie up the main thread and prevent the user from interacting with the page even though the page is visually rendered. Poorly designed third-party content is a frequent culprit.
 * _High/variable input latency_: critical user interaction events (tap, click, scroll, wheel, etc) are queued behind long tasks, which yields janky and unpredictable user experience.
 * _High/variable event handling latency_: similar to input, but for processing event callbacks (e.g. onload events, and so on), which delay application updates.
 * _Janky animations and scrolling_: some animation and scrolling interactions require coordination between compositor and main threads; if the main thread is blocked due to a long task, it can affect responsiveness of animations and scrolling.
