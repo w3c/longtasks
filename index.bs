@@ -283,7 +283,7 @@ Given a task task, perform the following algorithm:
 
     NOTE: the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.
 
-Security and Privacy Considerations {#priv-sec}
+Security & Privacy Considerations {#priv-sec}
 ===============================================
 
 Long Tasks API adheres to cross-origin policy by including origin-safe attribution information about the source of the long task.
