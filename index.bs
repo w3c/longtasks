@@ -1,4 +1,4 @@
-<pre class=metadata>
+duration<pre class=metadata>
 Title: Long Tasks API
 Group: webperf
 Status: ED
@@ -199,87 +199,87 @@ Modifications to other specifications {#mod}
 
 ### HTML: <a href="https://html.spec.whatwg.org/#definitions-3">event loop definitions</a> ### {#html-event-loop-dfn}
 
-Each task gets an associated <i>start time</i>, <i>end time</i>, and a <i>script evaluation environment settings object set</i>.
+Each task gets an associated <dfn for="task">start time</dfn>, <dfn for="task">end time</dfn>, and <dfn for="task">script evaluation environment settings</dfn> object set.
 
 ### HTML: <a href>event loop processing model</a> ### {#html-event-loop-processing}
 
 Before Step #3:
 
-* Set the selected task's start time to the value be the value that would be returned by the Performance object's now() method.
+* Set the selected task's [=task/start time=] to be the value that would be returned by the {{Performance}} object's {{Performance/now()}} method.
 
 After Step #3:
 
-* Set the selected task's end time to the value be the value that would be returned by the Performance object's now() method.
-* Execute the report long tasks algorithm (below), passing in the selected task.
+* Set the selected task's [=task/end time=] to the value be the value that would be returned by the {{Performance}} object's {{Performance/now()}} method.
+* Execute the [[#report-long-tasks]] algorithm (below), passing in the selected task.
 
 ### HTML: <a href="https://html.spec.whatwg.org/#calling-scripts">calling scripts</a> ### {#html-calling-scripts}
 
-In prepare to run script, add a step at the end to add settings to the currently running task's script evaluation environment settings object set.
+In <a href="https://html.spec.whatwg.org/#prepare-to-run-script">prepare to run script</a>, add a step at the end to add settings to the currently running task's [=task/script evaluation environment settings=] object set.
 
 Additions to the Long Task Spec {#sec-additions-to-spec}
 --------------------------------------------------------
 
-### Report Long Tasks ### {#report-long-tasks}
+<h4 dfn>Report Long Tasks</h4>
 
-Given a task task, perform the following algorithm:
+Given a task |task|, perform the following algorithm:
 
-1. If end time minus start time is less than the long tasks threshold of 50 ms, abort these steps.
+1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
-2. Let destinationRealms be an empty set.
+2. Let |destinationRealms| be an empty set.
 
 3. Determine the set of JavaScript Realms to which reports will be delivered:
 
-    For each environment settings object settings in task's script evaluation environment settings object set:
+    For each environment settings object |settings| in task's script evaluation environment settings object set:
 
-    1. Let topmostBC be settings's responsible browsing context's top-level browsing context.
-    2. Add topmostBC's Window's relevant Realm to destinationRealms.
-    3. Let descendantBCs be topmostBC's active document's list of descendant browsing contexts.
-    4. For each descendantBC in descendantBCs, add descendantBC's Window's relevant Realm to destinationRealms.
+    1. Let |topmostBC| be |settings|'s responsible browsing context's top-level browsing context.
+    2. Add |topmostBC|'s Window's relevant Realm to |destinationRealms|.
+    3. Let |descendantBCs| be |topmostBC|'s active document's list of descendant browsing contexts.
+    4. For each |descendantBC| in |descendantBCs|, add |descendantBC|'s Window's relevant Realm to |destinationRealms|.
 
-4. For each destinationRealm in destinationRealms:
+4. For each |destinationRealm| in |destinationRealms|:
 
-    1. Let name be the empty string. This will be used to report minimal frame attribution, below.
-    2. Let culpritSettings be null.
-    3. Process task's script evaluation environment settings object set to determine name and culpritSettings as follows:
+    1. Let |name| be the empty string. This will be used to report minimal frame attribution, below.
+    2. Let |culpritSettings| be null.
+    3. Process task's script evaluation environment settings object set to determine |name| and |culpritSettings| as follows:
 
-        1. If task's script evaluation environment settings object set is empty: set name to “unknown” and culpritSettings to null.
-        2. If task's script evaluation environment settings object set's length is greater than one: set name to "multiple-contexts” and culpritSettings to null.
+        1. If task's script evaluation environment settings object set is empty: set |name| to <code>“unknown”</code> and |culpritSettings| to <code>null</code>.
+        2. If task's script evaluation environment settings object set's length is greater than one: set |name| to <code>"multiple-contexts”</code> and |culpritSettings| to <code>null</code>.
         3. If task's script evaluation environment settings object set's length is one:
-            1. Set culpritSettings to the single item in task's script evaluation environment settings object set.
-            2. Let destinationOrigin be destinationRealm's relevant settings object's origin.
-            3. Let destinationBC be destinationRealm's relevant settings object's responsible browsing context.
-            4. If culpritSettings's origin and destinationOrigin are [same origin]:
-                1. If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “same-origin-ancestor”.
-                2. If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “same-origin-descendant”.
+            1. Set |culpritSettings| to the single item in task's script evaluation environment settings object set.
+            2. Let |destinationOrigin| be |destinationRealm|'s relevant settings object's origin.
+            3. Let |destinationBC| be |destinationRealm|'s relevant settings object's responsible browsing context.
+            4. If |culpritSettings|'s origin and |destinationOrigin| are [same origin]:
+                1. If |culpritSettings|'s responsible browsing context is an ancestor of |destinationBC|, set name to <code>“same-origin-ancestor”</code>.
+                2. If |culpritSettings|'s responsible browsing context is a descendant of |destinationBC|, set name to <code>“same-origin-descendant”</code>.
             5. Otherwise:
-                1. If culpritSettings's responsible browsing context is an ancestor of destinationBC, set name to “cross-origin-ancestor” and set culpritSettings to null.
+                1. If |culpritSettings|'s responsible browsing context is an ancestor of |destinationBC|, set name to <code>“cross-origin-ancestor”</code> and set |culpritSettings| to <code>null</code>.
 
                     NOTE: this is not reported because of security. Developers should look this up themselves.
 
-                2. If culpritSettings's responsible browsing context is a descendant of destinationBC, set name to “cross-origin-descendant”.
+                2. If |culpritSettings|'s responsible browsing context is a descendant of |destinationBC|, set name to <code>“cross-origin-descendant”</code>.
 
-5. Create a new {{TaskAttributionTiming}} object attribution and set its attributes as follows:
-    1. Set attribution's name attribute to "script".
-    2. Set attribution's entryType attribute to “taskattribution”
-    3. Set attribution's  startTime and duration to 0.
-    4. If culpritSettings is not null, and culpritSettings's responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
-        1. Set attribution's frameName attribute to the value of iframe's name content attribute, or null if the attribute is absent.
-        2. Set attribution's frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.
+5. Create a new {{TaskAttributionTiming}} object |attribution| and set its attributes as follows:
+    1. Set |attribution|'s name attribute to <code>"script"</code>.
+    2. Set |attribution|'s entryType attribute to <code>“taskattribution”</code>
+    3. Set |attribution|'s startTime and duration to 0.
+    4. If |culpritSettings| is not null, and |culpritSettings|'s responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:
+        1. Set |attribution|'s frameName attribute to the value of iframe's name content attribute, or null if the attribute is absent.
+        2. Set |attribution|'s frameSrc attribute to the value of iframe's src content attribute, or null if the attribute is absent.
 
             NOTE: it is intentional that we record the frame's src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
-        3. Set attribution's frameId attribute to the value of iframe's id content attribute, or null if the attribute is absent.
+        3. Set |attribution|'s frameId attribute to the value of iframe's id content attribute, or <code>null</code> if the attribute is absent.
 
-6. Create a new {{PerformanceLongTaskTiming}} object newEntry and set its attributes as follows:
+6. Create a new {{PerformanceLongTaskTiming}} object |newEntry| and set its attributes as follows:
 
-    1. Set newEntry's name attribute to name.
-    2. Set newEntry's entryType attribute to “longtask”
-    3. Set newEntry's startTime attribute to start time
-    4. Set newEntry's duration attribute to end time minus start time
-    5. Set newEntry's attribution attribute to a new frozen array containing the single value attribution.
+    1. Set |newEntry|'s {{PerformanceEntry/name}} attribute to |name|.
+    2. Set |newEntry|'s {{PerformanceEntry/entryType}} attribute to <code>“longtask”</code>
+    3. Set |newEntry|'s {{PerformanceEntry/startTime}} attribute to |start time|
+    4. Set |newEntry|'s {{PerformanceEntry/startTime}} attribute to |end time| minus |start time|
+    5. Set |newEntry|'s attribution attribute to a new frozen array containing the single value |attribution|.
 
-        NOTE: future iterations of this API may add more values to the attribution attribute, but for now it only contains a single value.
+        NOTE: future iterations of this API will add more values to the attribution attribute, but for now it only contains a single value.
 
-7. <a href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> newEntry on destinationRealm.
+7. <a href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> |newEntry| on |destinationRealm|.
 
     NOTE: the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.
 
