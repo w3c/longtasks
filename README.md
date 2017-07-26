@@ -131,7 +131,7 @@ Currently the TaskAttributionTiming entry in `attribution` is populated with "sc
 
 ## Privacy & Security
 Long Tasks API surfaces long tasks greater than a threshold (50ms) to developers via Javascript (Performance Observer API). It includes origin-safe attribution information about the source of the long task.
-There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.
+There is a 50ms threshold for long tasks. Together this provides adequate protection against security attacks against browser.
 
 However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could expedite existing privacy attacks. If this were to become an concern, additional mitigations can be implemented to address this such as dropping "culprit" after a per-target origin threshold is exceeded, or limiting to 10 origins per minute etc.
 
