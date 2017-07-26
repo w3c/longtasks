@@ -27,7 +27,7 @@ Major terms:
 Long Task API introduces a new PerformanceEntry object, which will report instances of long tasks:
 ```javascript
 interface PerformanceLongTaskTiming : PerformanceEntry {
-  readonly attribute FrozenArray<TaskAttributionTiming> attribution;
+  [SameObject, SaveSameObject] readonly attribute FrozenArray<TaskAttributionTiming> attribution;
 };
 ```
 
