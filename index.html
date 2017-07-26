@@ -254,7 +254,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-07-24">24 July 2017</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-07-26">26 July 2017</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -328,11 +328,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
         <li><a href="#html-event-loop-processing"><span class="secno">4.1.2</span> <span class="content">HTML: <span>event loop processing model</span></span></a>
         <li><a href="#html-calling-scripts"><span class="secno">4.1.3</span> <span class="content">HTML: <span>calling scripts</span></span></a>
        </ol>
-      <li>
-       <a href="#sec-additions-to-spec"><span class="secno">4.2</span> <span class="content">Additions to the Long Task Spec</span></a>
-       <ol class="toc">
-        <li><a href="#report-long-tasks"><span class="secno">4.2.1</span> <span class="content">Report Long Tasks</span></a>
-       </ol>
+      <li><a href="#report-long-tasks"><span class="secno">4.2</span> <span class="content">Report Long Tasks</span></a>
      </ol>
     <li><a href="#priv-sec"><span class="secno">5</span> <span class="content">Security &amp; Privacy Considerations</span></a>
     <li>
@@ -510,33 +506,32 @@ When delivering this information the web origin-policy must be adhered to.</p>
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing Model</span><a class="self-link" href="#sec-processing-model"></a></h2>
    <h3 class="heading settled" data-level="4.1" id="mod"><span class="secno">4.1. </span><span class="content">Modifications to other specifications</span><a class="self-link" href="#mod"></a></h3>
    <h4 class="heading settled" data-level="4.1.1" id="html-event-loop-dfn"><span class="secno">4.1.1. </span><span class="content">HTML: <a href="https://html.spec.whatwg.org/#definitions-3">event loop definitions</a></span><a class="self-link" href="#html-event-loop-dfn"></a></h4>
-   <p>Each task gets an associated <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-start-time">start time</dfn>, <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-end-time">end time</dfn>, and <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-script-evaluation-environment-settings">script evaluation environment settings</dfn> object set.</p>
+   <p>Each task gets an associated <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-start-time">start time</dfn>, <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-end-time">end time</dfn>, and script evaluation <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport="" id="task-environment-settings">environment settings</dfn> object set.</p>
    <h4 class="heading settled" data-level="4.1.2" id="html-event-loop-processing"><span class="secno">4.1.2. </span><span class="content">HTML: <a href="">event loop processing model</a></span><a class="self-link" href="#html-event-loop-processing"></a></h4>
    <p>Before Step #3:</p>
    <ul>
     <li data-md="">
-     <p>Set the selected task’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time-1">start time</a> to be the value that would be returned by the <code class="idl"><a data-link-type="idl">Performance</a></code> object’s <code class="idl"><a data-link-type="idl">now()</a></code> method.</p>
+     <p>Set the selected task’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time-1">start time</a> to be the value that would be returned by the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp">DOMHighResTimeStamp</a></code> object’s method.</p>
    </ul>
    <p>After Step #3:</p>
    <ul>
     <li data-md="">
-     <p>Set the selected task’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time-1">end time</a> to the value be the value that would be returned by the <code class="idl"><a data-link-type="idl">Performance</a></code> object’s <code class="idl"><a data-link-type="idl">now()</a></code> method.</p>
+     <p>Set the selected task’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time-1">end time</a> to the value be the value that would be returned by the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp">DOMHighResTimeStamp</a></code> object’s method.</p>
     <li data-md="">
-     <p>Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks-1">§4.2.1 Report Long Tasks</a> algorithm (below), passing in the selected task.</p>
+     <p>Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks-1">§4.2 Report Long Tasks</a> algorithm (below), passing in the selected task.</p>
    </ul>
    <h4 class="heading settled" data-level="4.1.3" id="html-calling-scripts"><span class="secno">4.1.3. </span><span class="content">HTML: <a href="https://html.spec.whatwg.org/#calling-scripts">calling scripts</a></span><a class="self-link" href="#html-calling-scripts"></a></h4>
-   <p>In <a href="https://html.spec.whatwg.org/#prepare-to-run-script">prepare to run script</a>, add a step at the end to add settings to the currently running task’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings" id="ref-for-task-script-evaluation-environment-settings-1">script evaluation environment settings</a> object set.</p>
-   <h3 class="heading settled" data-level="4.2" id="sec-additions-to-spec"><span class="secno">4.2. </span><span class="content">Additions to the Long Task Spec</span><a class="self-link" href="#sec-additions-to-spec"></a></h3>
-   <h4 class="heading settled dfn-paneled" data-dfn-type="dfn" data-level="4.2.1" data-lt="Report Long Tasks" data-noexport="" id="report-long-tasks"><span class="secno">4.2.1. </span><span class="content">Report Long Tasks</span></h4>
+   <p>In <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#prepare-to-run-script">prepare to run script</a>, add a step at the end to add settings to the currently running task’s <a data-link-type="dfn" href="#task-environment-settings" id="ref-for-task-environment-settings-1">environment settings</a> object set.</p>
+   <h3 class="heading settled dfn-paneled" data-dfn-type="dfn" data-level="4.2" data-lt="Report Long Tasks" data-noexport="" id="report-long-tasks"><span class="secno">4.2. </span><span class="content">Report Long Tasks</span></h3>
    <p>Given a task <var>task</var>, perform the following algorithm:</p>
    <ol>
     <li data-md="">
-     <p>If <var>end time</var> minus <var>start time</var> is less than the long tasks threshold of 50 ms, abort these steps.</p>
+     <p>If task’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time-2">end time</a> minus task’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time-2">start time</a> is less than the long tasks threshold of 50 ms, abort these steps.</p>
     <li data-md="">
      <p>Let <var>destinationRealms</var> be an empty set.</p>
     <li data-md="">
      <p>Determine the set of JavaScript Realms to which reports will be delivered:</p>
-     <p>For each environment settings object <var>settings</var> in task’s script evaluation environment settings object set:</p>
+     <p>For each <a data-link-type="dfn" href="#task-environment-settings" id="ref-for-task-environment-settings-2">environment settings</a> object <var>settings</var> in task’s script evaluation environment settings object set:</p>
      <ol>
       <li data-md="">
        <p>Let <var>topmostBC</var> be <var>settings</var>’s responsible browsing context’s top-level browsing context.</p>
@@ -594,11 +589,11 @@ When delivering this information the web origin-policy must be adhered to.</p>
      <p>Create a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming-8">TaskAttributionTiming</a></code> object <var>attribution</var> and set its attributes as follows:</p>
      <ol>
       <li data-md="">
-       <p>Set <var>attribution</var>’s name attribute to <code class="highlight"><span class="s2">"script"</span></code>.</p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name">name</a></code> attribute to <code class="highlight"><span class="s2">"script"</span></code>.</p>
       <li data-md="">
-       <p>Set <var>attribution</var>’s entryType attribute to <code class="highlight">“taskattribution”</code></p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype">entryType</a></code> attribute to <code class="highlight">“taskattribution”</code></p>
       <li data-md="">
-       <p>Set <var>attribution</var>’s startTime and duration to 0.</p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration">duration</a></code> to 0.</p>
       <li data-md="">
        <p>If <var>culpritSettings</var> is not null, and <var>culpritSettings</var>’s responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:</p>
        <ol>
@@ -615,13 +610,13 @@ When delivering this information the web origin-policy must be adhered to.</p>
      <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming-6">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> and set its attributes as follows:</p>
      <ol>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s name attribute to <var>name</var>.</p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name">name</a></code> attribute to <var>name</var>.</p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s entryType attribute to <code class="highlight">“longtask”</code></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype">entryType</a></code> attribute to <code class="highlight">“longtask”</code></p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s startTime attribute to <var>start time</var></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime">startTime</a></code> attribute to <var>start time</var></p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s duration attribute to <var>end time</var> minus <var>start time</var></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl">endTime</a></code> attribute to <var>end time</var> minus <var>start time</var></p>
       <li data-md="">
        <p>Set <var>newEntry</var>’s attribution attribute to a new frozen array containing the single value <var>attribution</var>.</p>
        <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the attribution attribute, but for now it only contains a single value.</p>
@@ -652,12 +647,12 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
    <li><a href="#dom-taskattributiontiming-containertype">containerType</a><span>, in §3.2</span>
    <li><a href="#culprit-frame">Culprit frame</a><span>, in §2</span>
    <li><a href="#task-end-time">end time</a><span>, in §4.1.1</span>
+   <li><a href="#task-environment-settings">environment settings</a><span>, in §4.1.1</span>
    <li><a href="#frame">Frame</a><span>, in §2</span>
    <li><a href="#frame-context">frame context</a><span>, in §2</span>
    <li><a href="#long-task">Long task</a><span>, in §2</span>
    <li><a href="#performancelongtasktiming">PerformanceLongTaskTiming</a><span>, in §3.1</span>
-   <li><a href="#report-long-tasks">Report Long Tasks</a><span>, in §4.2</span>
-   <li><a href="#task-script-evaluation-environment-settings">script evaluation environment settings</a><span>, in §4.1.1</span>
+   <li><a href="#report-long-tasks">Report Long Tasks</a><span>, in §4.1.3</span>
    <li><a href="#task-start-time">start time</a><span>, in §4.1.1</span>
    <li><a href="#taskattributiontiming">TaskAttributionTiming</a><span>, in §3.2</span>
   </ul>
@@ -667,6 +662,11 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
     <a data-link-type="biblio">[hr-time-2]</a> defines the following terms:
     <ul>
      <li><a href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp">DOMHighResTimeStamp</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[HTML]</a> defines the following terms:
+    <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#prepare-to-run-script">prepare to run script</a>
     </ul>
    <li>
     <a data-link-type="biblio">[performance-timeline-2]</a> defines the following terms:
@@ -688,6 +688,8 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
   <dl>
    <dt id="biblio-hr-time-2">[HR-TIME-2]
    <dd>Ilya Grigorik; James Simonsen; Jatinder Mann. <a href="https://www.w3.org/TR/hr-time-2/">High Resolution Time Level 2</a>. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-performance-timeline-2">[PERFORMANCE-TIMELINE-2]
    <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -711,7 +713,7 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
    <ul>
     <li><a href="#ref-for-performancelongtasktiming-1">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-performancelongtasktiming-2">(2)</a> <a href="#ref-for-performancelongtasktiming-3">(3)</a>
     <li><a href="#ref-for-performancelongtasktiming-4">3.3. Pointing to the culprit</a> <a href="#ref-for-performancelongtasktiming-5">(2)</a>
-    <li><a href="#ref-for-performancelongtasktiming-6">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-performancelongtasktiming-6">4.2. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-performancelongtasktiming-attribution">
@@ -726,7 +728,7 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
     <li><a href="#ref-for-taskattributiontiming-1">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-taskattributiontiming-2">(2)</a>
     <li><a href="#ref-for-taskattributiontiming-3">3.2. TaskAttributionTiming interface</a> <a href="#ref-for-taskattributiontiming-4">(2)</a> <a href="#ref-for-taskattributiontiming-5">(3)</a>
     <li><a href="#ref-for-taskattributiontiming-6">3.3. Pointing to the culprit</a> <a href="#ref-for-taskattributiontiming-7">(2)</a>
-    <li><a href="#ref-for-taskattributiontiming-8">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-taskattributiontiming-8">4.2. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containertype">
@@ -757,18 +759,21 @@ There is a 50ms threshold for long tasks, also timing info provided is clamped t
    <b><a href="#task-start-time">#task-start-time</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-task-start-time-1">4.1.2. HTML: event loop processing model</a>
+    <li><a href="#ref-for-task-start-time-2">4.2. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="task-end-time">
    <b><a href="#task-end-time">#task-end-time</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-task-end-time-1">4.1.2. HTML: event loop processing model</a>
+    <li><a href="#ref-for-task-end-time-2">4.2. Report Long Tasks</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="task-script-evaluation-environment-settings">
-   <b><a href="#task-script-evaluation-environment-settings">#task-script-evaluation-environment-settings</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="task-environment-settings">
+   <b><a href="#task-environment-settings">#task-environment-settings</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-task-script-evaluation-environment-settings-1">4.1.3. HTML: calling scripts</a>
+    <li><a href="#ref-for-task-environment-settings-1">4.1.3. HTML: calling scripts</a>
+    <li><a href="#ref-for-task-environment-settings-2">4.2. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="report-long-tasks">
