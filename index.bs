@@ -287,6 +287,6 @@ Security & Privacy Considerations {#priv-sec}
 ===============================================
 
 Long Tasks API adheres to cross-origin policy by including origin-safe attribution information about the source of the long task.
-There is a 50ms threshold for long tasks, also timing info provided is clamped to 1ms resolution. Together this provides adequate protection against security attacks against browser.
+There is a 50ms threshold for long tasks. Together this provides adequate protection against security attacks against browser.
 
 However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document.</a>
