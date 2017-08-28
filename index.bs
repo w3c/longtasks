@@ -81,7 +81,7 @@ Terminology {#sec-terminology}
 Long Task Timing {#sec-longtask-timing}
 =======================================
 
-Long Task timing involves the following new interfaces
+Long Task Timing involves the following new interfaces
 
 {{PerformanceLongTaskTiming}} interface {#sec-PerformanceLongTaskTiming}
 ------------------------------------------------------------------------
