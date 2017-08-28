@@ -5,7 +5,7 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version ca17a0d33e257270c2ba492a76457aaad79a57c7" name="generator">
+  <meta content="Bikeshed version 14c4d48c5433c4ae992bbbe5dd02f26d7681dd68" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
 <style>/* style-md-lists */
 
@@ -380,7 +380,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p><dfn data-dfn-type="dfn" data-noexport="" id="culprit-frame">Culprit frame<a class="self-link" href="#culprit-frame"></a></dfn> refers to the browsing context (iframe, embed or object etc) that is being implicated, on the whole, for a long task.</p>
    <p><dfn data-dfn-type="dfn" data-noexport="" id="attribution">Attribution<a class="self-link" href="#attribution"></a></dfn> refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task AND which browsing context is responsible for that work.</p>
    <h2 class="heading settled" data-level="3" id="sec-longtask-timing"><span class="secno">3. </span><span class="content">Long Task Timing</span><a class="self-link" href="#sec-longtask-timing"></a></h2>
-   <p>Long Task timing involves the following new interfaces</p>
+   <p>Long Task Timing involves the following new interfaces</p>
    <h3 class="heading settled" data-level="3.1" id="sec-PerformanceLongTaskTiming"><span class="secno">3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming">PerformanceLongTaskTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceLongTaskTiming"></a></h3>
 <pre class="idl highlight def"><span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="performancelongtasktiming"><code class="highlight">PerformanceLongTaskTiming</code></dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface">PerformanceEntry</a> {
     <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">FrozenArray</span>&lt;<a class="n" data-link-type="idl-name" href="#taskattributiontiming" id="ref-for-taskattributiontiming">TaskAttributionTiming</a>> <dfn class="nv dfn-paneled idl-code" data-dfn-for="PerformanceLongTaskTiming" data-dfn-type="attribute" data-export="" data-readonly="" data-type="FrozenArray<TaskAttributionTiming>" id="dom-performancelongtasktiming-attribution"><code class="highlight">attribution</code></dfn>;
