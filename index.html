@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 2b79dbafbd71fe3f8f4e2b9171e40a0bd49a639c" name="generator">
+  <meta content="Bikeshed version 3678d496235a6f1964fc14f56861db11f24476c4" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="afe4c97a3945e6a2e0d0bc914cef6347d6fae4f1" name="document-revision">
+  <meta content="f01f37ba56c728b6f20a673547466b7d5e6c5453" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -157,41 +157,41 @@ pre .property::before, pre .property::after {
 }</style>
 <style>/* style-dfn-panel */
 
-        .dfn-panel {
-            position: absolute;
-            z-index: 35;
-            height: auto;
-            width: -webkit-fit-content;
-            width: fit-content;
-            max-width: 300px;
-            max-height: 500px;
-            overflow: auto;
-            padding: 0.5em 0.75em;
-            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-            background: #DDDDDD;
-            color: black;
-            border: outset 0.2em;
-        }
-        .dfn-panel:not(.on) { display: none; }
-        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-        .dfn-panel > b { display: block; }
-        .dfn-panel a { color: black; }
-        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-        .dfn-panel > b + b { margin-top: 0.25em; }
-        .dfn-panel ul { padding: 0; }
-        .dfn-panel li { list-style: inside; }
-        .dfn-panel.activated {
-            display: inline-block;
-            position: fixed;
-            left: .5em;
-            bottom: 2em;
-            margin: 0 auto;
-            max-width: calc(100vw - 1.5em - .4em - .5em);
-            max-height: 30vh;
-        }
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    height: auto;
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 300px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: #DDDDDD;
+    color: black;
+    border: outset 0.2em;
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: black; }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0; }
+.dfn-panel li { list-style: inside; }
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
 
-        .dfn-paneled { cursor: pointer; }
-        </style>
+.dfn-paneled { cursor: pointer; }
+</style>
 <style>/* style-syntax-highlighting */
 pre.idl.highlight { color: #708090; }
 .highlight:not(.idl) { background: hsl(24, 20%, 95%); }
@@ -255,7 +255,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-01-09">9 January 2018</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-07-20">20 July 2018</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -290,8 +290,8 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p> Publication as an Editors Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may
     be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
     this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/45211/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p>This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>. </p>
+   <p> This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/45211/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+   <p>This document is governed by the <a href="https://www.w3.org/2018/Process-20180201/" id="w3c_process_revision">1 February 2018 W3C Process Document</a>. </p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -362,7 +362,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p>Some applications (and RUM vendors) are already attempting to identify and track cases where “long tasks” happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive calls: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the timer. This mostly works, but it has several bad performance implications: the application is polling to detect long tasks, which prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know who caused the delay (e.g. first party vs third party code)</p>
    <p>RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.</p>
    <h3 class="heading settled" data-level="1.1" id="example"><span class="secno">1.1. </span><span class="content">Usage Example</span><a class="self-link" href="#example"></a></h3>
-<pre class="example highlight" id="example-79af7d22"><a class="self-link" href="#example-79af7d22"></a><span class="kd">var</span> observer <span class="o">=</span> <span class="k">new</span> PerformanceObserver<span class="p">(</span><span class="kd">function</span><span class="p">(</span>list<span class="p">)</span> <span class="p">{</span>
+<pre class="example highlight" id="example-8fbc6d8f"><a class="self-link" href="#example-8fbc6d8f"></a><span class="kd">var</span> observer <span class="o">=</span> <span class="k">new</span> PerformanceObserver<span class="p">(</span><span class="kd">function</span><span class="p">(</span>list<span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> perfEntries <span class="o">=</span> list<span class="p">.</span>getEntries<span class="p">();</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> i <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> i <span class="o">&lt;</span> perfEntries<span class="p">.</span>length<span class="p">;</span> i<span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// Process long task notifications:</span>
@@ -384,7 +384,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p>Long Task timing involves the following new interfaces</p>
    <h3 class="heading settled" data-level="3.1" id="sec-PerformanceLongTaskTiming"><span class="secno">3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming">PerformanceLongTaskTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceLongTaskTiming"></a></h3>
 <pre class="idl highlight def"><span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="performancelongtasktiming"><code class="highlight">PerformanceLongTaskTiming</code></dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface">PerformanceEntry</a> {
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">FrozenArray</span>&lt;<a class="n" data-link-type="idl-name" href="#taskattributiontiming" id="ref-for-taskattributiontiming">TaskAttributionTiming</a>> <dfn class="nv dfn-paneled idl-code" data-dfn-for="PerformanceLongTaskTiming" data-dfn-type="attribute" data-export="" data-readonly="" data-type="FrozenArray<TaskAttributionTiming>" id="dom-performancelongtasktiming-attribution"><code class="highlight">attribution</code></dfn>;
+    <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">FrozenArray</span>&lt;<a class="n" data-link-type="idl-name" href="#taskattributiontiming" id="ref-for-taskattributiontiming">TaskAttributionTiming</a>> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="FrozenArray<TaskAttributionTiming>" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution">attribution</a>;
 };
 </pre>
    <p><code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming①">PerformanceLongTaskTiming</a></code> extends the following attributes of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface①">PerformanceEntry</a></code> interface:</p>
@@ -414,14 +414,14 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
     <li data-md="">
      <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype">entryType</a></code> attribute must return <code class="highlight"><span class="s2">"longtask"</span></code>.</p>
     <li data-md="">
-     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime">startTime</a></code> attribute MUST return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp" id="ref-for-idl-def-domhighrestimestampdomhighrestimestamp">DOMHighResTimeStamp</a></code> of when the task started.</p>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime">startTime</a></code> attribute MUST return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp">DOMHighResTimeStamp</a></code> of when the task started.</p>
     <li data-md="">
-     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration">duration</a></code> attribute MUST return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp" id="ref-for-idl-def-domhighrestimestampdomhighrestimestamp①">DOMHighResTimeStamp</a></code> equal to the elapsed time between the start and end of task</p>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration">duration</a></code> attribute MUST return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①">DOMHighResTimeStamp</a></code> equal to the elapsed time between the start and end of task.</p>
    </ul>
    <p><code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming②">PerformanceLongTaskTiming</a></code> adds the following attributes:</p>
    <ul>
     <li data-md="">
-     <p>The <dfn class="idl-code" data-dfn-for="PerformanceEntry" data-dfn-type="attribute" data-export="" id="dom-performanceentry-attribution"><code class="highlight">attribution</code><a class="self-link" href="#dom-performanceentry-attribution"></a></dfn> field returns a sequence of <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming①">TaskAttributionTiming</a></code> entries.</p>
+     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceLongTaskTiming" data-dfn-type="attribute" data-export="" id="dom-performancelongtasktiming-attribution"><code class="highlight">attribution</code></dfn> field returns a sequence of <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming①">TaskAttributionTiming</a></code> entries.</p>
    </ul>
    <h3 class="heading settled" data-level="3.2" id="sec-TaskAttributionTiming"><span class="secno">3.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming②">TaskAttributionTiming</a></code> interface</span><a class="self-link" href="#sec-TaskAttributionTiming"></a></h3>
 <pre class="def idl highlight"><span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="taskattributiontiming"><code class="highlight">TaskAttributionTiming</code></dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface②">PerformanceEntry</a> {
@@ -434,9 +434,9 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p><code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming③">TaskAttributionTiming</a></code> extends the following attributes of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface③">PerformanceEntry</a></code> interface:</p>
    <ul>
     <li data-md="">
-     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name①">name</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤">DOMString</a></code> indicating type of attribution. Currently this can <code class="highlight"><span class="s2">"script"</span></code>.</p>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name①">name</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤">DOMString</a></code> indicating type of attribution. Currently this can only be <code class="highlight"><span class="s2">"script"</span></code>.</p>
     <li data-md="">
-     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype①">entryType</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥">DOMString</a></code> <code class="highlight"><span class="s2">"taskattribution"</span></code></p>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype①">entryType</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥">DOMString</a></code> <code class="highlight"><span class="s2">"taskattribution"</span></code>.</p>
     <li data-md="">
      <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime①">startTime</a></code> attribute MUST return 0.</p>
     <li data-md="">
@@ -458,18 +458,18 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p>Thus pointing to the culprit has couple of facets:</p>
    <ul>
     <li data-md="">
-     <p>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name②">name</a></code> field</p>
+     <p>Pointing to the overall frame to blame for the long task on the whole: this is refered to as "minimal frame attribution" and is captured in the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name②">name</a></code> field.</p>
     <li data-md="">
-     <p>Pointing to the type of work involved in the task, and its associated frame context: this is captured in <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> objects in the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution">attribution</a></code> field of <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming③">PerformanceLongTaskTiming</a></code></p>
+     <p>Pointing to the type of work involved in the task, and its associated frame context: this is captured in <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> objects in the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution①">attribution</a></code> field of <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming③">PerformanceLongTaskTiming</a></code>.</p>
    </ul>
-   <p>Therefore, <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name③">name</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution①">attribution</a></code> fields on <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> together paint the picture for where the blame rests for a long task.
+   <p>Therefore, <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name③">name</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution②">attribution</a></code> fields on <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> together paint the picture for where the blame rests for a long task.
 When delivering this information the web origin-policy must be adhered to.</p>
-   <p>As an illustration, the <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> entry in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution②">attribution</a></code> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name④">name</a></code> as follows:</p>
+   <p>As an illustration, the <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> entry in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution③">attribution</a></code> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name④">name</a></code> as follows:</p>
    <table>
     <thead>
      <tr>
       <th>value of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑤">name</a></code>
-      <th>culprit frame implicated in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution③">attribution</a></code>
+      <th>culprit frame implicated in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution④">attribution</a></code>
     <tbody>
      <tr>
       <td><code class="highlight">self</code> 
@@ -507,12 +507,12 @@ When delivering this information the web origin-policy must be adhered to.</p>
    <p>Before Step #3:</p>
    <ul>
     <li data-md="">
-     <p>Set the selected task’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time">start time</a> to be the value that would be returned by the <code class="idl"><a data-link-type="idl">Performance</a></code> object’s <code class="idl"><a data-link-type="idl">now()</a></code> method.</p>
+     <p>Set the selected task’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time">start time</a> to be the value that would be returned by the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#dfn-performance" id="ref-for-dfn-performance">Performance</a></code> object’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#dom-performance-now" id="ref-for-dom-performance-now">now()</a></code> method.</p>
    </ul>
    <p>After Step #3:</p>
    <ul>
     <li data-md="">
-     <p>Set the selected task’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time">end time</a> to the value be the value that would be returned by the <code class="idl"><a data-link-type="idl">Performance</a></code> object’s <code class="idl"><a data-link-type="idl">now()</a></code> method.</p>
+     <p>Set the selected task’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time">end time</a> to the value be the value that would be returned by the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#dfn-performance" id="ref-for-dfn-performance①">Performance</a></code> object’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#dom-performance-now" id="ref-for-dom-performance-now①">now()</a></code> method.</p>
     <li data-md="">
      <p>Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks">§4.2.1 Report Long Tasks</a> algorithm (below), passing in the selected task.</p>
    </ul>
@@ -523,7 +523,7 @@ When delivering this information the web origin-policy must be adhered to.</p>
    <p>Given a task <var>task</var>, perform the following algorithm:</p>
    <ol>
     <li data-md="">
-     <p>If <var>end time</var> minus <var>start time</var> is less than the long tasks threshold of 50 ms, abort these steps.</p>
+     <p>If <var>task</var>’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time①">end time</a> minus <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time①">start time</a> is less than the long tasks threshold of 50 ms, abort these steps.</p>
     <li data-md="">
      <p>Let <var>destinationRealms</var> be an empty set.</p>
     <li data-md="">
@@ -586,36 +586,36 @@ When delivering this information the web origin-policy must be adhered to.</p>
      <p>Create a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑦">TaskAttributionTiming</a></code> object <var>attribution</var> and set its attributes as follows:</p>
      <ol>
       <li data-md="">
-       <p>Set <var>attribution</var>’s name attribute to <code class="highlight"><span class="s2">"script"</span></code>.</p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute to <code class="highlight"><span class="s2">"script"</span></code>.</p>
       <li data-md="">
-       <p>Set <var>attribution</var>’s entryType attribute to <code class="highlight">“taskattribution”</code></p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype②">entryType</a></code> attribute to <code class="highlight">“taskattribution”</code>.</p>
       <li data-md="">
-       <p>Set <var>attribution</var>’s startTime and duration to 0.</p>
+       <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration②">duration</a></code> to 0.</p>
       <li data-md="">
-       <p>If <var>culpritSettings</var> is not null, and <var>culpritSettings</var>’s responsible browsing context has a browsing context container that is an iframe element, then let iframe be that element, and perform the following steps:</p>
+       <p>If <var>culpritSettings</var> is not null, and <var>culpritSettings</var>’s responsible browsing context has a browsing context container that is an iframe element, then let <var>iframe</var> be that element, and perform the following steps:</p>
        <ol>
         <li data-md="">
-         <p>Set <var>attribution</var>’s frameName attribute to the value of iframe’s name content attribute, or null if the attribute is absent.</p>
+         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> attribute to the value of <var>iframe</var>’s name content attribute, or null if the attribute is absent.</p>
         <li data-md="">
-         <p>Set <var>attribution</var>’s frameSrc attribute to the value of iframe’s src content attribute, or null if the attribute is absent.</p>
+         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a></code> attribute to the value of <var>iframe</var>’s src content attribute, or null if the attribute is absent.</p>
          <p class="note" role="note"><span>NOTE:</span> it is intentional that we record the frame’s src attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
         <li data-md="">
-         <p>Set <var>attribution</var>’s frameId attribute to the value of iframe’s id content attribute, or <code class="highlight"><span class="kc">null</span></code> if the attribute is absent.</p>
+         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>iframe</var>’s id content attribute, or <code class="highlight"><span class="kc">null</span></code> if the attribute is absent.</p>
        </ol>
      </ol>
     <li data-md="">
      <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming⑤">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> and set its attributes as follows:</p>
      <ol>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute to <var>name</var>.</p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑦">name</a></code> attribute to <var>name</var>.</p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype②">entryType</a></code> attribute to <code class="highlight">“longtask”</code></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype③">entryType</a></code> attribute to <code class="highlight">“longtask”</code>.</p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> attribute to <var>start time</var></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>task</var>’s <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time②">start time</a>.</p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>end time</var> minus <var>start time</var></p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime④">startTime</a></code> attribute to <var>task</var>’s <a data-link-type="dfn" href="#task-end-time" id="ref-for-task-end-time②">end time</a> minus <a data-link-type="dfn" href="#task-start-time" id="ref-for-task-start-time③">start time</a>.</p>
       <li data-md="">
-       <p>Set <var>newEntry</var>’s attribution attribute to a new frozen array containing the single value <var>attribution</var>.</p>
+       <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑤">attribution</a></code> attribute to a new frozen array containing the single value <var>attribution</var>.</p>
        <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the attribution attribute, but for now it only contains a single value.</p>
      </ol>
     <li data-md="">
@@ -631,12 +631,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li>
-    attribution
-    <ul>
-     <li><a href="#dom-performancelongtasktiming-attribution">attribute for PerformanceLongTaskTiming</a><span>, in §3.1</span>
-     <li><a href="#dom-performanceentry-attribution">attribute for PerformanceEntry</a><span>, in §3.1</span>
-    </ul>
+   <li><a href="#dom-performancelongtasktiming-attribution">attribution</a><span>, in §3.1</span>
    <li><a href="#attribution">Attribution</a><span>, in §2</span>
    <li><a href="#dom-taskattributiontiming-containerid">containerId</a><span>, in §3.2</span>
    <li><a href="#dom-taskattributiontiming-containername">containerName</a><span>, in §3.2</span>
@@ -653,33 +648,100 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <li><a href="#task-start-time">start time</a><span>, in §4.1.1</span>
    <li><a href="#taskattributiontiming">TaskAttributionTiming</a><span>, in §3.2</span>
   </ul>
+  <aside class="dfn-panel" data-for="term-for-idl-def-domhighrestimestamp">
+   <a href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp">https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-def-domhighrestimestamp">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-idl-def-domhighrestimestamp①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-performance">
+   <a href="https://w3c.github.io/hr-time/#dfn-performance">https://w3c.github.io/hr-time/#dfn-performance</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-performance">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-dfn-performance①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-performance-now">
+   <a href="https://w3c.github.io/hr-time/#dom-performance-now">https://w3c.github.io/hr-time/#dom-performance-now</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-performance-now">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-dom-performance-now①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-the-performanceentry-interface">
+   <a href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface">https://w3c.github.io/performance-timeline/#the-performanceentry-interface</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-the-performanceentry-interface">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-the-performanceentry-interface①">(2)</a>
+    <li><a href="#ref-for-the-performanceentry-interface②">3.2. TaskAttributionTiming interface</a> <a href="#ref-for-the-performanceentry-interface③">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-performanceentry-duration">
+   <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration">https://w3c.github.io/performance-timeline/#dom-performanceentry-duration</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-performanceentry-duration">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-duration①">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-duration②">4.2.1. Report Long Tasks</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-performanceentry-entrytype">
+   <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype">https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-performanceentry-entrytype">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-entrytype①">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-entrytype②">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-entrytype③">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-performanceentry-name">
+   <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name">https://w3c.github.io/performance-timeline/#dom-performanceentry-name</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-performanceentry-name">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-name①">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-name②">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performanceentry-name③">(2)</a> <a href="#ref-for-dom-performanceentry-name④">(3)</a> <a href="#ref-for-dom-performanceentry-name⑤">(4)</a>
+    <li><a href="#ref-for-dom-performanceentry-name⑥">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-name⑦">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-performanceentry-starttime">
+   <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime">https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-performanceentry-starttime">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-starttime①">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-performanceentry-starttime②">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a> <a href="#ref-for-dom-performanceentry-starttime④">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
+   <a href="https://heycam.github.io/webidl/#idl-DOMString">https://heycam.github.io/webidl/#idl-DOMString</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-DOMString">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-idl-DOMString①">3.2. TaskAttributionTiming interface</a> <a href="#ref-for-idl-DOMString②">(2)</a> <a href="#ref-for-idl-DOMString③">(3)</a> <a href="#ref-for-idl-DOMString④">(4)</a> <a href="#ref-for-idl-DOMString⑤">(5)</a> <a href="#ref-for-idl-DOMString⑥">(6)</a> <a href="#ref-for-idl-DOMString⑦">(7)</a> <a href="#ref-for-idl-DOMString⑧">(8)</a> <a href="#ref-for-idl-DOMString⑨">(9)</a> <a href="#ref-for-idl-DOMString①⓪">(10)</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[hr-time-2]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestampdomhighrestimestamp">DOMHighResTimeStamp</a>
+     <li><span class="dfn-paneled" id="term-for-idl-def-domhighrestimestamp" style="color:initial">DOMHighResTimeStamp</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-performance" style="color:initial">Performance</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performance-now" style="color:initial">now()</span>
     </ul>
    <li>
     <a data-link-type="biblio">[performance-timeline-2]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface">PerformanceEntry</a>
-     <li><a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration">duration</a>
-     <li><a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype">entryType</a>
-     <li><a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name">name</a>
-     <li><a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime">startTime</a>
+     <li><span class="dfn-paneled" id="term-for-the-performanceentry-interface" style="color:initial">PerformanceEntry</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-duration" style="color:initial">duration</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-entrytype" style="color:initial">entryType</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-name" style="color:initial">name</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-starttime" style="color:initial">startTime</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
-     <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMString" style="color:initial">DOMString</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-hr-time-2">[HR-TIME-2]
-   <dd>Ilya Grigorik; James Simonsen; Jatinder Mann. <a href="https://www.w3.org/TR/hr-time-2/">High Resolution Time Level 2</a>. 3 August 2017. CR. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
+   <dd>Ilya Grigorik; James Simonsen; Jatinder Mann. <a href="https://www.w3.org/TR/hr-time-2/">High Resolution Time Level 2</a>. 1 March 2018. CR. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
    <dt id="biblio-performance-timeline-2">[PERFORMANCE-TIMELINE-2]
    <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 8 December 2016. CR. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -687,14 +749,14 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><span class="kt">interface</span> <a class="nv" href="#performancelongtasktiming"><code class="highlight">PerformanceLongTaskTiming</code></a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface④">PerformanceEntry</a> {
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">FrozenArray</span>&lt;<a class="n" data-link-type="idl-name" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑧">TaskAttributionTiming</a>> <a class="nv" data-readonly="" data-type="FrozenArray<TaskAttributionTiming>" href="#dom-performancelongtasktiming-attribution"><code class="highlight">attribution</code></a>;
+    <span class="kt">readonly</span> <span class="kt">attribute</span> <span class="kt">FrozenArray</span>&lt;<a class="n" data-link-type="idl-name" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑧">TaskAttributionTiming</a>> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="FrozenArray<TaskAttributionTiming>" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑥">attribution</a>;
 };
 
 <span class="kt">interface</span> <a class="nv" href="#taskattributiontiming"><code class="highlight">TaskAttributionTiming</code></a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface②①">PerformanceEntry</a> {
     <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype①">containerType</a>;
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a>;
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a>;
-    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a>;
+    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc②">containerSrc</a>;
+    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid②">containerId</a>;
+    <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④①"><span class="kt">DOMString</span></a> <a class="nv idl-code" data-link-type="attribute" data-readonly="" data-type="DOMString" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername②">containerName</a>;
 };
 
 </pre>
@@ -709,7 +771,9 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   <aside class="dfn-panel" data-for="dom-performancelongtasktiming-attribution">
    <b><a href="#dom-performancelongtasktiming-attribution">#dom-performancelongtasktiming-attribution</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-performancelongtasktiming-attribution">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performancelongtasktiming-attribution①">(2)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution②">(3)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution③">(4)</a>
+    <li><a href="#ref-for-dom-performancelongtasktiming-attribution">3.1. PerformanceLongTaskTiming interface</a>
+    <li><a href="#ref-for-dom-performancelongtasktiming-attribution①">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performancelongtasktiming-attribution②">(2)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution③">(3)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution④">(4)</a>
+    <li><a href="#ref-for-dom-performancelongtasktiming-attribution⑤">4.2.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="taskattributiontiming">
@@ -731,30 +795,35 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <b><a href="#dom-taskattributiontiming-containername">#dom-taskattributiontiming-containername</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containername">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containername①">4.2.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containerid">
    <b><a href="#dom-taskattributiontiming-containerid">#dom-taskattributiontiming-containerid</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containerid">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containerid①">4.2.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containersrc">
    <b><a href="#dom-taskattributiontiming-containersrc">#dom-taskattributiontiming-containersrc</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containersrc">3.2. TaskAttributionTiming interface</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containersrc①">4.2.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="task-start-time">
    <b><a href="#task-start-time">#task-start-time</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-task-start-time">4.1.2. HTML: event loop processing model</a>
+    <li><a href="#ref-for-task-start-time①">4.2.1. Report Long Tasks</a> <a href="#ref-for-task-start-time②">(2)</a> <a href="#ref-for-task-start-time③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="task-end-time">
    <b><a href="#task-end-time">#task-end-time</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-task-end-time">4.1.2. HTML: event loop processing model</a>
+    <li><a href="#ref-for-task-end-time①">4.2.1. Report Long Tasks</a> <a href="#ref-for-task-end-time②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="task-script-evaluation-environment-settings">
@@ -771,58 +840,57 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   </aside>
 <script>/* script-dfn-panel */
 
-        document.body.addEventListener("click", function(e) {
-            var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
-            // Find the dfn element or panel, if any, that was clicked on.
-            var el = e.target;
-            var target;
-            var hitALink = false;
-            while(el.parentElement) {
-                if(el.tagName == "A") {
-                    // Clicking on a link in a <dfn> shouldn't summon the panel
-                    hitALink = true;
-                }
-                if(el.classList.contains("dfn-paneled")) {
-                    target = "dfn";
-                    break;
-                }
-                if(el.classList.contains("dfn-panel")) {
-                    target = "dfn-panel";
-                    break;
-                }
-                el = el.parentElement;
-            }
-            if(target != "dfn-panel") {
-                // Turn off any currently "on" or "activated" panels.
-                queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
-                    el.classList.remove("on");
-                    el.classList.remove("activated");
-                });
-            }
-            if(target == "dfn" && !hitALink) {
-                // open the panel
-                var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
-                if(dfnPanel) {
-                    console.log(dfnPanel);
-                    dfnPanel.classList.add("on");
-                    var rect = el.getBoundingClientRect();
-                    dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
-                    dfnPanel.style.top = window.scrollY + rect.top + "px";
-                    var panelRect = dfnPanel.getBoundingClientRect();
-                    var panelWidth = panelRect.right - panelRect.left;
-                    if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
-                        // Reposition, because the panel is overflowing
-                        dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
-                    }
-                } else {
-                    console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
-                }
-            } else if(target == "dfn-panel") {
-                // Switch it to "activated" state, which pins it.
-                el.classList.add("activated");
-                el.style.left = null;
-                el.style.top = null;
-            }
-
+document.body.addEventListener("click", function(e) {
+    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    // Find the dfn element or panel, if any, that was clicked on.
+    var el = e.target;
+    var target;
+    var hitALink = false;
+    while(el.parentElement) {
+        if(el.tagName == "A") {
+            // Clicking on a link in a <dfn> shouldn't summon the panel
+            hitALink = true;
+        }
+        if(el.classList.contains("dfn-paneled")) {
+            target = "dfn";
+            break;
+        }
+        if(el.classList.contains("dfn-panel")) {
+            target = "dfn-panel";
+            break;
+        }
+        el = el.parentElement;
+    }
+    if(target != "dfn-panel") {
+        // Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+            el.classList.remove("on");
+            el.classList.remove("activated");
         });
-        </script>
+    }
+    if(target == "dfn" && !hitALink) {
+        // open the panel
+        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+        if(dfnPanel) {
+            dfnPanel.classList.add("on");
+            var rect = el.getBoundingClientRect();
+            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+            dfnPanel.style.top = window.scrollY + rect.top + "px";
+            var panelRect = dfnPanel.getBoundingClientRect();
+            var panelWidth = panelRect.right - panelRect.left;
+            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+                // Reposition, because the panel is overflowing
+                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+            }
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+        }
+    } else if(target == "dfn-panel") {
+        // Switch it to "activated" state, which pins it.
+        el.classList.add("activated");
+        el.style.left = null;
+        el.style.top = null;
+    }
+
+});
+</script>
