@@ -86,7 +86,7 @@ Usage Example {#example}
 Terminology {#sec-terminology}
 ==============================
 
-<dfn export>Long task</dfn> refers to any of the following tasks whose duration exceeds 50ms:
+<dfn export>Long task</dfn> refers to any of the following occurrences whose duration exceeds 50ms:
 
 * An event loop <a>task</a> plus the <a>perform a microtask checkpoint</a> that follows immediately afterwards. This captures the duration of an event loop <a>task</a>, including its associated <a>microtasks</a>.
 
@@ -116,7 +116,7 @@ Long Task timing involves the following new interfaces:
 
 {{PerformanceLongTaskTiming}} extends the following attributes of {{PerformanceEntry}} interface:
 
-* The {{PerformanceEntry/name}} attribute must return {{DOMString}} that specifies the type of long task being reported. For long tasks obtained from event loop <a>tasks</a>, it also provides minimal frame attribution.
+* The {{PerformanceEntry/name}} attribute must return {{DOMString}} that specifies the type of <a>long task</a> being reported. For long tasks obtained from event loop <a>tasks</a>, it also provides minimal frame attribution.
 
     Possible values for tasks that are not originated from event loop <a>tasks</a> are:
 
@@ -228,21 +228,23 @@ Modifications to other specifications {#mod}
 
 ### HTML: <a>event loop definitions</a> ### {#html-event-loop-dfn}
 
-Each task gets an associated <dfn for="task">script evaluation environment settings object set</dfn>.
+Each <a>task</a> gets an associated <dfn for="task">script evaluation environment settings object set</dfn>.
+
+Each <a>event loop</a> has two associated values: <dfn>event loop begin</dfn> and <dfn>event loop end</dfn>, which are initially unset.
 
 ### HTML: <a>event loop processing model</a> ### {#html-event-loop-processing}
 
 Before Step #1:
 
-* Let |event loop begin| be the <a>current high resolution time</a>.
-* If |event loop end| is set then let |top-level browsing contexts| be the set of all <a>top-level browsing contexts</a> of all <a>Document</a> objects associated with the <a>event loop</a> in question. Execute the [[#report-long-tasks]] algorithm, passing in |event loop begin|, |event loop end|, the string "browser", and |top-level browsing contexts|.
+* Let <a>event loop begin</a> be the <a>current high resolution time</a>.
+* If <a>event loop end</a> is set then let |top-level browsing contexts| be the set of all <a>top-level browsing contexts</a> of all <a>Document</a> objects associated with the <a>event loop</a> in question. Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a>, <a>event loop end</a>, the string "browser", and |top-level browsing contexts|.
 
 After Step #6:
 
 * Let |task end time| be the <a>current high resolution time</a>.
 * Let |top-level browsing contexts| be an empty set.
 * For each <a>environment settings object</a> |settings| in |oldestTask|'s [=task/script evaluation environment settings object set=], add |settings|'s <a>responsible browsing context</a>'s <a>top-level browsing context</a> to |top-level browsing contexts|.
-* Execute the [[#report-long-tasks]] algorithm, passing in |event loop begin| (repurposed as meaning the beginning of the task), |task end time|, the string "event-loop-task", |top-level browsing contexts|, and |oldestTask|.
+* Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a> (repurposed as meaning the beginning of the task), |task end time|, the string "event-loop-task", |top-level browsing contexts|, and |oldestTask|.
 
 In Step #7:
 
@@ -256,7 +258,7 @@ After Step #7:
 
 After Step #8 (at the very end):
 
-* Set |event loop end| to be the <a>current high resolution time</a>.
+* Set <a>event loop end</a> to be the <a>current high resolution time</a>.
 
 ### HTML: <a>calling scripts</a> ### {#html-calling-scripts}
 
@@ -312,7 +314,7 @@ Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optio
 
         2. Set |attribution|'s {{PerformanceEntry/entryType}} attribute to <code>"taskattribution"</code>.
         3. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
-        4. If |culpritSettings| is not <code>null</code>, and |culpritSettings|'s <a>responsible browsing context</a> has a browsing context container that is an <{iframe}> element, then let |iframe| be that element, and perform the following steps:
+        4. If |culpritSettings| is not <code>null</code>, and |culpritSettings|'s <a>responsible browsing context</a> has a <a>browsing context container</a> that is an <{iframe}> element, then let |iframe| be that element, and perform the following steps:
             1. Set |attribution|'s {{containerName}} attribute to the value of  |iframe|'s <{iframe/name}> content attribute, or <code>null</code> if the attribute is absent.
             2. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>null</code> if the attribute is absent.
 
