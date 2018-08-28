@@ -236,8 +236,8 @@ Each <a>event loop</a> has two associated values: <dfn>event loop begin</dfn> an
 
 Before Step #1:
 
-* Let <a>event loop begin</a> be the <a>current high resolution time</a>.
-* If <a>event loop end</a> is set then let |top-level browsing contexts| be the set of all <a>top-level browsing contexts</a> of all <a>Document</a> objects associated with the <a>event loop</a> in question. Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a>, <a>event loop end</a>, the string "browser", and |top-level browsing contexts|.
+* Set <a>event loop begin</a> to the <a>current high resolution time</a>.
+* If <a>event loop end</a> is set, then let |top-level browsing contexts| be the set of all <a>top-level browsing contexts</a> of all <a>Document</a> objects associated with the <a>event loop</a> in question. Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a>, <a>event loop end</a>, the string "browser", and |top-level browsing contexts|.
 
 After Step #6:
 
