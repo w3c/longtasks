@@ -33,8 +33,9 @@ urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
 urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #definitions-3; text: event loop definitions;
     type: dfn; url: #calling-scripts; text: calling scripts;
-    type: dfn; url: #list-of-the-descendant-browsing-contexts; text: list of the descendant browsing contexts
+    type: dfn; url: #list-of-the-descendant-browsing-contexts; text: list of the descendant browsing contexts;
     type: dfn; url: #ancestor-browsing-context; text: ancestor;
+    type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set;
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -223,51 +224,8 @@ As an illustration, the {{TaskAttributionTiming}} entry in {{PerformanceLongTask
 Processing Model {#sec-processing-model}
 ========================================
 
-Modifications to other specifications {#mod}
---------------------------------------------
-
-### HTML: <a>event loop definitions</a> ### {#html-event-loop-dfn}
-
-Each <a>task</a> gets an associated <dfn for="task">script evaluation environment settings object set</dfn>.
-
-Each <a>event loop</a> has two associated values: <dfn>event loop begin</dfn> and <dfn>event loop end</dfn>, which are initially unset.
-
-### HTML: <a>event loop processing model</a> ### {#html-event-loop-processing}
-
-Before Step #1:
-
-* Set <a>event loop begin</a> to the <a>current high resolution time</a>.
-* If <a>event loop end</a> is set, then let |top-level browsing contexts| be the set of all <a>top-level browsing contexts</a> of all <a>Document</a> objects associated with the <a>event loop</a> in question. Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a>, <a>event loop end</a>, the string "browser", and |top-level browsing contexts|.
-
-After Step #6:
-
-* Let |task end time| be the <a>current high resolution time</a>.
-* Let |top-level browsing contexts| be an empty set.
-* For each <a>environment settings object</a> |settings| in |oldestTask|'s [=task/script evaluation environment settings object set=], add |settings|'s <a>responsible browsing context</a>'s <a>top-level browsing context</a> to |top-level browsing contexts|.
-* Execute the [[#report-long-tasks]] algorithm, passing in <a>event loop begin</a> (repurposed as meaning the beginning of the task), |task end time|, the string "event-loop-task", |top-level browsing contexts|, and |oldestTask|.
-
-In Step #7:
-
-* In substep #1, <var ignore=''>now</var> can be replaced with |task end time|. This saves a call to <a>current high resolution time</a>.
-
-After Step #7:
-
-* Let |rendering end time| be the <a>current high resolution time</a>.
-* Let |top-level browsing contexts| be the set of all <a>top-level browsing context</a> of all <a>fully active</a> <a>Document</a> in <var ignore=''>docs</var>.
-* Execute the [[#report-long-tasks]] algorithm, passing in |task end time| (repurposed as meaning the beginning of the update the rendering step), |rendering end time|, the string "rendering", and |top-level browsing contexts|.
-
-After Step #8 (at the very end):
-
-* Set <a>event loop end</a> to be the <a>current high resolution time</a>.
-
-### HTML: <a>calling scripts</a> ### {#html-calling-scripts}
-
-In <a>prepare to run script</a>, add a step at the end to add |settings| to the currently running task's [=task/script evaluation environment settings object set=].
-
-Additions to the Long Task Spec {#sec-additions-to-spec}
+Report Long Tasks {#report-long-tasks}
 --------------------------------------------------------
-
-<h4 dfn>Report Long Tasks</h4>
 
 Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optionally |task|, perform the following algorithm:
 
@@ -288,12 +246,12 @@ Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optio
     1. Let |name| be the empty string. This will be used to report minimal frame attribution, below.
     2. Let |culpritSettings| be <code>null</code>.
     3. If the |task| argument was not provided, set |name| to |type|.
-    3. Otherwise: assert that |type| equals "event-loop-task" and process |task|'s [=task/script evaluation environment settings object set=] to determine |name| and |culpritSettings| as follows:
+    3. Otherwise: assert that |type| equals "event-loop-task" and process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
 
-        1. If |task|'s [=task/script evaluation environment settings object set=] is empty: set |name| to <code>"unknown"</code> and |culpritSettings| to <code>null</code>.
-        2. If |task|'s [=task/script evaluation environment settings object set=]'s length is greater than one: set |name| to <code>"multiple-contexts"</code> and |culpritSettings| to <code>null</code>.
-        3. If |task|'s [=task/script evaluation environment settings object set=]'s length is one:
-            1. Set |culpritSettings| to the single item in task's [=task/script evaluation environment settings object set=].
+        1. If |task|'s <a>script evaluation environment settings object set</a> is empty: set |name| to <code>"unknown"</code> and |culpritSettings| to <code>null</code>.
+        2. If |task|'s <a>script evaluation environment settings object set</a>'s length is greater than one: set |name| to <code>"multiple-contexts"</code> and |culpritSettings| to <code>null</code>.
+        3. If |task|'s <a>script evaluation environment settings object set</a>'s length is one:
+            1. Set |culpritSettings| to the single item in task's <a>script evaluation environment settings object set</a>.
             2. Let |destinationOrigin| be |destinationRealm|'s <a>relevant settings object</a>'s [=environment settings object/origin=].
             3. Let |destinationBC| be |destinationRealm|'s <a>relevant settings object</a>'s <a>responsible browsing context</a>.
             4. If |culpritSettings|'s [=environment settings object/origin=] and |destinationOrigin| are <a>same origin</a>:
