@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 018be3f805d3272ce699a232398d6e3902d1ea8d" name="generator">
+  <meta content="Bikeshed version 36c8e210b03bee5c4f253cec43379cce76c8dd3f" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="df82fbcf7a606b1c395095aed9ab1e2ebf834bb9" name="document-revision">
+  <meta content="9805a9a138781a34c7aa8471d12ba45b994cd217" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -255,7 +255,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-10-17">17 October 2018</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-11-13">13 November 2018</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -450,7 +450,7 @@ observer<c- p>.</c->observe<c- p>({</c->entryTypes<c- o>:</c-> <c- p>[</c-><c- u
    <p><code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming③">TaskAttributionTiming</a></code> extends the following attributes of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface③">PerformanceEntry</a></code> interface:</p>
    <ul>
     <li data-md>
-     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name①">name</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤">DOMString</a></code> indicating type of attribution. Currently this can only be <code class="highlight"><c- u>"script"</c-></code>.</p>
+     <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name①">name</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤">DOMString</a></code> indicating type of attribution. Currently this can only be <code class="highlight"><c- u>"unknown"</c-></code>.</p>
     <li data-md>
      <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype①">entryType</a></code> attribute must return <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥">DOMString</a></code> <code class="highlight"><c- u>"taskattribution"</c-></code>.</p>
     <li data-md>
@@ -480,7 +480,7 @@ observer<c- p>.</c->observe<c- p>({</c->entryTypes<c- o>:</c-> <c- p>[</c-><c- u
    </ul>
    <p>Therefore, <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name③">name</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution②">attribution</a></code> fields on <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> together paint the picture for where the blame rests for a long task.
 When delivering this information the web origin-policy must be adhered to.</p>
-   <p>As an illustration, the <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> entry in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution③">attribution</a></code> is populated with "script" work, and the container or frame implicated in attribution should match up with the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name④">name</a></code> as follows:</p>
+   <p>As an illustration, the <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> entry in <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution③">attribution</a></code> is populated with "unknown" work, and the container or frame implicated in attribution should match up with the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name④">name</a></code> as follows:</p>
    <table>
     <thead>
      <tr>
@@ -629,7 +629,7 @@ When delivering this information the web origin-policy must be adhered to.</p>
        <p>Otherwise, let <var>attribution</var> be a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑦">TaskAttributionTiming</a></code> object <var>attribution</var> and set its attributes as follows:</p>
        <ol>
         <li data-md>
-         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute to <code class="highlight"><c- u>"script"</c-></code>.</p>
+         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute to <code class="highlight"><c- u>"unknown"</c-></code>.</p>
          <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑦">name</a></code> attribute of a <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑧">TaskAttributionTiming</a></code> object, but for now it can only be a single value.</p>
         <li data-md>
          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype②">entryType</a></code> attribute to <code class="highlight"><c- u>"taskattribution"</c-></code>.</p>
@@ -1004,7 +1004,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-performance-timeline-2">[PERFORMANCE-TIMELINE-2]
-   <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 8 December 2016. CR. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
+   <dd>Ilya Grigorik; Jatinder Mann; Zhiheng Wang. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 30 October 2018. WD. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
    <dt id="biblio-webidl">[WebIDL]
    <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
