@@ -156,7 +156,7 @@ Long Task timing involves the following new interfaces:
 
 {{TaskAttributionTiming}} extends the following attributes of {{PerformanceEntry}} interface:
 
-* The {{PerformanceEntry/name}} attribute must return {{DOMString}} indicating type of attribution. Currently this can only be <code>"script"</code>.
+* The {{PerformanceEntry/name}} attribute must return {{DOMString}} indicating type of attribution. Currently this can only be <code>"unknown"</code>.
 * The {{PerformanceEntry/entryType}} attribute must return {{DOMString}} <code>"taskattribution"</code>.
 * The {{PerformanceEntry/startTime}} attribute MUST return 0.
 * The {{PerformanceEntry/duration}} attribute MUST return 0.
@@ -183,7 +183,7 @@ Thus pointing to the culprit has a couple of facets:
 Therefore, {{PerformanceEntry/name}} and {{PerformanceLongTaskTiming/attribution}} fields on {{PerformanceLongTaskTiming}} together paint the picture for where the blame rests for a long task.
 When delivering this information the web origin-policy must be adhered to.
 
-As an illustration, the {{TaskAttributionTiming}} entry in {{PerformanceLongTaskTiming/attribution}} is populated with "script" work, and the container or frame implicated in attribution should match up with the {{PerformanceEntry/name}} as follows:
+As an illustration, the {{TaskAttributionTiming}} entry in {{PerformanceLongTaskTiming/attribution}} is populated with "unknown" work, and the container or frame implicated in attribution should match up with the {{PerformanceEntry/name}} as follows:
 
 <table>
     <thead>
@@ -308,7 +308,7 @@ Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optio
 
     4. If |task| was not provided, let |attribution| be <code>null</code>.
     5. Otherwise, let |attribution| be a new {{TaskAttributionTiming}} object |attribution| and set its attributes as follows:
-        1. Set |attribution|'s {{PerformanceEntry/name}} attribute to <code>"script"</code>.
+        1. Set |attribution|'s {{PerformanceEntry/name}} attribute to <code>"unknown"</code>.
 
             NOTE: future iterations of this API will add more values to the {{PerformanceEntry/name}} attribute of a {{TaskAttributionTiming}} object, but for now it can only be a single value.
 
