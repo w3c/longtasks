@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 36c8e210b03bee5c4f253cec43379cce76c8dd3f" name="generator">
+  <meta content="Bikeshed version 7d8ce2d953ffaca8e344c0dab76f68fc292738a6" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="9805a9a138781a34c7aa8471d12ba45b994cd217" name="document-revision">
+  <meta content="0ffd94529e720dc281b73954dd8ddbddb2ead4fc" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -255,7 +255,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-11-13">13 November 2018</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-11-14">14 November 2018</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -313,18 +313,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li>
      <a href="#sec-processing-model"><span class="secno">4</span> <span class="content">Processing Model</span></a>
      <ol class="toc">
-      <li>
-       <a href="#mod"><span class="secno">4.1</span> <span class="content">Modifications to other specifications</span></a>
-       <ol class="toc">
-        <li><a href="#html-event-loop-dfn"><span class="secno">4.1.1</span> <span class="content">HTML: <span>event loop definitions</span></span></a>
-        <li><a href="#html-event-loop-processing"><span class="secno">4.1.2</span> <span class="content">HTML: <span>event loop processing model</span></span></a>
-        <li><a href="#html-calling-scripts"><span class="secno">4.1.3</span> <span class="content">HTML: <span>calling scripts</span></span></a>
-       </ol>
-      <li>
-       <a href="#sec-additions-to-spec"><span class="secno">4.2</span> <span class="content">Additions to the Long Task Spec</span></a>
-       <ol class="toc">
-        <li><a href="#report-long-tasks"><span class="secno">4.2.1</span> <span class="content">Report Long Tasks</span></a>
-       </ol>
+      <li><a href="#report-long-tasks"><span class="secno">4.1</span> <span class="content">Report Long Tasks</span></a>
      </ol>
     <li><a href="#priv-sec"><span class="secno">5</span> <span class="content">Security &amp; Privacy Considerations</span></a>
     <li>
@@ -516,52 +505,7 @@ When delivering this information the web origin-policy must be adhered to.</p>
       <td>empty 
    </table>
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing Model</span><a class="self-link" href="#sec-processing-model"></a></h2>
-   <h3 class="heading settled" data-level="4.1" id="mod"><span class="secno">4.1. </span><span class="content">Modifications to other specifications</span><a class="self-link" href="#mod"></a></h3>
-   <h4 class="heading settled" data-level="4.1.1" id="html-event-loop-dfn"><span class="secno">4.1.1. </span><span class="content">HTML: <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#definitions-3" id="ref-for-definitions-3">event loop definitions</a></span><a class="self-link" href="#html-event-loop-dfn"></a></h4>
-   <p>Each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task⑤">task</a> gets an associated <dfn class="dfn-paneled" data-dfn-for="task" data-dfn-type="dfn" data-noexport id="task-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</dfn>.</p>
-   <p>Each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop" id="ref-for-event-loop②">event loop</a> has two associated values: <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="event-loop-begin">event loop begin</dfn> and <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="event-loop-end">event loop end</dfn>, which are initially unset.</p>
-   <h4 class="heading settled" data-level="4.1.2" id="html-event-loop-processing"><span class="secno">4.1.2. </span><span class="content">HTML: <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model" id="ref-for-event-loop-processing-model②">event loop processing model</a></span><a class="self-link" href="#html-event-loop-processing"></a></h4>
-   <p>Before Step #1:</p>
-   <ul>
-    <li data-md>
-     <p>Set <a data-link-type="dfn" href="#event-loop-begin" id="ref-for-event-loop-begin">event loop begin</a> to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a>.</p>
-    <li data-md>
-     <p>If <a data-link-type="dfn" href="#event-loop-end" id="ref-for-event-loop-end">event loop end</a> is set, then let <var>top-level browsing contexts</var> be the set of all <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing contexts</a> of all <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">Document</a> objects associated with the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop" id="ref-for-event-loop③">event loop</a> in question. Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks">§4.2.1 Report Long Tasks</a> algorithm, passing in <a data-link-type="dfn" href="#event-loop-begin" id="ref-for-event-loop-begin①">event loop begin</a>, <a data-link-type="dfn" href="#event-loop-end" id="ref-for-event-loop-end①">event loop end</a>, the string "browser", and <var>top-level browsing contexts</var>.</p>
-   </ul>
-   <p>After Step #6:</p>
-   <ul>
-    <li data-md>
-     <p>Let <var>task end time</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time①">current high resolution time</a>.</p>
-    <li data-md>
-     <p>Let <var>top-level browsing contexts</var> be an empty set.</p>
-    <li data-md>
-     <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>settings</var> in <var>oldestTask</var>’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</a>, add <var>settings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context">responsible browsing context</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context①">top-level browsing context</a> to <var>top-level browsing contexts</var>.</p>
-    <li data-md>
-     <p>Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks①">§4.2.1 Report Long Tasks</a> algorithm, passing in <a data-link-type="dfn" href="#event-loop-begin" id="ref-for-event-loop-begin②">event loop begin</a> (repurposed as meaning the beginning of the task), <var>task end time</var>, the string "event-loop-task", <var>top-level browsing contexts</var>, and <var>oldestTask</var>.</p>
-   </ul>
-   <p>In Step #7:</p>
-   <ul>
-    <li data-md>
-     <p>In substep #1, <var>now</var> can be replaced with <var>task end time</var>. This saves a call to <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time②">current high resolution time</a>.</p>
-   </ul>
-   <p>After Step #7:</p>
-   <ul>
-    <li data-md>
-     <p>Let <var>rendering end time</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time③">current high resolution time</a>.</p>
-    <li data-md>
-     <p>Let <var>top-level browsing contexts</var> be the set of all <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context②">top-level browsing context</a> of all <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active" id="ref-for-fully-active">fully active</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document①">Document</a> in <var>docs</var>.</p>
-    <li data-md>
-     <p>Execute the <a href="#report-long-tasks" id="ref-for-report-long-tasks②">§4.2.1 Report Long Tasks</a> algorithm, passing in <var>task end time</var> (repurposed as meaning the beginning of the update the rendering step), <var>rendering end time</var>, the string "rendering", and <var>top-level browsing contexts</var>.</p>
-   </ul>
-   <p>After Step #8 (at the very end):</p>
-   <ul>
-    <li data-md>
-     <p>Set <a data-link-type="dfn" href="#event-loop-end" id="ref-for-event-loop-end②">event loop end</a> to be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time④">current high resolution time</a>.</p>
-   </ul>
-   <h4 class="heading settled" data-level="4.1.3" id="html-calling-scripts"><span class="secno">4.1.3. </span><span class="content">HTML: <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#calling-scripts" id="ref-for-calling-scripts">calling scripts</a></span><a class="self-link" href="#html-calling-scripts"></a></h4>
-   <p>In <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#prepare-to-run-script" id="ref-for-prepare-to-run-script">prepare to run script</a>, add a step at the end to add <var>settings</var> to the currently running task’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set①">script evaluation environment settings object set</a>.</p>
-   <h3 class="heading settled" data-level="4.2" id="sec-additions-to-spec"><span class="secno">4.2. </span><span class="content">Additions to the Long Task Spec</span><a class="self-link" href="#sec-additions-to-spec"></a></h3>
-   <h4 class="heading settled dfn-paneled" data-dfn-type="dfn" data-level="4.2.1" data-lt="Report Long Tasks" data-noexport id="report-long-tasks"><span class="secno">4.2.1. </span><span class="content">Report Long Tasks</span></h4>
+   <h3 class="heading settled" data-level="4.1" id="report-long-tasks"><span class="secno">4.1. </span><span class="content">Report Long Tasks</span><a class="self-link" href="#report-long-tasks"></a></h3>
    <p>Given <var>start time</var>, <var>end time</var>, <var>type</var>, <var>top-level browsing contexts</var>, and optionally <var>task</var>, perform the following algorithm:</p>
    <ol>
     <li data-md>
@@ -570,7 +514,7 @@ When delivering this information the web origin-policy must be adhered to.</p>
      <p>Let <var>destinationRealms</var> be an empty set.</p>
     <li data-md>
      <p>Determine the set of <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#sec-code-realms" id="ref-for-sec-code-realms">JavaScript Realms</a> to which reports will be delivered:</p>
-     <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context③">top-level browsing context</a> <var>topmostBC</var> in <var>top-level browsing contexts</var>:</p>
+     <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a> <var>topmostBC</var> in <var>top-level browsing contexts</var>:</p>
      <ol>
       <li data-md>
        <p>Add <var>topmostBC</var>’s Window’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a> to <var>destinationRealms</var>.</p>
@@ -589,37 +533,37 @@ When delivering this information the web origin-policy must be adhered to.</p>
       <li data-md>
        <p>If the <var>task</var> argument was not provided, set <var>name</var> to <var>type</var>.</p>
       <li data-md>
-       <p>Otherwise: assert that <var>type</var> equals "event-loop-task" and process <var>task</var>’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a> to determine <var>name</var> and <var>culpritSettings</var> as follows:</p>
+       <p>Otherwise: assert that <var>type</var> equals "event-loop-task" and process <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</a> to determine <var>name</var> and <var>culpritSettings</var> as follows:</p>
        <ol>
         <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a> is empty: set <var>name</var> to <code class="highlight"><c- u>"unknown"</c-></code> and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set①">script evaluation environment settings object set</a> is empty: set <var>name</var> to <code class="highlight"><c- u>"unknown"</c-></code> and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
         <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set④">script evaluation environment settings object set</a>'s length is greater than one: set <var>name</var> to <code class="highlight"><c- u>"multiple-contexts"</c-></code> and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a>’s length is greater than one: set <var>name</var> to <code class="highlight"><c- u>"multiple-contexts"</c-></code> and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
         <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set⑤">script evaluation environment settings object set</a>'s length is one:</p>
+         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a>’s length is one:</p>
          <ol>
           <li data-md>
-           <p>Set <var>culpritSettings</var> to the single item in task’s <a data-link-type="dfn" href="#task-script-evaluation-environment-settings-object-set" id="ref-for-task-script-evaluation-environment-settings-object-set⑥">script evaluation environment settings object set</a>.</p>
+           <p>Set <var>culpritSettings</var> to the single item in task’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set④">script evaluation environment settings object set</a>.</p>
           <li data-md>
            <p>Let <var>destinationOrigin</var> be <var>destinationRealm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a>.</p>
           <li data-md>
-           <p>Let <var>destinationBC</var> be <var>destinationRealm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object①">relevant settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context①">responsible browsing context</a>.</p>
+           <p>Let <var>destinationBC</var> be <var>destinationRealm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object①">relevant settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context">responsible browsing context</a>.</p>
           <li data-md>
            <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin①">origin</a> and <var>destinationOrigin</var> are <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#same-origin" id="ref-for-same-origin">same origin</a>:</p>
            <ol>
             <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context②">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"same-origin-ancestor"</c-></code>.</p>
+             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context①">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"same-origin-ancestor"</c-></code>.</p>
             <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context③">responsible browsing context</a> is a descendant of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"same-origin-descendant"</c-></code>.</p>
+             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context②">responsible browsing context</a> is a descendant of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"same-origin-descendant"</c-></code>.</p>
            </ol>
           <li data-md>
            <p>Otherwise:</p>
            <ol>
             <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context④">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context①">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"cross-origin-ancestor"</c-></code> and set <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context③">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context①">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"cross-origin-ancestor"</c-></code> and set <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
              <p class="note" role="note"><span>NOTE:</span> this is not reported because of security. Developers should look this up themselves.</p>
             <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a> is a descendant of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"cross-origin-descendant"</c-></code>.</p>
+             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context④">responsible browsing context</a> is a descendant of <var>destinationBC</var>, set <var>name</var> to <code class="highlight"><c- u>"cross-origin-descendant"</c-></code>.</p>
            </ol>
          </ol>
        </ol>
@@ -636,7 +580,7 @@ When delivering this information the web origin-policy must be adhered to.</p>
         <li data-md>
          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration②">duration</a></code> to 0.</p>
         <li data-md>
-         <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>, and <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑥">responsible browsing context</a> has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container">browsing context container</a> that is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> element, then let <var>iframe</var> be that element, and perform the following steps:</p>
+         <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>, and <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a> has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container">browsing context container</a> that is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> element, then let <var>iframe</var> be that element, and perform the following steps:</p>
          <ol>
           <li data-md>
            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or <code class="highlight"><c- kc>null</c-></code> if the attribute is absent.</p>
@@ -683,32 +627,22 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <li><a href="#dom-taskattributiontiming-containersrc">containerSrc</a><span>, in §3.2</span>
    <li><a href="#dom-taskattributiontiming-containertype">containerType</a><span>, in §3.2</span>
    <li><a href="#culprit-frame">Culprit frame</a><span>, in §2</span>
-   <li><a href="#event-loop-begin">event loop begin</a><span>, in §4.1.1</span>
-   <li><a href="#event-loop-end">event loop end</a><span>, in §4.1.1</span>
    <li><a href="#frame">Frame</a><span>, in §2</span>
    <li><a href="#frame-context">frame context</a><span>, in §2</span>
    <li><a href="#long-task">Long task</a><span>, in §2</span>
    <li><a href="#performancelongtasktiming">PerformanceLongTaskTiming</a><span>, in §3.1</span>
-   <li><a href="#report-long-tasks">Report Long Tasks</a><span>, in §4.2</span>
-   <li><a href="#task-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</a><span>, in §4.1.1</span>
    <li><a href="#taskattributiontiming">TaskAttributionTiming</a><span>, in §3.2</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-concept-document">
-   <a href="https://dom.spec.whatwg.org/#concept-document">https://dom.spec.whatwg.org/#concept-document</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-concept-document">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-concept-document①">(2)</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-concept-id">
    <a href="https://dom.spec.whatwg.org/#concept-id">https://dom.spec.whatwg.org/#concept-id</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-id">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-concept-id">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sec-code-realms">
    <a href="https://tc39.github.io/ecma262/#sec-code-realms">https://tc39.github.io/ecma262/#sec-code-realms</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-sec-code-realms">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-sec-code-realms">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-def-domhighrestimestamp">
@@ -717,40 +651,22 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-idl-def-domhighrestimestamp">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-idl-def-domhighrestimestamp①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-current-high-resolution-time">
-   <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">https://w3c.github.io/hr-time/#dfn-current-high-resolution-time</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dfn-current-high-resolution-time">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-dfn-current-high-resolution-time①">(2)</a> <a href="#ref-for-dfn-current-high-resolution-time②">(3)</a> <a href="#ref-for-dfn-current-high-resolution-time③">(4)</a> <a href="#ref-for-dfn-current-high-resolution-time④">(5)</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-active-document">
    <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">https://html.spec.whatwg.org/multipage/browsers.html#active-document</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-active-document">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-active-document">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ancestor-browsing-context">
    <a href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context">https://html.spec.whatwg.org/multipage/#ancestor-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-ancestor-browsing-context">4.2.1. Report Long Tasks</a> <a href="#ref-for-ancestor-browsing-context①">(2)</a>
+    <li><a href="#ref-for-ancestor-browsing-context">4.1. Report Long Tasks</a> <a href="#ref-for-ancestor-browsing-context①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-browsing-context-container">
    <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container">https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-browsing-context-container">4.2.1. Report Long Tasks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-calling-scripts">
-   <a href="https://html.spec.whatwg.org/multipage/#calling-scripts">https://html.spec.whatwg.org/multipage/#calling-scripts</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-calling-scripts">4.1.3. HTML: calling scripts</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-environment-settings-object">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-environment-settings-object">4.1.2. HTML: event loop processing model</a>
+    <li><a href="#ref-for-browsing-context-container">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-event-loop">
@@ -758,39 +674,24 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-event-loop">2. Terminology</a>
     <li><a href="#ref-for-event-loop①">3.1. PerformanceLongTaskTiming interface</a>
-    <li><a href="#ref-for-event-loop②">4.1.1. HTML: event loop definitions</a>
-    <li><a href="#ref-for-event-loop③">4.1.2. HTML: event loop processing model</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-definitions-3">
-   <a href="https://html.spec.whatwg.org/multipage/#definitions-3">https://html.spec.whatwg.org/multipage/#definitions-3</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-definitions-3">4.1.1. HTML: event loop definitions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-event-loop-processing-model">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-event-loop-processing-model">2. Terminology</a> <a href="#ref-for-event-loop-processing-model①">(2)</a>
-    <li><a href="#ref-for-event-loop-processing-model②">4.1.2. HTML: event loop processing model</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-fully-active">
-   <a href="https://html.spec.whatwg.org/multipage/browsers.html#fully-active">https://html.spec.whatwg.org/multipage/browsers.html#fully-active</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-fully-active">4.1.2. HTML: event loop processing model</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-iframe-element">
    <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-the-iframe-element">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-the-iframe-element">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-list-of-the-descendant-browsing-contexts">
    <a href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts">https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-of-the-descendant-browsing-contexts">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-list-of-the-descendant-browsing-contexts">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-microtask">
@@ -802,13 +703,13 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   <aside class="dfn-panel" data-for="term-for-attr-iframe-name">
    <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-attr-iframe-name">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-attr-iframe-name">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-settings-object-origin">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin">https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-settings-object-origin">4.2.1. Report Long Tasks</a> <a href="#ref-for-concept-settings-object-origin①">(2)</a>
+    <li><a href="#ref-for-concept-settings-object-origin">4.1. Report Long Tasks</a> <a href="#ref-for-concept-settings-object-origin①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-perform-a-microtask-checkpoint">
@@ -817,41 +718,40 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-perform-a-microtask-checkpoint">2. Terminology</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-prepare-to-run-script">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#prepare-to-run-script">https://html.spec.whatwg.org/multipage/webappapis.html#prepare-to-run-script</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-prepare-to-run-script">4.1.3. HTML: calling scripts</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-concept-relevant-realm">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-relevant-realm">4.2.1. Report Long Tasks</a> <a href="#ref-for-concept-relevant-realm①">(2)</a>
+    <li><a href="#ref-for-concept-relevant-realm">4.1. Report Long Tasks</a> <a href="#ref-for-concept-relevant-realm①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-relevant-settings-object">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-relevant-settings-object">4.2.1. Report Long Tasks</a> <a href="#ref-for-relevant-settings-object①">(2)</a>
+    <li><a href="#ref-for-relevant-settings-object">4.1. Report Long Tasks</a> <a href="#ref-for-relevant-settings-object①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-responsible-browsing-context">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context">https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-responsible-browsing-context">4.1.2. HTML: event loop processing model</a>
-    <li><a href="#ref-for-responsible-browsing-context①">4.2.1. Report Long Tasks</a> <a href="#ref-for-responsible-browsing-context②">(2)</a> <a href="#ref-for-responsible-browsing-context③">(3)</a> <a href="#ref-for-responsible-browsing-context④">(4)</a> <a href="#ref-for-responsible-browsing-context⑤">(5)</a> <a href="#ref-for-responsible-browsing-context⑥">(6)</a>
+    <li><a href="#ref-for-responsible-browsing-context">4.1. Report Long Tasks</a> <a href="#ref-for-responsible-browsing-context①">(2)</a> <a href="#ref-for-responsible-browsing-context②">(3)</a> <a href="#ref-for-responsible-browsing-context③">(4)</a> <a href="#ref-for-responsible-browsing-context④">(5)</a> <a href="#ref-for-responsible-browsing-context⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-same-origin">
    <a href="https://html.spec.whatwg.org/multipage/origin.html#same-origin">https://html.spec.whatwg.org/multipage/origin.html#same-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-same-origin">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-same-origin">4.1. Report Long Tasks</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-script-evaluation-environment-settings-object-set">
+   <a href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set">https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-script-evaluation-environment-settings-object-set">4.1. Report Long Tasks</a> <a href="#ref-for-script-evaluation-environment-settings-object-set①">(2)</a> <a href="#ref-for-script-evaluation-environment-settings-object-set②">(3)</a> <a href="#ref-for-script-evaluation-environment-settings-object-set③">(4)</a> <a href="#ref-for-script-evaluation-environment-settings-object-set④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-attr-iframe-src">
    <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-attr-iframe-src">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-attr-iframe-src">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-task">
@@ -859,14 +759,12 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-concept-task">2. Terminology</a> <a href="#ref-for-concept-task①">(2)</a>
     <li><a href="#ref-for-concept-task②">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-concept-task③">(2)</a> <a href="#ref-for-concept-task④">(3)</a>
-    <li><a href="#ref-for-concept-task⑤">4.1.1. HTML: event loop definitions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-top-level-browsing-context">
    <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-top-level-browsing-context">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-top-level-browsing-context①">(2)</a> <a href="#ref-for-top-level-browsing-context②">(3)</a>
-    <li><a href="#ref-for-top-level-browsing-context③">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-top-level-browsing-context">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-update-the-rendering">
@@ -888,7 +786,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-dom-performanceentry-duration">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-duration①">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-performanceentry-duration②">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-dom-performanceentry-duration②">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-performanceentry-entrytype">
@@ -896,7 +794,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-dom-performanceentry-entrytype">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-entrytype①">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-performanceentry-entrytype②">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-entrytype③">(2)</a>
+    <li><a href="#ref-for-dom-performanceentry-entrytype②">4.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-entrytype③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-performanceentry-name">
@@ -905,13 +803,13 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-dom-performanceentry-name">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-name①">3.2. TaskAttributionTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-name②">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performanceentry-name③">(2)</a> <a href="#ref-for-dom-performanceentry-name④">(3)</a> <a href="#ref-for-dom-performanceentry-name⑤">(4)</a>
-    <li><a href="#ref-for-dom-performanceentry-name⑥">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-name⑦">(2)</a> <a href="#ref-for-dom-performanceentry-name⑧">(3)</a>
+    <li><a href="#ref-for-dom-performanceentry-name⑥">4.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-name⑦">(2)</a> <a href="#ref-for-dom-performanceentry-name⑧">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-queue-a-performanceentry">
    <a href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry">https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-queue-a-performanceentry">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-dfn-queue-a-performanceentry">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-performanceentry-starttime">
@@ -919,7 +817,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-dom-performanceentry-starttime">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-starttime①">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-performanceentry-starttime②">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a> <a href="#ref-for-dom-performanceentry-starttime④">(3)</a>
+    <li><a href="#ref-for-dom-performanceentry-starttime②">4.1. Report Long Tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a> <a href="#ref-for-dom-performanceentry-starttime④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
@@ -934,7 +832,6 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-concept-document" style="color:initial">document</span>
      <li><span class="dfn-paneled" id="term-for-concept-id" style="color:initial">id</span>
     </ul>
    <li>
@@ -946,7 +843,6 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <a data-link-type="biblio">[hr-time-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-idl-def-domhighrestimestamp" style="color:initial">DOMHighResTimeStamp</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-current-high-resolution-time" style="color:initial">current high resolution time</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -954,23 +850,19 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
      <li><span class="dfn-paneled" id="term-for-active-document" style="color:initial">active document</span>
      <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context" style="color:initial">ancestor</span>
      <li><span class="dfn-paneled" id="term-for-browsing-context-container" style="color:initial">browsing context container</span>
-     <li><span class="dfn-paneled" id="term-for-calling-scripts" style="color:initial">calling scripts</span>
-     <li><span class="dfn-paneled" id="term-for-environment-settings-object" style="color:initial">environment settings object</span>
      <li><span class="dfn-paneled" id="term-for-event-loop" style="color:initial">event loop</span>
-     <li><span class="dfn-paneled" id="term-for-definitions-3" style="color:initial">event loop definitions</span>
      <li><span class="dfn-paneled" id="term-for-event-loop-processing-model" style="color:initial">event loop processing model</span>
-     <li><span class="dfn-paneled" id="term-for-fully-active" style="color:initial">fully active</span>
      <li><span class="dfn-paneled" id="term-for-the-iframe-element" style="color:initial">iframe</span>
      <li><span class="dfn-paneled" id="term-for-list-of-the-descendant-browsing-contexts" style="color:initial">list of the descendant browsing contexts</span>
      <li><span class="dfn-paneled" id="term-for-microtask" style="color:initial">microtask</span>
      <li><span class="dfn-paneled" id="term-for-attr-iframe-name" style="color:initial">name</span>
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin" style="color:initial">origin</span>
      <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint" style="color:initial">perform a microtask checkpoint</span>
-     <li><span class="dfn-paneled" id="term-for-prepare-to-run-script" style="color:initial">prepare to run script</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-realm" style="color:initial">relevant realm</span>
      <li><span class="dfn-paneled" id="term-for-relevant-settings-object" style="color:initial">relevant settings object</span>
      <li><span class="dfn-paneled" id="term-for-responsible-browsing-context" style="color:initial">responsible browsing context</span>
      <li><span class="dfn-paneled" id="term-for-same-origin" style="color:initial">same origin</span>
+     <li><span class="dfn-paneled" id="term-for-script-evaluation-environment-settings-object-set" style="color:initial">script evaluation environment settings object set</span>
      <li><span class="dfn-paneled" id="term-for-attr-iframe-src" style="color:initial">src</span>
      <li><span class="dfn-paneled" id="term-for-concept-task" style="color:initial">task</span>
      <li><span class="dfn-paneled" id="term-for-top-level-browsing-context" style="color:initial">top-level browsing context</span>
@@ -1033,7 +925,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-performancelongtasktiming">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-performancelongtasktiming①">(2)</a> <a href="#ref-for-performancelongtasktiming②">(3)</a>
     <li><a href="#ref-for-performancelongtasktiming③">3.3. Pointing to the culprit</a> <a href="#ref-for-performancelongtasktiming④">(2)</a>
-    <li><a href="#ref-for-performancelongtasktiming⑤">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-performancelongtasktiming⑤">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-performancelongtasktiming-attribution">
@@ -1041,7 +933,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-dom-performancelongtasktiming-attribution">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performancelongtasktiming-attribution①">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performancelongtasktiming-attribution②">(2)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution③">(3)</a> <a href="#ref-for-dom-performancelongtasktiming-attribution④">(4)</a>
-    <li><a href="#ref-for-dom-performancelongtasktiming-attribution⑤">4.2.1. Report Long Tasks</a> <a href="#ref-for-dom-performancelongtasktiming-attribution⑥">(2)</a>
+    <li><a href="#ref-for-dom-performancelongtasktiming-attribution⑤">4.1. Report Long Tasks</a> <a href="#ref-for-dom-performancelongtasktiming-attribution⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="taskattributiontiming">
@@ -1050,7 +942,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-taskattributiontiming">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-taskattributiontiming①">(2)</a>
     <li><a href="#ref-for-taskattributiontiming②">3.2. TaskAttributionTiming interface</a> <a href="#ref-for-taskattributiontiming③">(2)</a> <a href="#ref-for-taskattributiontiming④">(3)</a>
     <li><a href="#ref-for-taskattributiontiming⑤">3.3. Pointing to the culprit</a> <a href="#ref-for-taskattributiontiming⑥">(2)</a>
-    <li><a href="#ref-for-taskattributiontiming⑦">4.2.1. Report Long Tasks</a> <a href="#ref-for-taskattributiontiming⑧">(2)</a>
+    <li><a href="#ref-for-taskattributiontiming⑦">4.1. Report Long Tasks</a> <a href="#ref-for-taskattributiontiming⑧">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containertype">
@@ -1063,47 +955,21 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <b><a href="#dom-taskattributiontiming-containername">#dom-taskattributiontiming-containername</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containername">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containername①">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containername①">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containerid">
    <b><a href="#dom-taskattributiontiming-containerid">#dom-taskattributiontiming-containerid</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containerid">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containerid①">4.2.1. Report Long Tasks</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containerid①">4.1. Report Long Tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containersrc">
    <b><a href="#dom-taskattributiontiming-containersrc">#dom-taskattributiontiming-containersrc</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containersrc">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containersrc①">4.2.1. Report Long Tasks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="task-script-evaluation-environment-settings-object-set">
-   <b><a href="#task-script-evaluation-environment-settings-object-set">#task-script-evaluation-environment-settings-object-set</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-task-script-evaluation-environment-settings-object-set">4.1.2. HTML: event loop processing model</a>
-    <li><a href="#ref-for-task-script-evaluation-environment-settings-object-set①">4.1.3. HTML: calling scripts</a>
-    <li><a href="#ref-for-task-script-evaluation-environment-settings-object-set②">4.2.1. Report Long Tasks</a> <a href="#ref-for-task-script-evaluation-environment-settings-object-set③">(2)</a> <a href="#ref-for-task-script-evaluation-environment-settings-object-set④">(3)</a> <a href="#ref-for-task-script-evaluation-environment-settings-object-set⑤">(4)</a> <a href="#ref-for-task-script-evaluation-environment-settings-object-set⑥">(5)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="event-loop-begin">
-   <b><a href="#event-loop-begin">#event-loop-begin</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-event-loop-begin">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-event-loop-begin①">(2)</a> <a href="#ref-for-event-loop-begin②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="event-loop-end">
-   <b><a href="#event-loop-end">#event-loop-end</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-event-loop-end">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-event-loop-end①">(2)</a> <a href="#ref-for-event-loop-end②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="report-long-tasks">
-   <b><a href="#report-long-tasks">#report-long-tasks</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-report-long-tasks">4.1.2. HTML: event loop processing model</a> <a href="#ref-for-report-long-tasks">(2)</a> <a href="#ref-for-report-long-tasks">(3)</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containersrc①">4.1. Report Long Tasks</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
