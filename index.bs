@@ -117,14 +117,10 @@ Long Task timing involves the following new interfaces:
 
 {{PerformanceLongTaskTiming}} extends the following attributes of {{PerformanceEntry}} interface:
 
-* The {{PerformanceEntry/name}} attribute must return {{DOMString}} that specifies the type of <a>long task</a> being reported. For long tasks obtained from event loop <a>tasks</a>, it also provides minimal frame attribution.
+* The {{PerformanceEntry/name}} attribute must return a {{DOMString}} that provides minimal frame attribution.
 
-    Possible values for tasks that are not originated from event loop <a>tasks</a> are:
-
-    * <code>rendering</code>: long task comes from the <a>update the rendering</a> step.
-    * <code>browser</code>: long task comes from work outside of the <a>event loop</a>.
-
-    The following values are only possible for long tasks originated from event loop <a>tasks</a>:
+    If a task is not originated from event loop <a>tasks</a>, then {{PerformanceEntry/name}} MUST return <code>unknown</code>.
+    For long tasks originated from event loop <a>tasks</a>, {{PerformanceEntry/name}} MUST return one of the following:
 
     * <code>self</code>: long task is from within my own frame
     * <code>same-origin-ancestor</code>: long task is from a same-origin ancestor frame
@@ -135,7 +131,7 @@ Long Task timing involves the following new interfaces:
     * <code>cross-origin-unreachable</code>: long task is from a cross-origin unreachable frame
     * <code>multiple-contexts</code>: multiple frame contexts were involved in the long task
     * <code>unknown</code>: none of the above
-* The {{PerformanceEntry/entryType}} attribute must return <code>"longtask"</code>.
+* The {{PerformanceEntry/entryType}} attribute MUST return <code>"longtask"</code>.
 * The {{PerformanceEntry/startTime}} attribute MUST return a {{DOMHighResTimeStamp}} of when the task started.
 * The {{PerformanceEntry/duration}} attribute MUST return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task.
 
@@ -227,7 +223,7 @@ Processing Model {#sec-processing-model}
 Report Long Tasks {#report-long-tasks}
 --------------------------------------------------------
 
-Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optionally |task|, perform the following algorithm:
+Given |start time|, |end time|, |top-level browsing contexts|, and optionally |task|, perform the following algorithm:
 
 1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
@@ -245,8 +241,8 @@ Given |start time|, |end time|, |type|, |top-level browsing contexts|, and optio
 
     1. Let |name| be the empty string. This will be used to report minimal frame attribution, below.
     2. Let |culpritSettings| be <code>null</code>.
-    3. If the |task| argument was not provided, set |name| to |type|.
-    3. Otherwise: assert that |type| equals "event-loop-task" and process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
+    3. If the |task| argument was not provided, set |name| to <code>"unknown"</code>.
+    3. Otherwise: process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
 
         1. If |task|'s <a>script evaluation environment settings object set</a> is empty: set |name| to <code>"unknown"</code> and |culpritSettings| to <code>null</code>.
         2. If |task|'s <a>script evaluation environment settings object set</a>'s length is greater than one: set |name| to <code>"multiple-contexts"</code> and |culpritSettings| to <code>null</code>.
