@@ -30,6 +30,7 @@ urlPrefix: https://w3c.github.io/performance-timeline/; spec: PERFORMANCE-TIMELI
         text: startTime; url: #dom-performanceentry-starttime
         text: duration; url: #dom-performanceentry-duration
     type: dfn; url: #dfn-queue-a-performanceentry; text: Queue the PerformanceEntry
+    type: dfn; url: #dfn-register-a-performance-entry-type; text: register a performance entry type
 urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
     type: typedef; url: #idl-def-domhighrestimestamp; text: DOMHighResTimeStamp;
     type: interface; url: #dfn-performance; text: Performance;
@@ -245,6 +246,11 @@ These fields are not independent. The following gives an overview of how they ar
 
 Processing model {#sec-processing-model}
 ========================================
+
+A user agent implementing the Long Tasks API must perform the following steps:
+
+1. Run the <a>register a performance entry type</a> algorithm with <code>"longtask"</code> as input.
+1. Run the <a>register a performance entry type</a> algorithm with <code>"taskattribution"</code> as input.
 
 Report long tasks {#report-long-tasks}
 --------------------------------------------------------
