@@ -247,10 +247,7 @@ These fields are not independent. The following gives an overview of how they ar
 Processing model {#sec-processing-model}
 ========================================
 
-A user agent implementing the Long Tasks API must perform the following steps:
-
-1. Run the <a>register a performance entry type</a> algorithm with <code>"longtask"</code> as input.
-1. Run the <a>register a performance entry type</a> algorithm with <code>"taskattribution"</code> as input.
+A user agent implementing the Long Tasks API must run the <a>register a performance entry type</a> algorithm with <code>"longtask"</code> as input.
 
 Report long tasks {#report-long-tasks}
 --------------------------------------------------------
