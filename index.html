@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version f9fa604b61e5fc96edf5cdebd2c04e0e69b33a7b" name="generator">
+  <meta content="Bikeshed version 670c46b501fc025ae87a3398a195af35379ab37d" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="f782fe2d0aee3433518c870b324218b077af82c1" name="document-revision">
+  <meta content="31a412a9d545b4d8bfce46695a8e83bc0e7ab541" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -260,7 +260,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-11-29">29 November 2018</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-12-07">7 December 2018</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -490,13 +490,7 @@ When delivering this information the Web’s same-origin policy must be adhered 
     </table>
    </div>
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing model</span><a class="self-link" href="#sec-processing-model"></a></h2>
-   <p>A user agent implementing the Long Tasks API must perform the following steps:</p>
-   <ol>
-    <li data-md>
-     <p>Run the <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type" id="ref-for-dfn-register-a-performance-entry-type">register a performance entry type</a> algorithm with <code class="highlight"><c- u>"longtask"</c-></code> as input.</p>
-    <li data-md>
-     <p>Run the <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type" id="ref-for-dfn-register-a-performance-entry-type①">register a performance entry type</a> algorithm with <code class="highlight"><c- u>"taskattribution"</c-></code> as input.</p>
-   </ol>
+   <p>A user agent implementing the Long Tasks API must run the <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type" id="ref-for-dfn-register-a-performance-entry-type">register a performance entry type</a> algorithm with <code class="highlight"><c- u>"longtask"</c-></code> as input.</p>
    <h3 class="heading settled" data-level="4.1" id="report-long-tasks"><span class="secno">4.1. </span><span class="content">Report long tasks</span><a class="self-link" href="#report-long-tasks"></a></h3>
    <p>Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and optionally <var>task</var>, perform the following algorithm:</p>
    <ol>
@@ -858,7 +852,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
   <aside class="dfn-panel" data-for="term-for-dfn-register-a-performance-entry-type">
    <a href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type">https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-register-a-performance-entry-type">4. Processing model</a> <a href="#ref-for-dfn-register-a-performance-entry-type①">(2)</a>
+    <li><a href="#ref-for-dfn-register-a-performance-entry-type">4. Processing model</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-performanceentry-starttime">
