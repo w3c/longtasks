@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version a417ab651526c465cf0395da21ea73b0ffc2784e" name="generator">
+  <meta content="Bikeshed version 9c6ae748322940994300e90a77c34437364b40a6" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="5302ce6c1cd27b4a7d4a90f5325a58a8223cb91c" name="document-revision">
+  <meta content="cb087c71019d8f72995bf02fc44cfb14f68fb3b5" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -98,6 +98,17 @@ figcaption {
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
 }</style>
+<style>/* style-var-click-highlighting */
+
+    var { cursor: pointer; }
+    var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
+    var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
+    var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
+    var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
+    var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
+    var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
+    var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+    </style>
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -260,7 +271,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-12-12">12 December 2018</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-22">22 January 2019</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -277,7 +288,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -492,121 +503,123 @@ When delivering this information the Web’s same-origin policy must be adhered 
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing model</span><a class="self-link" href="#sec-processing-model"></a></h2>
    <p>A user agent implementing the Long Tasks API must run the <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type" id="ref-for-dfn-register-a-performance-entry-type">register a performance entry type</a> algorithm with <code class="highlight"><c- u>"longtask"</c-></code> as input.</p>
    <h3 class="heading settled" data-level="4.1" id="report-long-tasks"><span class="secno">4.1. </span><span class="content">Report long tasks</span><a class="self-link" href="#report-long-tasks"></a></h3>
-   <p>Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and optionally <var>task</var>, perform the following algorithm:</p>
-   <ol>
-    <li data-md>
-     <p>If <var>end time</var> minus <var>start time</var> is less than the long tasks threshold of 50 ms, abort these steps.</p>
-    <li data-md>
-     <p>Let <var>destinationRealms</var> be an empty set.</p>
-    <li data-md>
-     <p>Determine the set of <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#sec-code-realms" id="ref-for-sec-code-realms">JavaScript Realms</a> to which reports will be delivered:</p>
-     <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a> <var>topmostBC</var> in <var>top-level browsing contexts</var>:</p>
-     <ol>
-      <li data-md>
-       <p>Add <var>topmostBC</var>’s Window’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a> to <var>destinationRealms</var>.</p>
-      <li data-md>
-       <p>Let <var>descendantBCs</var> be <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts②">list of the descendant browsing contexts</a>.</p>
-      <li data-md>
-       <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add <var>descendantBC</var>’s Window’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a> to <var>destinationRealms</var>.</p>
-     </ol>
-    <li data-md>
-     <p>For each <var>destinationRealm</var> in <var>destinationRealms</var>:</p>
-     <ol>
-      <li data-md>
-       <p>Let <var>name</var> be the empty string. This will be used to report <a data-link-type="dfn" href="#minimal-culprit-attribution" id="ref-for-minimal-culprit-attribution">minimal culprit attribution</a>, below.</p>
-      <li data-md>
-       <p>Let <var>culpritSettings</var> be <code class="highlight"><c- kc>null</c-></code>.</p>
-      <li data-md>
-       <p>If the <var>task</var> argument was not provided, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown①">unknown</a></code>".</p>
-      <li data-md>
-       <p>Otherwise: process <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</a> to determine <var>name</var> and <var>culpritSettings</var> as follows:</p>
-       <ol>
-        <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set①">script evaluation environment settings object set</a> is empty: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown②">unknown</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
-        <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a>’s length is greater than one: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts①">multiple<c- o>-</c->contexts</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
-        <li data-md>
-         <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a>’s length is one:</p>
-         <ol>
-          <li data-md>
-           <p>Set <var>culpritSettings</var> to the single item in task’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set④">script evaluation environment settings object set</a>.</p>
-          <li data-md>
-           <p>Let <var>destinationSettings</var> be <var>destinationRealm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>.</p>
-          <li data-md>
-           <p>Let <var>destinationOrigin</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a>.</p>
-          <li data-md>
-           <p>Let <var>destinationBC</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context">responsible browsing context</a>.</p>
-          <li data-md>
-           <p>If <var>culpritSettings</var> is the same as <var>destinationSettings</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#self" id="ref-for-self①">self</a></code>".</p>
-          <li data-md>
-           <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin①">origin</a> and <var>destinationOrigin</var> are <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#same-origin" id="ref-for-same-origin④">same origin</a>:</p>
-           <ol>
-            <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context①">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context②">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin-ancestor" id="ref-for-same-origin-ancestor①">same<c- o>-</c->origin<c- o>-</c->ancestor</a></code>".</p>
-            <li data-md>
-             <p>Otherwise, if <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context②">responsible browsing context</a> is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts③">descendant</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin-descendant" id="ref-for-same-origin-descendant①">same<c- o>-</c->origin<c- o>-</c->descendant</a></code>".</p>
-            <li data-md>
-             <p>Otherwise, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin⑤">same<c- o>-</c->origin</a></code>".</p>
-           </ol>
-          <li data-md>
-           <p>Otherwise:</p>
-           <ol>
-            <li data-md>
-             <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context③">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context③">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-ancestor" id="ref-for-cross-origin-ancestor①">cross<c- o>-</c->origin<c- o>-</c->ancestor</a></code>" and set <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
-             <p class="note" role="note"><span>NOTE:</span> this is not reported because of security. Developers should look this up themselves.</p>
-            <li data-md>
-             <p>Otherwise, if <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context④">responsible browsing context</a> is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts④">descendant</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-descendant" id="ref-for-cross-origin-descendant①">cross<c- o>-</c->origin<c- o>-</c->descendant</a></code>".</p>
-            <li data-md>
-             <p>Otherwise, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-unreachable" id="ref-for-cross-origin-unreachable①">cross<c- o>-</c->origin<c- o>-</c->unreachable</a></code>".</p>
-           </ol>
-         </ol>
-       </ol>
-      <li data-md>
-       <p>If <var>task</var> was not provided, let <var>attribution</var> be <code class="highlight"><c- kc>null</c-></code>.</p>
-      <li data-md>
-       <p>Otherwise, let <var>attribution</var> be a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> object <var>attribution</var> and set its attributes as follows:</p>
-       <ol>
-        <li data-md>
-         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑤">name</a></code> attribute to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown③">unknown</a></code>".</p>
-         <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute of a <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> object, but for now it can only be a single value.</p>
-        <li data-md>
-         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype②">entryType</a></code> attribute to <code class="highlight"><c- u>"taskattribution"</c-></code>.</p>
-        <li data-md>
-         <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration②">duration</a></code> to 0.</p>
-        <li data-md>
-         <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>, and <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a> has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container①">browsing context container</a> that is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element, then let <var>iframe</var> be that element, and perform the following steps:</p>
-         <ol>
-          <li data-md>
-           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype①">containerType</a></code> attribute to "<code class="highlight">iframe</code>".</p>
-          <li data-md>
-           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or <code class="highlight"><c- kc>null</c-></code> if the attribute is absent.</p>
-          <li data-md>
-           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or <code class="highlight"><c- kc>null</c-></code> if the attribute is absent.</p>
-           <p class="note" role="note"><span>NOTE:</span> it is intentional that we record the frame’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src①">src</a></code> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
-          <li data-md>
-           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>iframe</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-id" id="ref-for-concept-id">ID</a>, or <code class="highlight"><c- kc>null</c-></code> if the ID is unset.</p>
-         </ol>
-       </ol>
-      <li data-md>
-       <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> and set its attributes as follows:</p>
-       <ol>
-        <li data-md>
-         <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑦">name</a></code> attribute to <var>name</var>.</p>
-        <li data-md>
-         <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype③">entryType</a></code> attribute to "<code class="highlight">longtask</code>".</p>
-        <li data-md>
-         <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>start time</var>.</p>
-        <li data-md>
-         <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime④">startTime</a></code> attribute to <var>end time</var> minus <var>start time</var>.</p>
-        <li data-md>
-         <p>If <var>attribution</var> is not <code class="highlight"><c- kc>null</c-></code>, set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution④">attribution</a></code> attribute to a new frozen array containing the single value <var>attribution</var>.</p>
-         <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑤">attribution</a></code> attribute, but for now it only contains a single value.</p>
-       </ol>
-      <li data-md>
-       <p><a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> <var>newEntry</var> on <var>destinationRealm</var>.</p>
-       <p class="note" role="note"><span>NOTE:</span> the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.</p>
-     </ol>
-   </ol>
+   <div class="algorithm" data-algorithm="Report long tasks">
+     Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and optionally <var>task</var>, perform the following algorithm: 
+    <ol>
+     <li data-md>
+      <p>If <var>end time</var> minus <var>start time</var> is less than the long tasks threshold of 50 ms, abort these steps.</p>
+     <li data-md>
+      <p>Let <var>destinationRealms</var> be an empty set.</p>
+     <li data-md>
+      <p>Determine the set of <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#sec-code-realms" id="ref-for-sec-code-realms">JavaScript Realms</a> to which reports will be delivered:</p>
+      <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a> <var>topmostBC</var> in <var>top-level browsing contexts</var>:</p>
+      <ol>
+       <li data-md>
+        <p>Add <var>topmostBC</var>’s Window’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a> to <var>destinationRealms</var>.</p>
+       <li data-md>
+        <p>Let <var>descendantBCs</var> be <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts②">list of the descendant browsing contexts</a>.</p>
+       <li data-md>
+        <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add <var>descendantBC</var>’s Window’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a> to <var>destinationRealms</var>.</p>
+      </ol>
+     <li data-md>
+      <p>For each <var>destinationRealm</var> in <var>destinationRealms</var>:</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>name</var> be the empty string. This will be used to report <a data-link-type="dfn" href="#minimal-culprit-attribution" id="ref-for-minimal-culprit-attribution">minimal culprit attribution</a>, below.</p>
+       <li data-md>
+        <p>Let <var>culpritSettings</var> be <code class="highlight"><c- kc>null</c-></code>.</p>
+       <li data-md>
+        <p>If the <var>task</var> argument was not provided, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown①">unknown</a></code>".</p>
+       <li data-md>
+        <p>Otherwise: process <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</a> to determine <var>name</var> and <var>culpritSettings</var> as follows:</p>
+        <ol>
+         <li data-md>
+          <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set①">script evaluation environment settings object set</a> is empty: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown②">unknown</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+         <li data-md>
+          <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a>’s length is greater than one: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts①">multiple<c- o>-</c->contexts</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+         <li data-md>
+          <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a>’s length is one:</p>
+          <ol>
+           <li data-md>
+            <p>Set <var>culpritSettings</var> to the single item in <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set④">script evaluation environment settings object set</a>.</p>
+           <li data-md>
+            <p>Let <var>destinationSettings</var> be <var>destinationRealm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>.</p>
+           <li data-md>
+            <p>Let <var>destinationOrigin</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a>.</p>
+           <li data-md>
+            <p>Let <var>destinationBC</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context">responsible browsing context</a>.</p>
+           <li data-md>
+            <p>If <var>culpritSettings</var> is the same as <var>destinationSettings</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#self" id="ref-for-self①">self</a></code>".</p>
+           <li data-md>
+            <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin①">origin</a> and <var>destinationOrigin</var> are <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#same-origin" id="ref-for-same-origin④">same origin</a>:</p>
+            <ol>
+             <li data-md>
+              <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context①">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context②">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin-ancestor" id="ref-for-same-origin-ancestor①">same<c- o>-</c->origin<c- o>-</c->ancestor</a></code>".</p>
+             <li data-md>
+              <p>Otherwise, if <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context②">responsible browsing context</a> is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts③">descendant</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin-descendant" id="ref-for-same-origin-descendant①">same<c- o>-</c->origin<c- o>-</c->descendant</a></code>".</p>
+             <li data-md>
+              <p>Otherwise, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin⑤">same<c- o>-</c->origin</a></code>".</p>
+            </ol>
+           <li data-md>
+            <p>Otherwise:</p>
+            <ol>
+             <li data-md>
+              <p>If <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context③">responsible browsing context</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ancestor-browsing-context" id="ref-for-ancestor-browsing-context③">ancestor</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-ancestor" id="ref-for-cross-origin-ancestor①">cross<c- o>-</c->origin<c- o>-</c->ancestor</a></code>" and set <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+              <p class="note" role="note"><span>NOTE:</span> this is not reported because of security. Developers should look this up themselves.</p>
+             <li data-md>
+              <p>Otherwise, if <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context④">responsible browsing context</a> is a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts④">descendant</a> of <var>destinationBC</var>, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-descendant" id="ref-for-cross-origin-descendant①">cross<c- o>-</c->origin<c- o>-</c->descendant</a></code>".</p>
+             <li data-md>
+              <p>Otherwise, set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#cross-origin-unreachable" id="ref-for-cross-origin-unreachable①">cross<c- o>-</c->origin<c- o>-</c->unreachable</a></code>".</p>
+            </ol>
+          </ol>
+        </ol>
+       <li data-md>
+        <p>If <var>task</var> was not provided, let <var>attribution</var> be <code class="highlight"><c- kc>null</c-></code>.</p>
+       <li data-md>
+        <p>Otherwise, let <var>attribution</var> be a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> object and set its attributes as follows:</p>
+        <ol>
+         <li data-md>
+          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑤">name</a></code> attribute to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown③">unknown</a></code>".</p>
+          <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑥">name</a></code> attribute of a <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑥">TaskAttributionTiming</a></code> object, but for now it can only be a single value.</p>
+         <li data-md>
+          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype②">entryType</a></code> attribute to <code class="highlight"><c- u>"taskattribution"</c-></code>.</p>
+         <li data-md>
+          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration②">duration</a></code> to 0.</p>
+         <li data-md>
+          <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>, and <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a> has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container①">browsing context container</a> that is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element, then let <var>iframe</var> be that element, and perform the following steps:</p>
+          <ol>
+           <li data-md>
+            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype①">containerType</a></code> attribute to "<code class="highlight">iframe</code>".</p>
+           <li data-md>
+            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or <code class="highlight"><c- kc>null</c-></code> if the attribute is absent.</p>
+           <li data-md>
+            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or <code class="highlight"><c- kc>null</c-></code> if the attribute is absent.</p>
+            <p class="note" role="note"><span>NOTE:</span> it is intentional that we record the frame’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src①">src</a></code> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
+           <li data-md>
+            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>iframe</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-id" id="ref-for-concept-id">ID</a>, or <code class="highlight"><c- kc>null</c-></code> if the ID is unset.</p>
+          </ol>
+        </ol>
+       <li data-md>
+        <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> and set its attributes as follows:</p>
+        <ol>
+         <li data-md>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑦">name</a></code> attribute to <var>name</var>.</p>
+         <li data-md>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype③">entryType</a></code> attribute to "<code class="highlight">longtask</code>".</p>
+         <li data-md>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>start time</var>.</p>
+         <li data-md>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime④">startTime</a></code> attribute to <var>end time</var> minus <var>start time</var>.</p>
+         <li data-md>
+          <p>If <var>attribution</var> is not <code class="highlight"><c- kc>null</c-></code>, set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution④">attribution</a></code> attribute to a new frozen array containing the single value <var>attribution</var>.</p>
+          <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑤">attribution</a></code> attribute, but for now it only contains a single value.</p>
+        </ol>
+       <li data-md>
+        <p><a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> <var>newEntry</var> on <var>destinationRealm</var>.</p>
+        <p class="note" role="note"><span>NOTE:</span> the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.</p>
+      </ol>
+    </ol>
+   </div>
    <h2 class="heading settled" data-level="5" id="priv-sec"><span class="secno">5. </span><span class="content">Security &amp; privacy considerations</span><a class="self-link" href="#priv-sec"></a></h2>
    <p>Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about the source of the long task.
 There is a 50ms threshold for long tasks. Together this provides adequate protection against security attacks against browser.</p>
@@ -944,7 +957,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-performance-timeline-2">[PERFORMANCE-TIMELINE-2]
-   <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 19 November 2018. WD. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
+   <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 10 January 2019. WD. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
    <dt id="biblio-webidl">[WebIDL]
    <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
@@ -1104,6 +1117,90 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-minimal-culprit-attribution">4.1. Report long tasks</a>
    </ul>
   </aside>
+<script>/* script-var-click-highlighting */
+
+    document.addEventListener("click", e=>{
+        if(e.target.nodeName == "VAR") {
+            highlightSameAlgoVars(e.target);
+        }
+    });
+    {
+        const indexCounts = new Map();
+        const indexNames = new Map();
+        function highlightSameAlgoVars(v) {
+            // Find the algorithm container.
+            let algoContainer = null;
+            let searchEl = v;
+            while(algoContainer == null && searchEl != document.body) {
+                searchEl = searchEl.parentNode;
+                if(searchEl.hasAttribute("data-algorithm")) {
+                    algoContainer = searchEl;
+                }
+            }
+
+            // Not highlighting document-global vars,
+            // too likely to be unrelated.
+            if(algoContainer == null) return;
+
+            const algoName = algoContainer.getAttribute("data-algorithm");
+            const varName = getVarName(v);
+            const addClass = !v.classList.contains("selected");
+            let highlightClass = null;
+            if(addClass) {
+                const index = chooseHighlightIndex(algoName, varName);
+                indexCounts.get(algoName)[index] += 1;
+                indexNames.set(algoName+"///"+varName, index);
+                highlightClass = nameFromIndex(index);
+            } else {
+                const index = previousHighlightIndex(algoName, varName);
+                indexCounts.get(algoName)[index] -= 1;
+                highlightClass = nameFromIndex(index);
+            }
+
+            // Find all same-name vars, and toggle their class appropriately.
+            for(const el of algoContainer.querySelectorAll("var")) {
+                if(getVarName(el) == varName) {
+                    el.classList.toggle("selected", addClass);
+                    el.classList.toggle(highlightClass, addClass);
+                }
+            }
+        }
+        function getVarName(el) {
+            return el.textContent.replace(/(\s| )+/, " ").trim();
+        }
+        function chooseHighlightIndex(algoName, varName) {
+            let indexes = null;
+            if(indexCounts.has(algoName)) {
+                indexes = indexCounts.get(algoName);
+            } else {
+                // 7 classes right now
+                indexes = [0,0,0,0,0,0,0];
+                indexCounts.set(algoName, indexes);
+            }
+
+            // If the element was recently unclicked,
+            // *and* that color is still unclaimed,
+            // give it back the same color.
+            const lastIndex = previousHighlightIndex(algoName, varName);
+            if(indexes[lastIndex] === 0) return lastIndex;
+
+            // Find the earliest index with the lowest count.
+            const minCount = Math.min.apply(null, indexes);
+            let index = null;
+            for(var i = 0; i < indexes.length; i++) {
+                if(indexes[i] == minCount) {
+                    return i;
+                }
+            }
+        }
+        function previousHighlightIndex(algoName, varName) {
+            return indexNames.get(algoName+"///"+varName);
+        }
+        function nameFromIndex(index) {
+            return "selected" + index;
+        }
+    }
+    </script>
 <script>/* script-dfn-panel */
 
 document.body.addEventListener("click", function(e) {
