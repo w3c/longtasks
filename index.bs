@@ -77,7 +77,7 @@ However, some task can take a long time (multiple frames), and if and when that 
 
 Some applications (and RUM vendors) are already attempting to identify and track cases where "long tasks" happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive calls: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the timer. This mostly works, but it has several bad performance implications: the application is polling to detect long tasks, which prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know who caused the delay (e.g. first party vs third party code).
 
-RAIL performance model suggests that applications should respond in under 100ms to user input; for touch move and scrolling in under 16ms. Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets.
+The RAIL performance model suggests that applications should respond in under 100ms to user input (for touch move and scrolling, in under 16ms). Our goal with this API is to surface notifications about tasks that may prevent the application from hitting these targets. We surface tasks that take 50ms or more. A website without these tasks should respond to user input in under 100ms: it will take less than 50ms to finish the task that is being executed when the user input is received and less than 50ms to execute the task to react to such user input.
 
 Usage Example {#example}
 ------------------------
