@@ -304,13 +304,25 @@ Report long tasks {#report-long-tasks}
 
             1. Set |attribution|'s {{PerformanceEntry/entryType}} attribute to <code>"taskattribution"</code>.
             1. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
-            1. If |culpritSettings| is not <code>null</code>, and |culpritSettings|'s <a>responsible browsing context</a> has a <a>browsing context container</a> that is an <{iframe}> element, then let |iframe| be that element, and perform the following steps:
-                1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
-                1. Set |attribution|'s {{containerName}} attribute to the value of  |iframe|'s <{iframe/name}> content attribute, or <code>null</code> if the attribute is absent.
-                1. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>null</code> if the attribute is absent.
+            1. Set |attribution|'s {{TaskAttributionTiming/containerType}}, {{TaskAttributionTiming/containerName}}, {{TaskAttributionTiming/containerSrc}}, and {{TaskAttributionTiming/containerId}} to <code>null</code>.
+            1. If |culpritSettings| is not <code>null</code>
+                1. Let |container| be the |culpritSettings|'s <a>responsible browsing context</a>'s <a>browsing context container</a>.
+                1. If |container| is not <code>null</code>, set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or <code>null</code> if the ID is unset.
+                1. If |container| is an <{iframe}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{iframe/name}> content attribute, or <code>null</code> if the attribute is absent.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{iframe/src}> content attribute, or <code>null</code> if the attribute is absent.
 
-                    NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
-                1. Set |attribution|'s {{containerId}} attribute to the value of |iframe|'s [=Element/ID=], or <code>null</code> if the ID is unset.
+                        NOTE: it is intentional that we record the iframe's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify iframes, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
+
+                1. If |container| is an <{object}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or <code>null</code> if the attribute is absent.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{object/data}> content attribute, or <code>null</code> if the attribute is absent.
+                1. If |container| is an <{embed}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>embed</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to <code>null</code>.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{embed/src}> content attribute, or <code>null</code> if the attribute is absent.
 
         1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| and set its attributes as follows:
 
