@@ -132,7 +132,7 @@ The values of the attributes of a {{PerformanceLongTaskTiming}} are set in the p
 The {{PerformanceEntry/name}} attribute's getter will return one of the following strings:
 
 : "<code><dfn>unknown</dfn></code>"
-:: The long task did not originate from an event loop <a>task</a>.
+:: The long task originated from an <a>update the rendering</a> step within the <a>event loop processing model</a> or work the user agent performed outside of the <a>event loop</a>.
 : "<code><dfn>self</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within this <a>browsing context</a>.
 : "<code><dfn>same-origin-ancestor</dfn></code>"
@@ -148,7 +148,7 @@ The {{PerformanceEntry/name}} attribute's getter will return one of the followin
 : "<code><dfn>cross-origin-unreachable</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within a cross-origin <a>browsing context</a> that is not an ancestor or descendant.
 : "<code><dfn>multiple-contexts</dfn></code>"
-:: Multiple <a>browsing contexts</a> were involved in the long task.
+:: The long task originated from an event loop <a>task</a> involving multiple <a>browsing contexts</a>.
 
 The {{PerformanceEntry/entryType}} attribute's getter will return <code>"longtask"</code>.
 
