@@ -123,6 +123,7 @@ Long Task timing involves the following new interfaces:
 <pre class="idl">
     interface PerformanceLongTaskTiming : PerformanceEntry {
         readonly attribute FrozenArray&lt;TaskAttributionTiming> attribution;
+        [Default] object toJSON();
     };
 </pre>
 
@@ -166,6 +167,7 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
         readonly attribute DOMString containerSrc;
         readonly attribute DOMString containerId;
         readonly attribute DOMString containerName;
+        [Default] object toJSON();
     };
 </pre>
 
