@@ -32,7 +32,7 @@ urlPrefix: https://w3c.github.io/performance-timeline/; spec: PERFORMANCE-TIMELI
     type: dfn; url: #dfn-queue-a-performanceentry; text: Queue the PerformanceEntry
     type: dfn; url: #dfn-register-a-performance-entry-type; text: register a performance entry type
     type: attribute; for: PerformanceObserver;
-        text: supportedEntryTypes; url: ##supportedentrytypes-attribute;
+        text: supportedEntryTypes; url: #supportedentrytypes-attribute;
 urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
     type: typedef; url: #idl-def-domhighrestimestamp; text: DOMHighResTimeStamp;
     type: interface; url: #dfn-performance; text: Performance;
