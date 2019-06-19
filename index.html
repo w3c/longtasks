@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version 872cce6d3026423d677f3bd5837f1a1a46299a04" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="d041d25c25967502a16fdb630138e87dc664ba11" name="document-revision">
+  <meta content="e3c855f11f983d5b4b40e6dff5f2dbaa9612f0e6" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -271,7 +271,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-06-13">13 June 2019</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-06-19">19 June 2019</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -503,7 +503,8 @@ When delivering this information the Web’s same-origin policy must be adhered 
     </table>
    </div>
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing model</span><a class="self-link" href="#sec-processing-model"></a></h2>
-   <p>A user agent implementing the Long Tasks API must run the <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type" id="ref-for-dfn-register-a-performance-entry-type">register a performance entry type</a> algorithm with <code class="highlight"><c- u>"longtask"</c-></code> as input.</p>
+   <p class="note" role="note"><span>Note:</span> A user agent implementing the Long Tasks API would need to include <code class="highlight"><c- u>"longtask"</c-></code> in <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute" id="ref-for-supportedentrytypes-attribute">supportedEntryTypes</a></code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> contexts.
+This allows developers to detect support for long tasks.</p>
    <h3 class="heading settled" data-level="4.1" id="report-long-tasks"><span class="secno">4.1. </span><span class="content">Report long tasks</span><a class="self-link" href="#report-long-tasks"></a></h3>
    <div class="algorithm" data-algorithm="Report long tasks">
      Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and optionally <var>task</var>, perform the following algorithm: 
@@ -674,6 +675,12 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <a href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp">https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-def-domhighrestimestamp">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-idl-def-domhighrestimestamp①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-window">
+   <a href="https://html.spec.whatwg.org/multipage/window-object.html#window">https://html.spec.whatwg.org/multipage/window-object.html#window</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-window">4. Processing model</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-active-document">
@@ -873,18 +880,18 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-dfn-queue-a-performanceentry">4.1. Report long tasks</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-register-a-performance-entry-type">
-   <a href="https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type">https://w3c.github.io/performance-timeline/#dfn-register-a-performance-entry-type</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dfn-register-a-performance-entry-type">4. Processing model</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-dom-performanceentry-starttime">
    <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime">https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-performanceentry-starttime">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-starttime①">3.2. TaskAttributionTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-starttime②">4.1. Report long tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a> <a href="#ref-for-dom-performanceentry-starttime④">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-supportedentrytypes-attribute">
+   <a href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute">https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-supportedentrytypes-attribute">4. Processing model</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
@@ -927,6 +934,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-window" style="color:initial">Window</span>
      <li><span class="dfn-paneled" id="term-for-active-document" style="color:initial">active document</span>
      <li><span class="dfn-paneled" id="term-for-integration-with-the-javascript-agent-cluster-formalism" style="color:initial">agent cluster</span>
      <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context" style="color:initial">ancestor</span>
@@ -961,8 +969,8 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
      <li><span class="dfn-paneled" id="term-for-dom-performanceentry-entrytype" style="color:initial">entryType</span>
      <li><span class="dfn-paneled" id="term-for-dom-performanceentry-name" style="color:initial">name</span>
      <li><span class="dfn-paneled" id="term-for-dfn-queue-a-performanceentry" style="color:initial">queue the performanceentry</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-register-a-performance-entry-type" style="color:initial">register a performance entry type</span>
      <li><span class="dfn-paneled" id="term-for-dom-performanceentry-starttime" style="color:initial">startTime</span>
+     <li><span class="dfn-paneled" id="term-for-supportedentrytypes-attribute" style="color:initial">supportedEntryTypes</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
