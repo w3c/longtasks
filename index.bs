@@ -185,13 +185,13 @@ The {{PerformanceEntry/startTime}} attribute's getter will always return 0.
 
 The {{PerformanceEntry/duration}} attribute's getter will always return 0.
 
-The <dfn attribute for=TaskAttributionTiming>containerType</dfn> attribute's getter will return the type of the <a>culprit browsing context container</a>, such as "<code>iframe</code>", "<code>embed</code>", or "<code>object</code>".
+The <dfn attribute for=TaskAttributionTiming>containerType</dfn> attribute's getter will return the type of the <a>culprit browsing context container</a>, such as "<code>iframe</code>", "<code>embed</code>", or "<code>object</code>". If no single <a>culprit browsing context container</a> is found, it will return "<code>window</code>".
 
-The <dfn attribute for=TaskAttributionTiming>containerName</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>name</code> content attribute.
+The <dfn attribute for=TaskAttributionTiming>containerName</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>name</code> content attribute. If no single <a>culprit browsing context container</a> is found, it will return the empty string.
 
-The <dfn attribute for=TaskAttributionTiming>containerId</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>id</code> content attribute.
+The <dfn attribute for=TaskAttributionTiming>containerId</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>id</code> content attribute. If no single <a>culprit browsing context container</a> is found, it will return the empty string.
 
-The <dfn attribute for=TaskAttributionTiming>containerSrc</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>src</code> content attribute.
+The <dfn attribute for=TaskAttributionTiming>containerSrc</dfn> attribute's getter will return the value of the <a lt="culprit browsing context container">container</a>'s <code>src</code> content attribute. If no single <a>culprit browsing context container</a> is found, it will return the empty string.
 
 Pointing to the culprit {#sec-PointingToCulprit}
 ------------------------------------------------
@@ -311,11 +311,16 @@ Report long tasks {#report-long-tasks}
             1. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
             1. If |culpritSettings| is not <code>null</code>, and |culpritSettings|'s <a>responsible browsing context</a> has a <a>browsing context container</a> that is an <{iframe}> element, then let |iframe| be that element, and perform the following steps:
                 1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
-                1. Set |attribution|'s {{containerName}} attribute to the value of  |iframe|'s <{iframe/name}> content attribute, or <code>null</code> if the attribute is absent.
-                1. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>null</code> if the attribute is absent.
+                1. Set |attribution|'s {{containerName}} attribute to the value of  |iframe|'s <{iframe/name}> content attribute, or <code>""</code> if the attribute is absent.
+                1. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>""</code> if the attribute is absent.
 
                     NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
-                1. Set |attribution|'s {{containerId}} attribute to the value of |iframe|'s [=Element/ID=], or <code>null</code> if the ID is unset.
+
+                1. Set |attribution|'s {{containerId}} attribute to the value of |iframe|'s [=Element/ID=], or <code>""</code> if the ID is unset.
+            1. Otherwise, perform the following steps:
+                1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
+                1. Set |attribution|'s {{containerName}} attribute to <code>""</code>.
+                1. Set |attribution|'s {{containerSrc}} attribute to <code>""</code>.
 
         1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| and set its attributes as follows:
 
