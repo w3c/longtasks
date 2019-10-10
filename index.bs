@@ -315,6 +315,7 @@ Report long tasks {#report-long-tasks}
                 1. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>""</code> if the attribute is absent.
 
                     NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
+
                 1. Set |attribution|'s {{containerId}} attribute to the value of |iframe|'s [=Element/ID=], or <code>""</code> if the ID is unset.
             1. Otherwise, perform the following steps:
                 1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
