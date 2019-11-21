@@ -85,9 +85,8 @@ Usage Example {#example}
 ------------------------
 
 <pre class="example highlight">
-    var observer = new PerformanceObserver(function(list) {
-        var perfEntries = list.getEntries();
-        for (var i = 0; i < perfEntries.length; i++) {
+    const observer = new PerformanceObserver(function(list) {
+        for (const entry of list.getEntries()) {
             // Process long task notifications:
             // report back for analytics and monitoring
             // ...
