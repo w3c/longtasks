@@ -76,8 +76,7 @@ The above covers existing use cases found in the wild, enables document-level at
 
 ```javascript
 const observer = new PerformanceObserver(function(list) {
-  const perfEntries = list.getEntries();
-  for (let i = 0; i < perfEntries.length; i++) {
+  for (const entry of list.getEntries()) {
      // Process long task notifications:
      // report back for analytics and monitoring
      // ...
