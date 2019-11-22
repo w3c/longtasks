@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 86a39676f08870ba1210b97fe65ff62bd4e723c9" name="generator">
+  <meta content="Bikeshed version 83d3ceadc5400c8422976bbcbe49615aace9cf1e" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="1ad97941a5080f0a5dc2688ce1aefe1763e93ad1" name="document-revision">
+  <meta content="50062455dbb80fd865971bd6f37e0c7206a907a3" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -271,7 +271,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-10-10">10 October 2019</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-11-22">22 November 2019</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -367,16 +367,15 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p>Some applications (and <a href="https://en.wikipedia.org/wiki/Real_user_monitoring">RUM</a> vendors) are already attempting to identify and track cases where "long tasks" happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive expirations: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the event loop. This approach mostly works but has several bad performance implications: by polling to detect long tasks, the application prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know what is causing the delay (e.g. first party or third party code).</p>
    <p>The <a href="https://developers.google.com/web/fundamentals/performance/rail">RAIL</a> performance model suggests that applications should respond to user input in less than 100ms (for touch move and scrolling, the threshold is 16ms). The goal of this API is to surface notifications about tasks that may prevent the application from hitting these targets. This API surfaces tasks that take 50ms or more. A website without these tasks should respond to user input in under 100ms: it will take less than 50ms to finish the task that is being executed when the user input is received and less than 50ms to execute the task to react to such user input.</p>
    <h3 class="heading settled" data-level="1.1" id="example"><span class="secno">1.1. </span><span class="content">Usage Example</span><a class="self-link" href="#example"></a></h3>
-<pre class="example highlight" id="example-5f53d47c"><a class="self-link" href="#example-5f53d47c"></a><c- a>var</c-> observer <c- o>=</c-> <c- k>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
-    <c- a>var</c-> perfEntries <c- o>=</c-> list<c- p>.</c->getEntries<c- p>();</c->
-    <c- k>for</c-> <c- p>(</c-><c- a>var</c-> i <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> i <c- o>&lt;</c-> perfEntries<c- p>.</c->length<c- p>;</c-> i<c- o>++</c-><c- p>)</c-> <c- p>{</c->
+<pre class="example highlight" id="example-872f1566"><a class="self-link" href="#example-872f1566"></a><c- kr>const</c-> observer <c- o>=</c-> <c- k>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
+    <c- k>for</c-> <c- p>(</c-><c- kr>const</c-> entry <c- k>of</c-> list<c- p>.</c->getEntries<c- p>())</c-> <c- p>{</c->
         <c- c1>// Process long task notifications:</c->
         <c- c1>// report back for analytics and monitoring</c->
         <c- c1>// ...</c->
     <c- p>}</c->
 <c- p>});</c->
-<c- c1>// register observer for long task notifications</c->
-observer<c- p>.</c->observe<c- p>({</c->entryTypes<c- o>:</c-> <c- p>[</c-><c- u>"longtask"</c-><c- p>]});</c->
+<c- c1>// Register observer for previous and future long task notifications.</c->
+observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"longtask"</c-><c- p>,</c-> buffered<c- o>:</c-> <c- kc>true</c-><c- p>});</c->
 <c- c1>// Long script execution after this will result in queueing</c->
 <c- c1>// and receiving "longtask" entries in the observer.</c->
 </pre>
@@ -631,7 +630,6 @@ This allows developers to detect support for long tasks.</p>
         </ol>
        <li data-md>
         <p><a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> <var>newEntry</var> on <var>destinationRealm</var>.</p>
-        <p class="note" role="note"><span>NOTE:</span> the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.</p>
       </ol>
     </ol>
    </div>
@@ -1006,13 +1004,13 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
-   <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
+   <dd><a href="https://tc39.es/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.es/ecma262/">https://tc39.es/ecma262/</a>
    <dt id="biblio-hr-time-2">[HR-TIME-2]
-   <dd>Ilya Grigorik; James Simonsen; Jatinder Mann. <a href="https://www.w3.org/TR/hr-time-2/">High Resolution Time Level 2</a>. 26 June 2019. CR. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
+   <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/hr-time-2/">High Resolution Time Level 2</a>. 21 November 2019. REC. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-performance-timeline-2">[PERFORMANCE-TIMELINE-2]
-   <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 17 September 2019. WD. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
+   <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/performance-timeline-2/">Performance Timeline Level 2</a>. 24 October 2019. WD. URL: <a href="https://www.w3.org/TR/performance-timeline-2/">https://www.w3.org/TR/performance-timeline-2/</a>
    <dt id="biblio-webidl">[WebIDL]
    <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
