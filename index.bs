@@ -85,16 +85,15 @@ Usage Example {#example}
 ------------------------
 
 <pre class="example highlight">
-    var observer = new PerformanceObserver(function(list) {
-        var perfEntries = list.getEntries();
-        for (var i = 0; i < perfEntries.length; i++) {
+    const observer = new PerformanceObserver(function(list) {
+        for (const entry of list.getEntries()) {
             // Process long task notifications:
             // report back for analytics and monitoring
             // ...
         }
     });
-    // register observer for long task notifications
-    observer.observe({entryTypes: ["longtask"]});
+    // Register observer for previous and future long task notifications.
+    observer.observe({type: "longtask", buffered: true});
     // Long script execution after this will result in queueing
     // and receiving "longtask" entries in the observer.
 </pre>
@@ -333,8 +332,6 @@ Report long tasks {#report-long-tasks}
                 NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
 
         1. <a>Queue the PerformanceEntry</a> |newEntry| on |destinationRealm|.
-
-            NOTE: the "queue a PerformanceEntry" algorithm will end up doing nothing if no observers are registered. Implementations likely will want to bail out from this algorithm earlier in that case, instead of assembling all the above information only to find out nobody is listening for it.
 </div>
 
 Security & privacy considerations {#priv-sec}
