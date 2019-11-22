@@ -75,9 +75,8 @@ The `name` field provides minimal frame attribution so that the observing frame 
 The above covers existing use cases found in the wild, enables document-level attribution, and eliminates the negative performance implications mentioned earlier. To receive these notifications, the application can subscribe to them via PerformanceObserver interface:
 
 ```javascript
-var observer = new PerformanceObserver(function(list) {
-  var perfEntries = list.getEntries();
-  for (var i = 0; i < perfEntries.length; i++) {
+const observer = new PerformanceObserver(function(list) {
+  for (const entry of list.getEntries()) {
      // Process long task notifications:
      // report back for analytics and monitoring
      // ...
@@ -85,8 +84,9 @@ var observer = new PerformanceObserver(function(list) {
 });
 
 
-// register observer for long task notifications
-observer.observe({entryTypes: ["longtask"]});
+// Register observer for long task notifications.
+// Since the "buffered" flag is set, longtasks that already occurred are received.
+observer.observe({type: "longtask", buffered: true});
 
 // Long script execution after this will result in queueing 
 // and receiving “longtask” entries in the observer.
