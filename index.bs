@@ -47,6 +47,9 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #unit-of-related-browsing-contexts; text: unit of related browsing contexts
     type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set
     type: dfn; url: #integration-with-the-javascript-agent-cluster-formalism; text: agent cluster
+    type: attribute; for: Frame;
+        text: name; url: #dom-frame-name
+        text: src; url: #dom-frame-src
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -308,18 +311,31 @@ Report long tasks {#report-long-tasks}
 
             1. Set |attribution|'s {{PerformanceEntry/entryType}} attribute to <code>"taskattribution"</code>.
             1. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
-            1. If |culpritSettings| is not <code>null</code>, and |culpritSettings|'s <a>responsible browsing context</a> has a <a>browsing context container</a> that is an <{iframe}> element, then let |iframe| be that element, and perform the following steps:
-                1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
-                1. Set |attribution|'s {{containerName}} attribute to the value of  |iframe|'s <{iframe/name}> content attribute, or <code>""</code> if the attribute is absent.
-                1. Set |attribution|'s {{containerSrc}} attribute to the value of |iframe|'s <{iframe/src}> content attribute, or <code>""</code> if the attribute is absent.
+            1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
+            1. Set |attribution|'s {{containerName}} and {{containerSrc}} attributes to the empty string.
+            1. If |culpritSettings| is not <code>null</code>:
+                1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s' <a>browsing context container</a>.
+                1. Assert: |container| is not <code>null</code>.
+                1. Set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or the empty string if the ID is unset.
+                1. If |container| is an <{iframe}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <{iframe/name}> content attribute, or the empty string if the attribute is absent.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{iframe/src}> content attribute, or the empty string if the attribute is absent.
 
                     NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
 
-                1. Set |attribution|'s {{containerId}} attribute to the value of |iframe|'s [=Element/ID=], or <code>""</code> if the ID is unset.
-            1. Otherwise, perform the following steps:
-                1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
-                1. Set |attribution|'s {{containerName}} attribute to <code>""</code>.
-                1. Set |attribution|'s {{containerSrc}} attribute to <code>""</code>.
+                1. If |container| is a <{frame}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>frame</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s {{Frame/name}} attribute.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s {{Frame/src}} attribute.
+                1. If |container| is an <{object}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or the empty string if the attribute is absent.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{object/data}> content attribute, or the empty string if the attribute is absent.
+                1. If |container| is an <{embed}> element:
+                    1. Set |attribution|'s {{containerType}} attribute to "<code>embed</code>".
+                    1. Set |attribution|'s {{containerName}} attribute to the empty string.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{embed/src}> content attribute, or the empty string if the attribute is absent.
 
         1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| and set its attributes as follows:
 
