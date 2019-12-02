@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 83d3ceadc5400c8422976bbcbe49615aace9cf1e" name="generator">
+  <meta content="Bikeshed version e1a165f1c2fb1cc2aceb87e110984a42830c36fa" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="50062455dbb80fd865971bd6f37e0c7206a907a3" name="document-revision">
+  <meta content="c7144c2ae732edbb6068124b8a42e293dd201ecf" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -271,7 +271,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-11-22">22 November 2019</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-12-02">2 December 2019</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -288,7 +288,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -590,27 +590,59 @@ This allows developers to detect support for long tasks.</p>
          <li data-md>
           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime②">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration②">duration</a></code> to 0.</p>
          <li data-md>
-          <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>, and <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a> has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container①">browsing context container</a> that is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element, then let <var>iframe</var> be that element, and perform the following steps:</p>
+          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype①">containerType</a></code> attribute to <code class="highlight"><c- u>"window"</c-></code>.</p>
+         <li data-md>
+          <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a></code> attributes to the empty string.</p>
+         <li data-md>
+          <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>:</p>
           <ol>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype①">containerType</a></code> attribute to "<code class="highlight">iframe</code>".</p>
+            <p>Let <var>container</var> be <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#responsible-browsing-context" id="ref-for-responsible-browsing-context⑤">responsible browsing context</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context-container" id="ref-for-browsing-context-container①">browsing context container</a>.</p>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername①">containerName</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or <code class="highlight"><c- u>""</c-></code> if the attribute is absent.</p>
+            <p class="assertion">Assert: <var>container</var> is not <code class="highlight"><c- kc>null</c-></code>.</p>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc①">containerSrc</a></code> attribute to the value of <var>iframe</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or <code class="highlight"><c- u>""</c-></code> if the attribute is absent.</p>
+            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>container</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-id" id="ref-for-concept-id">ID</a>, or the empty string if the ID is unset.</p>
+           <li data-md>
+            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element:</p>
+            <ol>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype②">containerType</a></code> attribute to "<code class="highlight">iframe</code>".</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername②">containerName</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or the empty string if the attribute is absent.</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc②">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
+            </ol>
             <p class="note" role="note"><span>NOTE:</span> it is intentional that we record the frame’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src①">src</a></code> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>iframe</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-id" id="ref-for-concept-id">ID</a>, or <code class="highlight"><c- u>""</c-></code> if the ID is unset.</p>
-          </ol>
-         <li data-md>
-          <p>Otherwise, perform the following steps:</p>
-          <ol>
+            <p>If <var>container</var> is a <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/obsolete.html#frame" id="ref-for-frame">frame</a></code> element:</p>
+            <ol>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype③">containerType</a></code> attribute to "<code class="highlight">frame</code>".</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername③">containerName</a></code> attribute to the value of <var>container</var>’s <code class="highlight">name</code> content attribute, or the empty string if the attribute is absent.</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc③">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight">src</code> content attribute, or the empty string if the attribute is absent.</p>
+            </ol>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype②">containerType</a></code> attribute to <code class="highlight"><c- u>"window"</c-></code>.</p>
+            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element①">object</a></code> element:</p>
+            <ol>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype④">containerType</a></code> attribute to "<code class="highlight">object</code>".</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername④">containerName</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name" id="ref-for-attr-object-name">name</a></code> content attribute, or the empty string if the attribute is absent.</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc④">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data">data</a></code> content attribute, or the empty string if the attribute is absent.</p>
+            </ol>
            <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername②">containerName</a></code> attribute to <code class="highlight"><c- u>""</c-></code>.</p>
-           <li data-md>
-            <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc②">containerSrc</a></code> attribute to <code class="highlight"><c- u>""</c-></code>.</p>
+            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element" id="ref-for-the-embed-element">embed</a></code> element:</p>
+            <ol>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype⑤">containerType</a></code> attribute to "<code class="highlight">embed</code>".</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername⑤">containerName</a></code> attribute to the empty string.</p>
+             <li data-md>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc⑤">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src" id="ref-for-attr-embed-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
+            </ol>
           </ol>
         </ol>
        <li data-md>
@@ -731,6 +763,18 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-browsing-context-container①">4.1. Report long tasks</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-attr-object-data">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-attr-object-data">4.1. Report long tasks</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-the-embed-element">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-the-embed-element">4.1. Report long tasks</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-event-loop">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop">https://html.spec.whatwg.org/multipage/webappapis.html#event-loop</a><b>Referenced in:</b>
    <ul>
@@ -743,6 +787,12 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <ul>
     <li><a href="#ref-for-event-loop-processing-model">2. Terminology</a> <a href="#ref-for-event-loop-processing-model①">(2)</a>
     <li><a href="#ref-for-event-loop-processing-model②">3.1. PerformanceLongTaskTiming interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-frame">
+   <a href="https://html.spec.whatwg.org/multipage/obsolete.html#frame">https://html.spec.whatwg.org/multipage/obsolete.html#frame</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-frame">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-iframe-element">
@@ -765,16 +815,17 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-microtask">2. Terminology</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-attr-iframe-name">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-attr-object-name">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-attr-iframe-name">4.1. Report long tasks</a>
+    <li><a href="#ref-for-attr-object-name">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-object-element">
    <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-the-object-element">2. Terminology</a>
+    <li><a href="#ref-for-the-object-element①">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-settings-object-origin">
@@ -958,12 +1009,15 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
      <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context①" style="color:initial">ancestor browsing context</span>
      <li><span class="dfn-paneled" id="term-for-browsing-context" style="color:initial">browsing context</span>
      <li><span class="dfn-paneled" id="term-for-browsing-context-container" style="color:initial">browsing context container</span>
+     <li><span class="dfn-paneled" id="term-for-attr-object-data" style="color:initial">data</span>
+     <li><span class="dfn-paneled" id="term-for-the-embed-element" style="color:initial">embed</span>
      <li><span class="dfn-paneled" id="term-for-event-loop" style="color:initial">event loop</span>
      <li><span class="dfn-paneled" id="term-for-event-loop-processing-model" style="color:initial">event loop processing model</span>
+     <li><span class="dfn-paneled" id="term-for-frame" style="color:initial">frame</span>
      <li><span class="dfn-paneled" id="term-for-the-iframe-element" style="color:initial">iframe</span>
      <li><span class="dfn-paneled" id="term-for-list-of-the-descendant-browsing-contexts" style="color:initial">list of the descendant browsing contexts</span>
      <li><span class="dfn-paneled" id="term-for-microtask" style="color:initial">microtask</span>
-     <li><span class="dfn-paneled" id="term-for-attr-iframe-name" style="color:initial">name</span>
+     <li><span class="dfn-paneled" id="term-for-attr-object-name" style="color:initial">name <small>(for object)</small></span>
      <li><span class="dfn-paneled" id="term-for-the-object-element" style="color:initial">object</span>
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin" style="color:initial">origin</span>
      <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint" style="color:initial">perform a microtask checkpoint</span>
@@ -972,7 +1026,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
      <li><span class="dfn-paneled" id="term-for-responsible-browsing-context" style="color:initial">responsible browsing context</span>
      <li><span class="dfn-paneled" id="term-for-same-origin" style="color:initial">same origin</span>
      <li><span class="dfn-paneled" id="term-for-script-evaluation-environment-settings-object-set" style="color:initial">script evaluation environment settings object set</span>
-     <li><span class="dfn-paneled" id="term-for-attr-iframe-src" style="color:initial">src</span>
+     <li><span class="dfn-paneled" id="term-for-attr-iframe-src" style="color:initial">src <small>(for iframe)</small></span>
      <li><span class="dfn-paneled" id="term-for-concept-task" style="color:initial">task</span>
      <li><span class="dfn-paneled" id="term-for-top-level-browsing-context" style="color:initial">top-level browsing context</span>
      <li><span class="dfn-paneled" id="term-for-unit-of-related-browsing-contexts" style="color:initial">unit of related browsing contexts</span>
@@ -1023,10 +1077,10 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#taskattributiontiming"><code class="highlight"><c- g>TaskAttributionTiming</c-></code></a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface①①"><c- n>PerformanceEntry</c-></a> {
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype③"><c- g>containerType</c-></a>;
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①①"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc③"><c- g>containerSrc</c-></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype⑥"><c- g>containerType</c-></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①①"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc⑥"><c- g>containerSrc</c-></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid②"><c- g>containerId</c-></a>;
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername③"><c- g>containerName</c-></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername⑥"><c- g>containerName</c-></a>;
     [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Default" id="ref-for-Default①①"><c- g>Default</c-></a>] <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-object" id="ref-for-idl-object①①"><c- b>object</c-></a> <a href="#dom-taskattributiontiming-tojson"><code class="highlight"><c- g>toJSON</c-></code></a>();
 };
 
@@ -1144,14 +1198,14 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <b><a href="#dom-taskattributiontiming-containertype">#dom-taskattributiontiming-containertype</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containertype">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containertype①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containertype②">(2)</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containertype①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containertype②">(2)</a> <a href="#ref-for-dom-taskattributiontiming-containertype③">(3)</a> <a href="#ref-for-dom-taskattributiontiming-containertype④">(4)</a> <a href="#ref-for-dom-taskattributiontiming-containertype⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containername">
    <b><a href="#dom-taskattributiontiming-containername">#dom-taskattributiontiming-containername</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containername">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containername①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containername②">(2)</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containername①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containername②">(2)</a> <a href="#ref-for-dom-taskattributiontiming-containername③">(3)</a> <a href="#ref-for-dom-taskattributiontiming-containername④">(4)</a> <a href="#ref-for-dom-taskattributiontiming-containername⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-taskattributiontiming-containerid">
@@ -1165,7 +1219,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <b><a href="#dom-taskattributiontiming-containersrc">#dom-taskattributiontiming-containersrc</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-taskattributiontiming-containersrc">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-taskattributiontiming-containersrc①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containersrc②">(2)</a>
+    <li><a href="#ref-for-dom-taskattributiontiming-containersrc①">4.1. Report long tasks</a> <a href="#ref-for-dom-taskattributiontiming-containersrc②">(2)</a> <a href="#ref-for-dom-taskattributiontiming-containersrc③">(3)</a> <a href="#ref-for-dom-taskattributiontiming-containersrc④">(4)</a> <a href="#ref-for-dom-taskattributiontiming-containersrc⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="minimal-culprit-attribution">
