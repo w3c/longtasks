@@ -314,7 +314,7 @@ Report long tasks {#report-long-tasks}
             1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
             1. Set |attribution|'s {{containerName}} and {{containerSrc}} attributes to the empty string.
             1. If |culpritSettings| is not <code>null</code>:
-                1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s' <a>browsing context container</a>.
+                1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s <a>browsing context container</a>.
                 1. Assert: |container| is not <code>null</code>.
                 1. Set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or the empty string if the ID is unset.
                 1. If |container| is an <{iframe}> element:
