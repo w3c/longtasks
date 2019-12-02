@@ -47,9 +47,6 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #unit-of-related-browsing-contexts; text: unit of related browsing contexts
     type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set
     type: dfn; url: #integration-with-the-javascript-agent-cluster-formalism; text: agent cluster
-    type: attribute; for: Frame;
-        text: name; url: #dom-frame-name
-        text: src; url: #dom-frame-src
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -326,8 +323,8 @@ Report long tasks {#report-long-tasks}
 
                 1. If |container| is a <{frame}> element:
                     1. Set |attribution|'s {{containerType}} attribute to "<code>frame</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s {{Frame/name}} attribute.
-                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s {{Frame/src}} attribute.
+                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <code>name</code> content attribute, or the empty string if the attribute is absent.
+                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <code>src</code> content attribute, or the empty string if the attribute is absent.
                 1. If |container| is an <{object}> element:
                     1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
                     1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or the empty string if the attribute is absent.
