@@ -301,7 +301,7 @@ Report long tasks {#report-long-tasks}
                     1. Otherwise, set |name| to "<code><a>cross-origin-unreachable</a></code>".
 
         1. If |task| was not provided, let |attribution| be <code>null</code>.
-        1. Otherwise, let |attribution| be a new {{TaskAttributionTiming}} object and set its attributes as follows:
+        1. Otherwise, let |attribution| be a new {{TaskAttributionTiming}} object with |destinationRealm| and set its attributes as follows:
             1. Set |attribution|'s {{PerformanceEntry/name}} attribute to "<code><a>unknown</a></code>".
 
                 NOTE: future iterations of this API will add more values to the {{PerformanceEntry/name}} attribute of a {{TaskAttributionTiming}} object, but for now it can only be a single value.
@@ -334,7 +334,7 @@ Report long tasks {#report-long-tasks}
                     1. Set |attribution|'s {{containerName}} attribute to the empty string.
                     1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{embed/src}> content attribute, or the empty string if the attribute is absent.
 
-        1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| and set its attributes as follows:
+        1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| with |destinationRealm| and set its attributes as follows:
 
             1. Set |newEntry|'s {{PerformanceEntry/name}} attribute to |name|.
             1. Set |newEntry|'s {{PerformanceEntry/entryType}} attribute to "<code>longtask</code>".
@@ -344,7 +344,7 @@ Report long tasks {#report-long-tasks}
 
                 NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
 
-        1. <a>Queue the PerformanceEntry</a> |newEntry| on |destinationRealm|.
+        1. <a>Queue the PerformanceEntry</a> |newEntry|.
 </div>
 
 Security & privacy considerations {#priv-sec}
