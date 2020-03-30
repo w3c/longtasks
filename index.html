@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version f3955067, updated Thu Mar 26 10:22:14 2020 -0700" name="generator">
+  <meta content="Bikeshed version 959d006d, updated Sat Mar 28 12:38:37 2020 -0700" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="c54bd005e3fe8ef92f2142cfa3e6277c7b3afba5" name="document-revision">
+  <meta content="1bc389accc71a8c1410a2a343c0f4780a7eaec72" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -271,7 +271,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-03-26">26 March 2020</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-03-30">30 March 2020</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -580,7 +580,7 @@ This allows developers to detect support for long tasks.</p>
        <li data-md>
         <p>If <var>task</var> was not provided, let <var>attribution</var> be <code class="highlight"><c- kc>null</c-></code>.</p>
        <li data-md>
-        <p>Otherwise, let <var>attribution</var> be a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> object and set its attributes as follows:</p>
+        <p>Otherwise, let <var>attribution</var> be a new <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming⑤">TaskAttributionTiming</a></code> object with <var>destinationRealm</var> and set its attributes as follows:</p>
         <ol>
          <li data-md>
           <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑤">name</a></code> attribute to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown③">unknown</a></code>".</p>
@@ -646,7 +646,7 @@ This allows developers to detect support for long tasks.</p>
           </ol>
         </ol>
        <li data-md>
-        <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> and set its attributes as follows:</p>
+        <p>Create a new <code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming④">PerformanceLongTaskTiming</a></code> object <var>newEntry</var> with <var>destinationRealm</var> and set its attributes as follows:</p>
         <ol>
          <li data-md>
           <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑦">name</a></code> attribute to <var>name</var>.</p>
@@ -661,7 +661,7 @@ This allows developers to detect support for long tasks.</p>
           <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑤">attribution</a></code> attribute, but for now it only contains a single value.</p>
         </ol>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> <var>newEntry</var> on <var>destinationRealm</var>.</p>
+        <p><a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">Queue the PerformanceEntry</a> <var>newEntry</var>.</p>
       </ol>
     </ol>
    </div>
