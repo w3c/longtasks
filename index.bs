@@ -129,7 +129,7 @@ Long Task timing involves the following new interfaces:
     };
 </pre>
 
-The values of the attributes of a {{PerformanceLongTaskTiming}} are set in the processing model in [[#report-long-tasks]]. The following provides an informative summary of how they will be set.
+The values of the attributes of a {{PerformanceLongTaskTiming}} are set in the processing model in [[#report-long-task]]. The following provides an informative summary of how they will be set.
 
 The {{PerformanceEntry/name}} attribute's getter will return one of the following strings:
 
@@ -174,7 +174,7 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
     };
 </pre>
 
-The values of the attributes of a {{TaskAttributionTiming}} are set in the processing model in [[#report-long-tasks]]. The following provides an informative summary of how they will be set.
+The values of the attributes of a {{TaskAttributionTiming}} are set in the processing model in [[#report-long-task]]. The following provides an informative summary of how they will be set.
 
 The {{PerformanceEntry/name}} attribute's getter will always return "<code>unknown</code>".
 
@@ -255,96 +255,84 @@ Processing model {#sec-processing-model}
 Note: A user agent implementing the Long Tasks API would need to include <code>"longtask"</code> in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts.
 This allows developers to detect support for long tasks.
 
-Report long tasks {#report-long-tasks}
+Report a long task {#report-long-task}
 --------------------------------------------------------
 
-<div algorithm="Report long tasks">
-    Given |start time|, |end time|, |top-level browsing contexts|, and optionally |task|, perform the following algorithm:
+<div algorithm="Report a long task">
+    When asked to <dfn export>report a long task</dfn> for a {{Document}} |document|, given |start time|, |end time|, and |task|, perform the following steps:
 
     1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
-    1. Let |destinationRealms| be an empty set.
+    1. Let |destinationRealm| be |document|'s <a>relevant Realm</a>.
 
-    1. Determine the set of <a>JavaScript Realms</a> to which reports will be delivered:
+    1. Let |name| be the empty string. This will be used to report <a>minimal culprit attribution</a>, below.
+    1. Let |culpritSettings| be <code>null</code>.
+    1. Process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
 
-        For each <a>top-level browsing context</a> |topmostBC| in |top-level browsing contexts|:
+        1. If |task|'s <a>script evaluation environment settings object set</a> is empty: set |name| to "<code><a>unknown</a></code>" and |culpritSettings| to <code>null</code>.
+        1. If |task|'s <a>script evaluation environment settings object set</a>'s length is greater than one: set |name| to "<code><a>multiple-contexts</a></code>" and |culpritSettings| to <code>null</code>.
+        1. If |task|'s <a>script evaluation environment settings object set</a>'s length is one:
+            1. Set |culpritSettings| to the single item in |task|'s <a>script evaluation environment settings object set</a>.
+            1. Let |destinationSettings| be |destinationRealm|'s <a>relevant settings object</a>.
+            1. Let |destinationOrigin| be |destinationSettings|'s [=environment settings object/origin=].
+            1. Let |destinationBC| be |destinationSettings|'s <a>responsible browsing context</a>.
+            1. If |culpritSettings| is the same as |destinationSettings|, set |name| to "<code><a>self</a></code>".
+            1. If |culpritSettings|'s [=environment settings object/origin=] and |destinationOrigin| are <a>same origin</a>:
+                1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>same-origin-ancestor</a></code>".
+                1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>same-origin-descendant</a></code>".
+                1. Otherwise, set |name| to "<code><a>same-origin</a></code>".
+            1. Otherwise:
+                1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>cross-origin-ancestor</a></code>" and set |culpritSettings| to <code>null</code>.
 
-        1. Add |topmostBC|'s Window's <a>relevant Realm</a> to |destinationRealms|.
-        1. Let |descendantBCs| be |topmostBC|'s <a>active document</a>'s <a>list of the descendant browsing contexts</a>.
-        1. For each |descendantBC| in |descendantBCs|, add |descendantBC|'s Window's <a>relevant Realm</a> to |destinationRealms|.
+                    NOTE: this is not reported because of security. Developers should look this up themselves.
 
-    1. For each |destinationRealm| in |destinationRealms|:
+                1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>cross-origin-descendant</a></code>".
+                1. Otherwise, set |name| to "<code><a>cross-origin-unreachable</a></code>".
 
-        1. Let |name| be the empty string. This will be used to report <a>minimal culprit attribution</a>, below.
-        1. Let |culpritSettings| be <code>null</code>.
-        1. If the |task| argument was not provided, set |name| to "<code><a>unknown</a></code>".
-        1. Otherwise: process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
+    1. Let |attribution| be a new {{TaskAttributionTiming}} object with |destinationRealm| and set its attributes as follows:
+        1. Set |attribution|'s {{PerformanceEntry/name}} attribute to "<code><a>unknown</a></code>".
 
-            1. If |task|'s <a>script evaluation environment settings object set</a> is empty: set |name| to "<code><a>unknown</a></code>" and |culpritSettings| to <code>null</code>.
-            1. If |task|'s <a>script evaluation environment settings object set</a>'s length is greater than one: set |name| to "<code><a>multiple-contexts</a></code>" and |culpritSettings| to <code>null</code>.
-            1. If |task|'s <a>script evaluation environment settings object set</a>'s length is one:
-                1. Set |culpritSettings| to the single item in |task|'s <a>script evaluation environment settings object set</a>.
-                1. Let |destinationSettings| be |destinationRealm|'s <a>relevant settings object</a>.
-                1. Let |destinationOrigin| be |destinationSettings|'s [=environment settings object/origin=].
-                1. Let |destinationBC| be |destinationSettings|'s <a>responsible browsing context</a>.
-                1. If |culpritSettings| is the same as |destinationSettings|, set |name| to "<code><a>self</a></code>".
-                1. If |culpritSettings|'s [=environment settings object/origin=] and |destinationOrigin| are <a>same origin</a>:
-                    1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>same-origin-ancestor</a></code>".
-                    1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>same-origin-descendant</a></code>".
-                    1. Otherwise, set |name| to "<code><a>same-origin</a></code>".
-                1. Otherwise:
-                    1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>cross-origin-ancestor</a></code>" and set |culpritSettings| to <code>null</code>.
+            NOTE: future iterations of this API will add more values to the {{PerformanceEntry/name}} attribute of a {{TaskAttributionTiming}} object, but for now it can only be a single value.
 
-                        NOTE: this is not reported because of security. Developers should look this up themselves.
+        1. Set |attribution|'s {{PerformanceEntry/entryType}} attribute to <code>"taskattribution"</code>.
+        1. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
+        1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
+        1. Set |attribution|'s {{containerName}} and {{containerSrc}} attributes to the empty string.
+        1. If |culpritSettings| is not <code>null</code>:
+            1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s <a>browsing context container</a>.
+            1. Assert: |container| is not <code>null</code>.
+            1. Set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or the empty string if the ID is unset.
+            1. If |container| is an <{iframe}> element:
+                1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
+                1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <{iframe/name}> content attribute, or the empty string if the attribute is absent.
+                1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{iframe/src}> content attribute, or the empty string if the attribute is absent.
 
-                    1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>cross-origin-descendant</a></code>".
-                    1. Otherwise, set |name| to "<code><a>cross-origin-unreachable</a></code>".
+                NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
 
-        1. If |task| was not provided, let |attribution| be <code>null</code>.
-        1. Otherwise, let |attribution| be a new {{TaskAttributionTiming}} object with |destinationRealm| and set its attributes as follows:
-            1. Set |attribution|'s {{PerformanceEntry/name}} attribute to "<code><a>unknown</a></code>".
+            1. If |container| is a <{frame}> element:
+                1. Set |attribution|'s {{containerType}} attribute to "<code>frame</code>".
+                1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <code>name</code> content attribute, or the empty string if the attribute is absent.
+                1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <code>src</code> content attribute, or the empty string if the attribute is absent.
+            1. If |container| is an <{object}> element:
+                1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
+                1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or the empty string if the attribute is absent.
+                1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{object/data}> content attribute, or the empty string if the attribute is absent.
+            1. If |container| is an <{embed}> element:
+                1. Set |attribution|'s {{containerType}} attribute to "<code>embed</code>".
+                1. Set |attribution|'s {{containerName}} attribute to the empty string.
+                1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{embed/src}> content attribute, or the empty string if the attribute is absent.
 
-                NOTE: future iterations of this API will add more values to the {{PerformanceEntry/name}} attribute of a {{TaskAttributionTiming}} object, but for now it can only be a single value.
+    1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| with |destinationRealm| and set its attributes as follows:
 
-            1. Set |attribution|'s {{PerformanceEntry/entryType}} attribute to <code>"taskattribution"</code>.
-            1. Set |attribution|'s {{PerformanceEntry/startTime}} and {{PerformanceEntry/duration}} to 0.
-            1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
-            1. Set |attribution|'s {{containerName}} and {{containerSrc}} attributes to the empty string.
-            1. If |culpritSettings| is not <code>null</code>:
-                1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s <a>browsing context container</a>.
-                1. Assert: |container| is not <code>null</code>.
-                1. Set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or the empty string if the ID is unset.
-                1. If |container| is an <{iframe}> element:
-                    1. Set |attribution|'s {{containerType}} attribute to "<code>iframe</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <{iframe/name}> content attribute, or the empty string if the attribute is absent.
-                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{iframe/src}> content attribute, or the empty string if the attribute is absent.
+        1. Set |newEntry|'s {{PerformanceEntry/name}} attribute to |name|.
+        1. Set |newEntry|'s {{PerformanceEntry/entryType}} attribute to "<code>longtask</code>".
+        1. Set |newEntry|'s {{PerformanceEntry/startTime}} attribute to |start time|.
+        1. Set |newEntry|'s {{PerformanceEntry/duration}} attribute to |end time| minus |start time|.
+        1. If |attribution| is not <code>null</code>, set |newEntry|'s {{PerformanceLongTaskTiming/attribution}} attribute to a new frozen array containing the single value |attribution|.
 
-                    NOTE: it is intentional that we record the frame's <{iframe/src}> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.
+            NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
 
-                1. If |container| is a <{frame}> element:
-                    1. Set |attribution|'s {{containerType}} attribute to "<code>frame</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the value of |container|'s <code>name</code> content attribute, or the empty string if the attribute is absent.
-                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <code>src</code> content attribute, or the empty string if the attribute is absent.
-                1. If |container| is an <{object}> element:
-                    1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or the empty string if the attribute is absent.
-                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{object/data}> content attribute, or the empty string if the attribute is absent.
-                1. If |container| is an <{embed}> element:
-                    1. Set |attribution|'s {{containerType}} attribute to "<code>embed</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the empty string.
-                    1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{embed/src}> content attribute, or the empty string if the attribute is absent.
-
-        1. Create a new {{PerformanceLongTaskTiming}} object |newEntry| with |destinationRealm| and set its attributes as follows:
-
-            1. Set |newEntry|'s {{PerformanceEntry/name}} attribute to |name|.
-            1. Set |newEntry|'s {{PerformanceEntry/entryType}} attribute to "<code>longtask</code>".
-            1. Set |newEntry|'s {{PerformanceEntry/startTime}} attribute to |start time|.
-            1. Set |newEntry|'s {{PerformanceEntry/duration}} attribute to |end time| minus |start time|.
-            1. If |attribution| is not <code>null</code>, set |newEntry|'s {{PerformanceLongTaskTiming/attribution}} attribute to a new frozen array containing the single value |attribution|.
-
-                NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
-
-        1. <a>Queue the PerformanceEntry</a> |newEntry|.
+    1. <a>Queue the PerformanceEntry</a> |newEntry|.
 </div>
 
 Security & privacy considerations {#priv-sec}
