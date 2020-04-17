@@ -134,7 +134,7 @@ The values of the attributes of a {{PerformanceLongTaskTiming}} are set in the p
 The {{PerformanceEntry/name}} attribute's getter will return one of the following strings:
 
 : "<code><dfn>unknown</dfn></code>"
-:: The long task originated from an <a>update the rendering</a> step within the <a>event loop processing model</a> or work the user agent performed outside of the <a>event loop</a>.
+:: The long task originated from work that the user agent performed outside of the <a>event loop</a>.
 : "<code><dfn>self</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within this <a>browsing context</a>.
 : "<code><dfn>same-origin-ancestor</dfn></code>"
@@ -259,50 +259,58 @@ Report long tasks {#report-long-tasks}
 --------------------------------------------------------
 
 <div algorithm="Report long tasks">
-    Given |start time|, |end time|, |top-level browsing contexts|, and optionally |task|, perform the following algorithm:
+    Given |start time|, |end time|, |top-level browsing contexts|, and |task|, perform the following algorithm:
 
     1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
     1. Let |destinationRealms| be an empty set.
 
-    1. Determine the set of <a>JavaScript Realms</a> to which reports will be delivered:
+    1. Determine the set of [=JavaScript Realms=] to which reports will be delivered:
 
-        For each <a>top-level browsing context</a> |topmostBC| in |top-level browsing contexts|:
+        For each [=top-level browsing context=] |topmostBC| in |top-level browsing contexts|:
 
-        1. Add |topmostBC|'s Window's <a>relevant Realm</a> to |destinationRealms|.
-        1. Let |descendantBCs| be |topmostBC|'s <a>active document</a>'s <a>list of the descendant browsing contexts</a>.
-        1. For each |descendantBC| in |descendantBCs|, add |descendantBC|'s Window's <a>relevant Realm</a> to |destinationRealms|.
+        1. Add |topmostBC|'s [=active document=]'s [=relevant Realm=] to |destinationRealms|.
+        1. Let |descendantBCs| be |topmostBC|'s [=active document=]'s [=list of the descendant browsing contexts=].
+        1. For each |descendantBC| in |descendantBCs|, add |descendantBC|'s [=active document=]'s [=relevant Realm=] to |destinationRealms|.
+    
+    1. A user agent may remove some [=JavaScript Realms=] from |destinationRealms|.
+
+    Note: this removal could be used to avoid reporting long tasks for [=JavaScript Realms=] that the user agent handles in a separate process. However, this concept is not specified precisely.
+
+    Issue(75): there is some ongoing discussion regarding the scope of which {{Document|Documents}} gain visibility over which long tasks, so this logic could change in the future.
 
     1. For each |destinationRealm| in |destinationRealms|:
 
-        1. Let |name| be the empty string. This will be used to report <a>minimal culprit attribution</a>, below.
+        1. Let |name| be the empty string. This will be used to report [=minimal culprit attribution=], below.
         1. Let |culpritSettings| be <code>null</code>.
-        1. If the |task| argument was not provided, set |name| to "<code><a>unknown</a></code>".
-        1. Otherwise: process |task|'s <a>script evaluation environment settings object set</a> to determine |name| and |culpritSettings| as follows:
+        1. Process |task|'s [=script evaluation environment settings object set=] to determine |name| and |culpritSettings| as follows:
 
-            1. If |task|'s <a>script evaluation environment settings object set</a> is empty: set |name| to "<code><a>unknown</a></code>" and |culpritSettings| to <code>null</code>.
-            1. If |task|'s <a>script evaluation environment settings object set</a>'s length is greater than one: set |name| to "<code><a>multiple-contexts</a></code>" and |culpritSettings| to <code>null</code>.
-            1. If |task|'s <a>script evaluation environment settings object set</a>'s length is one:
-                1. Set |culpritSettings| to the single item in |task|'s <a>script evaluation environment settings object set</a>.
-                1. Let |destinationSettings| be |destinationRealm|'s <a>relevant settings object</a>.
+            1. If |task|'s [=script evaluation environment settings object set=] is empty: set |name| to "<code>[=unknown=]</code>" and |culpritSettings| to <code>null</code>.
+            1. Otherwise, if |task|'s [=script evaluation environment settings object set=]'s length is greater than one: set |name| to "<code>[=multiple-contexts=]</code>" and |culpritSettings| to <code>null</code>.
+            1. Otherwise, i.e. if |task|'s [=script evaluation environment settings object set=]'s length is one:
+                1. Set |culpritSettings| to the single item in |task|'s [=script evaluation environment settings object set=].
+                1. Let |destinationSettings| be |destinationRealm|'s [=Realm/settings object=].
                 1. Let |destinationOrigin| be |destinationSettings|'s [=environment settings object/origin=].
-                1. Let |destinationBC| be |destinationSettings|'s <a>responsible browsing context</a>.
-                1. If |culpritSettings| is the same as |destinationSettings|, set |name| to "<code><a>self</a></code>".
-                1. If |culpritSettings|'s [=environment settings object/origin=] and |destinationOrigin| are <a>same origin</a>:
-                    1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>same-origin-ancestor</a></code>".
-                    1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>same-origin-descendant</a></code>".
-                    1. Otherwise, set |name| to "<code><a>same-origin</a></code>".
+                1. Let |destinationBC| be |destinationSettings|'s [=environment settings object/global object=]'s [=Window/browsing context=].
+                1. Let |culpritBC| be |culpritSettings|'s [=environment settings object/global object=]'s [=Window/browsing context=].
+                1. Assert: |culpritBC| is not <code>null</code>.
+                1. If |culpritSettings| is the same as |destinationSettings|, set |name| to "<code>[=self=]</code>".
+                1. Otherwise, if |culpritSettings|'s [=environment settings object/origin=] and |destinationOrigin| are [=same origin=]:
+                    1. If |destinationBC| is <code>null</code>, set |name| to "<code>[=same-origin=]</code>".
+                    1. Otherwise, if |culpritBC| is an [=ancestor=] of |destinationBC|, set |name| to "<code>[=same-origin-ancestor=]</code>".
+                    1. Otherwise, if |destinationBC| is an [=ancestor=] of |culpritBC|, set |name| to "<code>[=same-origin-descendant=]</code>".
+                    1. Otherwise, set |name| to "<code>[=same-origin=]</code>".
                 1. Otherwise:
-                    1. If |culpritSettings|'s <a>responsible browsing context</a> is an <a>ancestor</a> of |destinationBC|, set |name| to "<code><a>cross-origin-ancestor</a></code>" and set |culpritSettings| to <code>null</code>.
+                    1. If |destinationBC| is <code>null</code>, set |name| to "<code>[=cross-origin-unreachable=]</code>".
+                    1. Otherwise, if |culpritBC| is an [=ancestor=] of |destinationBC|, set |name| to "<code>[=cross-origin-ancestor=]</code>" and set |culpritSettings| to <code>null</code>.
 
                         NOTE: this is not reported because of security. Developers should look this up themselves.
 
-                    1. Otherwise, if |culpritSettings|'s <a>responsible browsing context</a> is a <a lt="list of the descendant browsing contexts">descendant</a> of |destinationBC|, set |name| to "<code><a>cross-origin-descendant</a></code>".
-                    1. Otherwise, set |name| to "<code><a>cross-origin-unreachable</a></code>".
+                    1. Otherwise, if |destinationBC| is an [=ancestor=] of |culpritBC|, set |name| to "<code>[=cross-origin-descendant=]</code>".
+                    1. Otherwise, set |name| to "<code>[=cross-origin-unreachable=]</code>".
 
-        1. If |task| was not provided, let |attribution| be <code>null</code>.
-        1. Otherwise, let |attribution| be a new {{TaskAttributionTiming}} object with |destinationRealm| and set its attributes as follows:
-            1. Set |attribution|'s {{PerformanceEntry/name}} attribute to "<code><a>unknown</a></code>".
+        1. Let |attribution| be a new {{TaskAttributionTiming}} object with |destinationRealm| and set its attributes as follows:
+            1. Set |attribution|'s {{PerformanceEntry/name}} attribute to "<code>[=unknown=]</code>".
 
                 NOTE: future iterations of this API will add more values to the {{PerformanceEntry/name}} attribute of a {{TaskAttributionTiming}} object, but for now it can only be a single value.
 
@@ -311,7 +319,9 @@ Report long tasks {#report-long-tasks}
             1. Set |attribution|'s {{containerType}} attribute to <code>"window"</code>.
             1. Set |attribution|'s {{containerName}} and {{containerSrc}} attributes to the empty string.
             1. If |culpritSettings| is not <code>null</code>:
-                1. Let |container| be |culpritSettings|'s <a>responsible browsing context</a>'s <a>browsing context container</a>.
+                1. Let |culpritBC| be |culpritSettings|'s [=environment settings object/global object=]'s [=Window/browsing context=].
+                1. Assert: |culpritBC| is not <code>null</code>.
+                1. Let |container| be |culpritBC|'s [=browsing context container=].
                 1. Assert: |container| is not <code>null</code>.
                 1. Set |attribution|'s {{containerId}} attribute to the value of |container|'s [=Element/ID=], or the empty string if the ID is unset.
                 1. If |container| is an <{iframe}> element:
@@ -344,7 +354,7 @@ Report long tasks {#report-long-tasks}
 
                 NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
 
-        1. <a>Queue the PerformanceEntry</a> |newEntry|.
+        1. [=Queue the PerformanceEntry=] |newEntry|.
 </div>
 
 Security & privacy considerations {#priv-sec}
