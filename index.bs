@@ -361,7 +361,70 @@ Report long tasks {#report-long-tasks}
 Security & privacy considerations {#priv-sec}
 ===============================================
 
-Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about the source of the long task.
-There is a 50ms threshold for long tasks. Together this provides adequate protection against security attacks against browser.
+Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about
+the source of the long task. There is a 50ms threshold for long tasks. Together this provides adequate
+protection against security attacks against the browser itself.
 
-However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document</a>.
+The Long Tasks API provides timing information about the duration and type of tasks executed by the user,
+as well as attribution such as source code location for function calls. This could enable an attacker
+to perform side-channel timing attacks to guess user’s action, or identify the user. For example, a pattern of
+long script followed by a long render could be put together to guess user’s interaction with a social
+widget. Detailed function call attribution would be used to determine the user’s action.
+
+However, privacy related attacks are possible. While the API doesn’t introduce any new privacy attacks,
+it could make existing privacy attacks faster. Mitigations for this are possible and can be implemented
+as needed:
+
+* Further clamp the long task duration provided by the API to make attacks harder to exploit.
+* Limit the number of origins for which longtasks are exposed by the API, and obfuscate the attribution of
+    any tasks afterwards.
+* Allow dropping the culprit/attribution information after a certain threshold.
+* Add a built-in delay to the timing information exposed to make attacks dependent on longtask volume harder
+    to execute.
+
+What is Exposed to Observers? {#what-is-exposed}
+--------------------------------------------------------
+
+All observers within the top level page (i.e. all iframes in the page and the main frame) will receive
+notifications about presence of long tasks. We expose the start time of the task, its duration, and a
+pointer to the culprit frame. This information can already be observed today, and with higher resolution,
+using setTimeout. Observers in other different pages (tabs or windows) should not receive notifications,
+regardless of the architecture of the user agent.
+
+Cross origin rules for what is exposed:
+* Cross-origin observers may see the direction of the culprit e.g if the culprit is a deeply nested iframe,
+    then the host page can see the first cross-origin between itself and the culprit.
+* Conversely, if the culprit is the top level page, then a deeply embedded iframe can see that a longtask
+    occurrred in its cross-origin ancestor but does not receive any information about it.
+
+Opt-in: In a future version of this API, sites could opt into revealing their attribution info to trusted
+cross origins using a mechanism like the "Timing-Allow-Origin" header. This is very useful for enabling third
+party content providers to share their attribution info with host sites, as they often partner to tackle
+performance issues.
+
+Attack Scenarios Considered {#attack-scenarios}
+--------------------------------------------------------
+
+The following are the timing attacks considered:
+
+1. <b>Timing attacks</b>, of which two variants are considered:
+
+    1. <b>Traditional timing attacks</b>: using external resource load time to reveal the size of
+        private data. For instance the number of hidden pictures in a gallery, whether username is
+        valid, etc. See an <a href="http://crypto.stanford.edu/~dabo/papers/webtiming.pdf">example</a>.
+
+    1. <b>Side-channel timing attacks</b>: using time for video parsing, script parsing, App Cache reads
+        or Cache API (service workers) usage to uniquely identify a user, or to create a profile of the
+        user’s age, gender, location, and interests etc. For
+        <a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
+        Facebook Pages can be limited to certain demographic (eg. females of age 20-30) the file size of
+        the permalink page can be used to determine whether the user is in the target demographic.
+
+    These scenarios are addressed by the 50ms threshold AND respecting cross-origin boundary i.e. not
+    showing task type or additional attribution to untrusted cross origin observers.
+
+1. <b>Visitedness attack</b>: the a ttacker uses paint timing provided in the API to execute the
+    <code>:visited</code> attack to determine if a user has visited certain URLs. We think the API is
+    safe here: while timing for slow paint may show up in long tasks attribution down the road (restricted
+    to same origin), paint time can already be detected today via double rAFs, and we do not intend to
+    provide a higher resolution feedback mechanism.
