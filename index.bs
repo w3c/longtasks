@@ -40,7 +40,8 @@ urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
         text: now(); url: #dom-performance-now
     type: dfn; text: current high resolution time; url: #dfn-current-high-resolution-time;
 urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
-    type: dfn; url: #definitions-3; text: event loop definitions;
+    type: dfn; url: #event-loop; text: event loop;
+    type: dfn; url: #browsing-context; text: browsing context;
     type: dfn; url: #calling-scripts; text: calling scripts;
     type: dfn; url: #list-of-the-descendant-browsing-contexts; text: list of the descendant browsing contexts;
     type: dfn; url: #ancestor-browsing-context; text: ancestor;
@@ -272,7 +273,7 @@ Report long tasks {#report-long-tasks}
         1. Add |topmostBC|'s [=active document=]'s [=relevant Realm=] to |destinationRealms|.
         1. Let |descendantBCs| be |topmostBC|'s [=active document=]'s [=list of the descendant browsing contexts=].
         1. For each |descendantBC| in |descendantBCs|, add |descendantBC|'s [=active document=]'s [=relevant Realm=] to |destinationRealms|.
-    
+
     1. A user agent may remove some [=JavaScript Realms=] from |destinationRealms|.
 
     Note: this removal could be used to avoid reporting long tasks for [=JavaScript Realms=] that the user agent handles in a separate process. However, this concept is not specified precisely.
