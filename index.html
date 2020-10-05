@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 9b2525c5, updated Tue Sep 29 16:07:49 2020 +0200" name="generator">
+  <meta content="Bikeshed version 1f0de27a, updated Fri Oct 2 13:31:20 2020 -0700" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="bb88894cc8d58fe72884e100ed7ce73b5d9e2ca5" name="document-revision">
+  <meta content="e878d2bdeb270b6ff1fb3b9ac0740ecdb01ba040" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -236,7 +236,7 @@ figcaption:not(.no-marker)::before {
 .dfn-panel:not(.on) { display: none; }
 .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
 .dfn-panel > b { display: block; }
-.dfn-panel a { color: black; }
+.dfn-panel a { color: var(--dfnpanel-text); }
 .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
 .dfn-panel > b + b { margin-top: 0.25em; }
 .dfn-panel ul { padding: 0; }
@@ -633,7 +633,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-09-29">29 September 2020</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-10-05">5 October 2020</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -694,7 +694,12 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <ol class="toc">
       <li><a href="#report-long-tasks"><span class="secno">4.1</span> <span class="content">Report long tasks</span></a>
      </ol>
-    <li><a href="#priv-sec"><span class="secno">5</span> <span class="content">Security &amp; privacy considerations</span></a>
+    <li>
+     <a href="#priv-sec"><span class="secno">5</span> <span class="content">Security &amp; privacy considerations</span></a>
+     <ol class="toc">
+      <li><a href="#what-is-exposed"><span class="secno">5.1</span> <span class="content">What is Exposed to Observers?</span></a>
+      <li><a href="#attack-scenarios"><span class="secno">5.2</span> <span class="content">Attack Scenarios Considered</span></a>
+     </ol>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -1156,9 +1161,65 @@ This allows developers to detect support for long tasks.</p>
     </ol>
    </div>
    <h2 class="heading settled" data-level="5" id="priv-sec"><span class="secno">5. </span><span class="content">Security &amp; privacy considerations</span><a class="self-link" href="#priv-sec"></a></h2>
-   <p>Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about the source of the long task.
-There is a 50ms threshold for long tasks. Together this provides adequate protection against security attacks against browser.</p>
-   <p>However, privacy related attacks are possible, while the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster. Mitigations for this are possible and discussed in the security review <a href="https://docs.google.com/document/d/1tIMI1gau_q6X5EBnjDNiFS5NWV9cpYJ5KKA7xPd3VB8/edit">in this document</a>.</p>
+   <p>Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about
+the source of the long task. There is a 50ms threshold for long tasks. Together this provides adequate
+protection against cross-origin leaks.</p>
+   <p>The Long Tasks API provides timing information about the duration and type of tasks executed by the user,
+as well as attribution such as the browsing context causing the function calls. This could enable an attacker
+to perform side-channel timing attacks to guess the user’s action, or identify the user. For example, a pattern of
+long script followed by a long render could be put together to guess user’s interaction with a social
+widget. Detailed function call attribution would be used to determine the user’s action.</p>
+   <p>While the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster.
+Mitigations for this are possible and can be implemented as needed:</p>
+   <ul>
+    <li data-md>
+     <p>Further clamp the long task duration provided by the API to make attacks harder to exploit (i.e. round the
+result or add random jitter to the value).</p>
+    <li data-md>
+     <p>Limit the number of origins for which longtasks are exposed by the API, and obfuscate the attribution of
+any tasks afterwards. For instance, a page with 5 iframes could receive only attribution for tasks from 3
+of those iframes, and would receive no attribution (<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑧">name</a></code> set to <code class="highlight">unknown</code>")
+for tasks from the other 2.</p>
+    <li data-md>
+     <p>Allow dropping the culprit/attribution information after a certain threshold. For instance, after 10 longtasks
+all entries would receive no attribution and their <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-name" id="ref-for-dom-performanceentry-name⑨">name</a></code> would be "<code class="highlight">unknown</code>".</p>
+    <li data-md>
+     <p>Add a built-in delay to the timing information exposed to make attacks dependent on longtask volume harder
+to execute.</p>
+   </ul>
+   <h3 class="heading settled" data-level="5.1" id="what-is-exposed"><span class="secno">5.1. </span><span class="content">What is Exposed to Observers?</span><a class="self-link" href="#what-is-exposed"></a></h3>
+   <p>All observers within the top level page (i.e. all iframes in the page and the main frame) will receive
+notifications about presence of long tasks. We expose the start time of the task, its duration, and a
+pointer to the culprit frame. This information can already be observed today, and with higher resolution,
+using setTimeout. An attacker can do this by clearing everything else on the page and adding the
+vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
+Observers in other different pages (tabs or windows) should not receive notifications, regardless of the
+architecture of the user agent.</p>
+   <p>Cross origin rules for what is exposed:</p>
+   <ul>
+    <li data-md>
+     <p>Cross-origin observers may see the direction of the culprit e.g if the culprit is a deeply nested iframe,
+then the host page can see the first cross-origin between itself and the culprit.</p>
+    <li data-md>
+     <p>Conversely, if the culprit is the top level page, then a deeply embedded iframe can see that a longtask
+occurrred in its cross-origin ancestor but does not receive any information about it.</p>
+   </ul>
+   <h3 class="heading settled" data-level="5.2" id="attack-scenarios"><span class="secno">5.2. </span><span class="content">Attack Scenarios Considered</span><a class="self-link" href="#attack-scenarios"></a></h3>
+   <p>The following are the timing attacks considered:</p>
+   <ol>
+    <li data-md>
+     <p><b>Traditional timing attacks</b>: using external resource load time to reveal the size of
+private data. For instance the number of hidden pictures in a gallery, whether username is
+valid, etc. See an <a href="http://crypto.stanford.edu/~dabo/papers/webtiming.pdf">example</a>.</p>
+    <li data-md>
+     <p><b>Side-channel timing attacks</b>: using time for video parsing, script parsing, App Cache reads
+or Cache API (service workers) usage to uniquely identify a user, or to create a profile of the
+user’s age, gender, location, and interests etc. For <a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
+a social network can be limited to certain demographic (eg. females of age 20-30) the file size of
+the permalink page can be used to determine whether the user is in the target demographic.</p>
+   </ol>
+   <p>These scenarios are addressed by the 50ms threshold AND respecting cross-origin boundary i.e. not
+showing task type or additional attribution to untrusted cross origin observers.</p>
   </main>
 <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
@@ -1426,6 +1487,7 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
     <li><a href="#ref-for-dom-performanceentry-name①">3.2. TaskAttributionTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-name②">3.3. Pointing to the culprit</a> <a href="#ref-for-dom-performanceentry-name③">(2)</a> <a href="#ref-for-dom-performanceentry-name④">(3)</a>
     <li><a href="#ref-for-dom-performanceentry-name⑤">4.1. Report long tasks</a> <a href="#ref-for-dom-performanceentry-name⑥">(2)</a> <a href="#ref-for-dom-performanceentry-name⑦">(3)</a>
+    <li><a href="#ref-for-dom-performanceentry-name⑧">5. Security &amp; privacy considerations</a> <a href="#ref-for-dom-performanceentry-name⑨">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-queue-a-performanceentry">
@@ -1486,71 +1548,71 @@ There is a 50ms threshold for long tasks. Together this provides adequate protec
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-document" style="color:initial">Document</span>
-     <li><span class="dfn-paneled" id="term-for-concept-id" style="color:initial">id</span>
+     <li><span class="dfn-paneled" id="term-for-document">Document</span>
+     <li><span class="dfn-paneled" id="term-for-concept-id">id</span>
     </ul>
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-sec-code-realms" style="color:initial">javascript realms</span>
+     <li><span class="dfn-paneled" id="term-for-sec-code-realms">javascript realms</span>
     </ul>
    <li>
     <a data-link-type="biblio">[hr-time-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-idl-def-domhighrestimestamp" style="color:initial">DOMHighResTimeStamp</span>
+     <li><span class="dfn-paneled" id="term-for-idl-def-domhighrestimestamp">DOMHighResTimeStamp</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-window" style="color:initial">Window</span>
-     <li><span class="dfn-paneled" id="term-for-active-document" style="color:initial">active document</span>
-     <li><span class="dfn-paneled" id="term-for-integration-with-the-javascript-agent-cluster-formalism" style="color:initial">agent cluster</span>
-     <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context" style="color:initial">ancestor</span>
-     <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context①" style="color:initial">ancestor browsing context</span>
-     <li><span class="dfn-paneled" id="term-for-window-bc" style="color:initial">browsing context <small>(for Window)</small></span>
-     <li><span class="dfn-paneled" id="term-for-browsing-context-container" style="color:initial">browsing context container</span>
-     <li><span class="dfn-paneled" id="term-for-attr-object-data" style="color:initial">data</span>
-     <li><span class="dfn-paneled" id="term-for-the-embed-element" style="color:initial">embed</span>
-     <li><span class="dfn-paneled" id="term-for-event-loop" style="color:initial">event loop</span>
-     <li><span class="dfn-paneled" id="term-for-event-loop-processing-model" style="color:initial">event loop processing model</span>
-     <li><span class="dfn-paneled" id="term-for-frame" style="color:initial">frame</span>
-     <li><span class="dfn-paneled" id="term-for-concept-settings-object-global" style="color:initial">global object</span>
-     <li><span class="dfn-paneled" id="term-for-the-iframe-element" style="color:initial">iframe</span>
-     <li><span class="dfn-paneled" id="term-for-list-of-the-descendant-browsing-contexts" style="color:initial">list of the descendant browsing contexts</span>
-     <li><span class="dfn-paneled" id="term-for-microtask" style="color:initial">microtask</span>
-     <li><span class="dfn-paneled" id="term-for-attr-object-name" style="color:initial">name <small>(for object)</small></span>
-     <li><span class="dfn-paneled" id="term-for-the-object-element" style="color:initial">object</span>
-     <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin" style="color:initial">origin</span>
-     <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint" style="color:initial">perform a microtask checkpoint</span>
-     <li><span class="dfn-paneled" id="term-for-concept-relevant-realm" style="color:initial">relevant realm</span>
-     <li><span class="dfn-paneled" id="term-for-same-origin" style="color:initial">same origin</span>
-     <li><span class="dfn-paneled" id="term-for-script-evaluation-environment-settings-object-set" style="color:initial">script evaluation environment settings object set</span>
-     <li><span class="dfn-paneled" id="term-for-concept-realm-settings-object" style="color:initial">settings object</span>
-     <li><span class="dfn-paneled" id="term-for-attr-iframe-src" style="color:initial">src <small>(for iframe)</small></span>
-     <li><span class="dfn-paneled" id="term-for-concept-task" style="color:initial">task</span>
-     <li><span class="dfn-paneled" id="term-for-top-level-browsing-context" style="color:initial">top-level browsing context</span>
-     <li><span class="dfn-paneled" id="term-for-unit-of-related-browsing-contexts" style="color:initial">unit of related browsing contexts</span>
-     <li><span class="dfn-paneled" id="term-for-update-the-rendering" style="color:initial">update the rendering</span>
+     <li><span class="dfn-paneled" id="term-for-window">Window</span>
+     <li><span class="dfn-paneled" id="term-for-active-document">active document</span>
+     <li><span class="dfn-paneled" id="term-for-integration-with-the-javascript-agent-cluster-formalism">agent cluster</span>
+     <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context">ancestor</span>
+     <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context①">ancestor browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-window-bc">browsing context <small>(for Window)</small></span>
+     <li><span class="dfn-paneled" id="term-for-browsing-context-container">browsing context container</span>
+     <li><span class="dfn-paneled" id="term-for-attr-object-data">data</span>
+     <li><span class="dfn-paneled" id="term-for-the-embed-element">embed</span>
+     <li><span class="dfn-paneled" id="term-for-event-loop">event loop</span>
+     <li><span class="dfn-paneled" id="term-for-event-loop-processing-model">event loop processing model</span>
+     <li><span class="dfn-paneled" id="term-for-frame">frame</span>
+     <li><span class="dfn-paneled" id="term-for-concept-settings-object-global">global object</span>
+     <li><span class="dfn-paneled" id="term-for-the-iframe-element">iframe</span>
+     <li><span class="dfn-paneled" id="term-for-list-of-the-descendant-browsing-contexts">list of the descendant browsing contexts</span>
+     <li><span class="dfn-paneled" id="term-for-microtask">microtask</span>
+     <li><span class="dfn-paneled" id="term-for-attr-object-name">name <small>(for object)</small></span>
+     <li><span class="dfn-paneled" id="term-for-the-object-element">object</span>
+     <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin">origin</span>
+     <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint">perform a microtask checkpoint</span>
+     <li><span class="dfn-paneled" id="term-for-concept-relevant-realm">relevant realm</span>
+     <li><span class="dfn-paneled" id="term-for-same-origin">same origin</span>
+     <li><span class="dfn-paneled" id="term-for-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</span>
+     <li><span class="dfn-paneled" id="term-for-concept-realm-settings-object">settings object</span>
+     <li><span class="dfn-paneled" id="term-for-attr-iframe-src">src <small>(for iframe)</small></span>
+     <li><span class="dfn-paneled" id="term-for-concept-task">task</span>
+     <li><span class="dfn-paneled" id="term-for-top-level-browsing-context">top-level browsing context</span>
+     <li><span class="dfn-paneled" id="term-for-unit-of-related-browsing-contexts">unit of related browsing contexts</span>
+     <li><span class="dfn-paneled" id="term-for-update-the-rendering">update the rendering</span>
     </ul>
    <li>
     <a data-link-type="biblio">[performance-timeline-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-the-performanceentry-interface" style="color:initial">PerformanceEntry</span>
-     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-duration" style="color:initial">duration</span>
-     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-entrytype" style="color:initial">entryType</span>
-     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-name" style="color:initial">name</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-queue-a-performanceentry" style="color:initial">queue the performanceentry</span>
-     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-starttime" style="color:initial">startTime</span>
-     <li><span class="dfn-paneled" id="term-for-supportedentrytypes-attribute" style="color:initial">supportedEntryTypes</span>
+     <li><span class="dfn-paneled" id="term-for-the-performanceentry-interface">PerformanceEntry</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-duration">duration</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-entrytype">entryType</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-name">name</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-queue-a-performanceentry">queue the performanceentry</span>
+     <li><span class="dfn-paneled" id="term-for-dom-performanceentry-starttime">startTime</span>
+     <li><span class="dfn-paneled" id="term-for-supportedentrytypes-attribute">supportedEntryTypes</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-idl-DOMString" style="color:initial">DOMString</span>
-     <li><span class="dfn-paneled" id="term-for-Default" style="color:initial">Default</span>
-     <li><span class="dfn-paneled" id="term-for-Exposed" style="color:initial">Exposed</span>
-     <li><span class="dfn-paneled" id="term-for-idl-frozen-array" style="color:initial">FrozenArray</span>
-     <li><span class="dfn-paneled" id="term-for-idl-object" style="color:initial">object</span>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
+     <li><span class="dfn-paneled" id="term-for-Default">Default</span>
+     <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
+     <li><span class="dfn-paneled" id="term-for-idl-frozen-array">FrozenArray</span>
+     <li><span class="dfn-paneled" id="term-for-idl-object">object</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
