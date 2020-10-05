@@ -363,21 +363,25 @@ Security & privacy considerations {#priv-sec}
 
 Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about
 the source of the long task. There is a 50ms threshold for long tasks. Together this provides adequate
-protection against security attacks against cross-origin leaks.
+protection against cross-origin leaks.
 
 The Long Tasks API provides timing information about the duration and type of tasks executed by the user,
-as well as attribution such as source code location for function calls. This could enable an attacker
-to perform side-channel timing attacks to guess user’s action, or identify the user. For example, a pattern of
+as well as attribution such as the browsing context causing the function calls. This could enable an attacker
+to perform side-channel timing attacks to guess the user’s action, or identify the user. For example, a pattern of
 long script followed by a long render could be put together to guess user’s interaction with a social
 widget. Detailed function call attribution would be used to determine the user’s action.
 
 While the API doesn’t introduce any new privacy attacks, it could make existing privacy attacks faster.
 Mitigations for this are possible and can be implemented as needed:
 
-* Further clamp the long task duration provided by the API to make attacks harder to exploit.
+* Further clamp the long task duration provided by the API to make attacks harder to exploit (i.e. round the
+    result or add random jitter to the value).
 * Limit the number of origins for which longtasks are exposed by the API, and obfuscate the attribution of
-    any tasks afterwards.
-* Allow dropping the culprit/attribution information after a certain threshold.
+    any tasks afterwards. For instance, a page with 5 iframes could receive only attribution for tasks from 3
+    of those iframes, and would receive no attribution ({{PerformanceEntry/name}} set to <code>unknown</code>")
+    for tasks from the other 2.
+* Allow dropping the culprit/attribution information after a certain threshold. For instance, after 10 longtasks
+    all entries would receive no attribution and their {{PerformanceEntry/name}} would be "<code>unknown</code>".
 * Add a built-in delay to the timing information exposed to make attacks dependent on longtask volume harder
     to execute.
 
@@ -387,7 +391,7 @@ What is Exposed to Observers? {#what-is-exposed}
 All observers within the top level page (i.e. all iframes in the page and the main frame) will receive
 notifications about presence of long tasks. We expose the start time of the task, its duration, and a
 pointer to the culprit frame. This information can already be observed today, and with higher resolution,
-using setTimeout. This can be done by an attacker by clearing everything else on the page and adding the
+using setTimeout. An attacker can do this by clearing everything else on the page and adding the
 vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
 Observers in other different pages (tabs or windows) should not receive notifications, regardless of the
 architecture of the user agent.
@@ -397,11 +401,6 @@ Cross origin rules for what is exposed:
     then the host page can see the first cross-origin between itself and the culprit.
 * Conversely, if the culprit is the top level page, then a deeply embedded iframe can see that a longtask
     occurrred in its cross-origin ancestor but does not receive any information about it.
-
-Opt-in: In a future version of this API, sites could opt into revealing their attribution info to trusted
-cross origins using a mechanism like the "Timing-Allow-Origin" header. This is very useful for enabling third
-party content providers to share their attribution info with host sites, as they often partner to tackle
-performance issues.
 
 Attack Scenarios Considered {#attack-scenarios}
 --------------------------------------------------------
@@ -421,4 +420,3 @@ The following are the timing attacks considered:
 
 These scenarios are addressed by the 50ms threshold AND respecting cross-origin boundary i.e. not
 showing task type or additional attribution to untrusted cross origin observers.
-
