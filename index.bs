@@ -338,7 +338,7 @@ Report long tasks {#report-long-tasks}
                     1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <code>src</code> content attribute, or the empty string if the attribute is absent.
                 1. If |container| is an <{object}> element:
                     1. Set |attribution|'s {{containerType}} attribute to "<code>object</code>".
-                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <{object/name}> content attribute, or the empty string if the attribute is absent.
+                    1. Set |attribution|'s {{containerName}} attribute to the value of  |container|'s <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">name</a> content attribute, or the empty string if the attribute is absent.
                     1. Set |attribution|'s {{containerSrc}} attribute to the value of |container|'s <{object/data}> content attribute, or the empty string if the attribute is absent.
                 1. If |container| is an <{embed}> element:
                     1. Set |attribution|'s {{containerType}} attribute to "<code>embed</code>".
