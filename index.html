@@ -5,9 +5,8 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 1f0de27a, updated Fri Oct 2 13:31:20 2020 -0700" name="generator">
+  <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
-  <meta content="e878d2bdeb270b6ff1fb3b9ac0740ecdb01ba040" name="document-revision">
 <style>
 dl {
     margin-left: 2em;
@@ -78,17 +77,13 @@ pre .property::before, pre .property::after {
 <style>/* style-colors */
 
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
-html {
-    color: black;
-    color: var(--text);
-    background-color: white;
-    background-color: var(--bg);
-}
 :root {
     color-scheme: light dark;
 
     --text: black;
     --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
 
     --logo-bg: #1a5e9a;
     --logo-active-bg: #c00;
@@ -162,6 +157,11 @@ html {
     --warning-border: red;
     --warning-bg: hsla(40,100%,50%,0.95);
     --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
 
     --def-border: #8ccbf2;
     --def-bg: #def;
@@ -380,7 +380,7 @@ dfn > a.self-link::before      { content: "#"; }
 code.highlight { padding: .1em; border-radius: .3em; }
 pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
 
-.highlight:not(.idl) { background: #fdf6e3; }
+.highlight:not(.idl) { background: rgba(0, 0, 0, .03); }
 c-[a] { color: #990055 } /* Keyword.Declaration */
 c-[b] { color: #990055 } /* Keyword.Type */
 c-[c] { color: #708090 } /* Comment */
@@ -451,6 +451,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     :root {
         --text: #ddd;
         --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
 
         --logo-bg: #1a5e9a;
         --logo-active-bg: #c00;
@@ -526,6 +528,11 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
         --warning-border: red;
         --warning-bg: hsla(40,100%,20%,0.95);
         --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
 
         --def-border: #8ccbf2;
         --def-bg: #080818;
@@ -633,7 +640,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-10-05">5 October 2020</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-11-30">30 November 2020</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -669,7 +676,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p> Publication as an Editors Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may
     be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
     this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/45211/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+   <p> This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/45211/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
    <p>This document is governed by the <a href="https://www.w3.org/2020/Process-20200915/" id="w3c_process_revision">15 September 2020 W3C Process Document</a>. </p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1124,7 +1131,7 @@ This allows developers to detect support for long tasks.</p>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype④">containerType</a></code> attribute to "<code class="highlight">object</code>".</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername④">containerName</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name" id="ref-for-attr-object-name">name</a></code> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername④">containerName</a></code> attribute to the value of <var>container</var>’s <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">name</a> content attribute, or the empty string if the attribute is absent.</p>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc④">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data">data</a></code> content attribute, or the empty string if the attribute is absent.</p>
             </ol>
@@ -1376,10 +1383,10 @@ showing task type or additional attribution to untrusted cross origin observers.
     <li><a href="#ref-for-microtask">2. Terminology</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-attr-object-name">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-attr-iframe-name">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-attr-object-name">4.1. Report long tasks</a>
+    <li><a href="#ref-for-attr-iframe-name">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-object-element">
@@ -1580,7 +1587,7 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="term-for-the-iframe-element">iframe</span>
      <li><span class="dfn-paneled" id="term-for-list-of-the-descendant-browsing-contexts">list of the descendant browsing contexts</span>
      <li><span class="dfn-paneled" id="term-for-microtask">microtask</span>
-     <li><span class="dfn-paneled" id="term-for-attr-object-name">name <small>(for object)</small></span>
+     <li><span class="dfn-paneled" id="term-for-attr-iframe-name">name</span>
      <li><span class="dfn-paneled" id="term-for-the-object-element">object</span>
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin">origin</span>
      <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint">perform a microtask checkpoint</span>
