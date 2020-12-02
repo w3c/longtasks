@@ -157,7 +157,7 @@ The {{PerformanceEntry/entryType}} attribute's getter will return <code>"longtas
 
 The {{PerformanceEntry/startTime}} attribute's getter will return a {{DOMHighResTimeStamp}} of when the task started.
 
-The {{PerformanceEntry/duration}} attribute's getter will return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task.
+The {{PerformanceEntry/duration}} attribute's getter will return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task, with a 1 ms granularity.
 
 The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's getter will return a frozen array of {{TaskAttributionTiming}} entries.
 
@@ -350,7 +350,8 @@ Report long tasks {#report-long-tasks}
             1. Set |newEntry|'s {{PerformanceEntry/name}} attribute to |name|.
             1. Set |newEntry|'s {{PerformanceEntry/entryType}} attribute to "<code>longtask</code>".
             1. Set |newEntry|'s {{PerformanceEntry/startTime}} attribute to |start time|.
-            1. Set |newEntry|'s {{PerformanceEntry/duration}} attribute to |end time| minus |start time|.
+            1. Let |dur| be |end time| minus |start time|.
+            1. Set |newEntry|'s {{PerformanceEntry/duration}} attribute to the integer part of |dur|.
             1. If |attribution| is not <code>null</code>, set |newEntry|'s {{PerformanceLongTaskTiming/attribution}} attribute to a new frozen array containing the single value |attribution|.
 
                 NOTE: future iterations of this API will add more values to the {{PerformanceLongTaskTiming/attribution}} attribute, but for now it only contains a single value.
@@ -362,8 +363,8 @@ Security & privacy considerations {#priv-sec}
 ===============================================
 
 Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about
-the source of the long task. There is a 50ms threshold for long tasks. Together this provides adequate
-protection against cross-origin leaks.
+the source of the long task. There is a 50ms threshold for long tasks. Durations are only provided in 1 ms
+granularity. Together this provides adequate protection against cross-origin leaks.
 
 The Long Tasks API provides timing information about the duration and type of tasks executed by the user,
 as well as attribution such as the browsing context causing the function calls. This could enable an attacker
@@ -374,8 +375,8 @@ widget. Detailed function call attribution would be used to determine the userâ€
 While the API doesnâ€™t introduce any new privacy attacks, it could make existing privacy attacks faster.
 Mitigations for this are possible and can be implemented as needed:
 
-* Further clamp the long task duration provided by the API to make attacks harder to exploit (i.e. round the
-    result or add random jitter to the value).
+* Further clamp or add random jitter to the long task duration provided by the API to make attacks harder to
+    exploit.
 * Limit the number of origins for which longtasks are exposed by the API, and obfuscate the attribution of
     any tasks afterwards. For instance, a page with 5 iframes could receive only attribution for tasks from 3
     of those iframes, and would receive no attribution ({{PerformanceEntry/name}} set to <code>unknown</code>")
@@ -389,10 +390,10 @@ What is Exposed to Observers? {#what-is-exposed}
 --------------------------------------------------------
 
 All observers within the top level page (i.e. all iframes in the page and the main frame) will receive
-notifications about presence of long tasks. We expose the start time of the task, its duration, and a
-pointer to the culprit frame. This information can already be observed today, and with higher resolution,
-using setTimeout. An attacker can do this by clearing everything else on the page and adding the
-vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
+notifications about presence of long tasks. We expose the start time of the task, its duration (with 1 ms
+granularity), and a pointer to the culprit frame. This information can already be observed today, and with
+higher resolution, using setTimeout. An attacker can do this by clearing everything else on the page and adding
+the vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
 Observers in other different pages (tabs or windows) should not receive notifications, regardless of the
 architecture of the user agent.
 
