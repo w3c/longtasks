@@ -5,7 +5,7 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
+  <meta content="Bikeshed version 4e8dd937, updated Fri Nov 13 16:49:31 2020 -0800" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
 <style>
 dl {
@@ -640,7 +640,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <header>
     <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"></a> </p>
     <h1 class="p-name no-ref" id="title">Long Tasks API 1</h1>
-    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-11-30">30 November 2020</time></span></h2>
+    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-12-02">2 December 2020</time></span></h2>
    </header>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -825,7 +825,7 @@ observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"longtask"</c-><c
    </dl>
    <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype">entryType</a></code> attribute’s getter will return <code class="highlight"><c- u>"longtask"</c-></code>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime">startTime</a></code> attribute’s getter will return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp">DOMHighResTimeStamp</a></code> of when the task started.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration">duration</a></code> attribute’s getter will return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①">DOMHighResTimeStamp</a></code> equal to the elapsed time between the start and end of task.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration">duration</a></code> attribute’s getter will return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①">DOMHighResTimeStamp</a></code> equal to the elapsed time between the start and end of task, with a 1 ms granularity.</p>
    <div class="mdn-anno wrapped">
     <button class="mdn-anno-btn"><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></button>
     <div class="feature">
@@ -1157,7 +1157,9 @@ This allows developers to detect support for long tasks.</p>
          <li data-md>
           <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>start time</var>.</p>
          <li data-md>
-          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration③">duration</a></code> attribute to <var>end time</var> minus <var>start time</var>.</p>
+          <p>Let <var>dur</var> be <var>end time</var> minus <var>start time</var>.</p>
+         <li data-md>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration③">duration</a></code> attribute to the integer part of <var>dur</var>.</p>
          <li data-md>
           <p>If <var>attribution</var> is not <code class="highlight"><c- kc>null</c-></code>, set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution④">attribution</a></code> attribute to a new frozen array containing the single value <var>attribution</var>.</p>
           <p class="note" role="note"><span>NOTE:</span> future iterations of this API will add more values to the <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution⑤">attribution</a></code> attribute, but for now it only contains a single value.</p>
@@ -1169,8 +1171,8 @@ This allows developers to detect support for long tasks.</p>
    </div>
    <h2 class="heading settled" data-level="5" id="priv-sec"><span class="secno">5. </span><span class="content">Security &amp; privacy considerations</span><a class="self-link" href="#priv-sec"></a></h2>
    <p>Long Tasks API adheres to the same-origin policy by including origin-safe attribution information about
-the source of the long task. There is a 50ms threshold for long tasks. Together this provides adequate
-protection against cross-origin leaks.</p>
+the source of the long task. There is a 50ms threshold for long tasks. Durations are only provided in 1 ms
+granularity. Together this provides adequate protection against cross-origin leaks.</p>
    <p>The Long Tasks API provides timing information about the duration and type of tasks executed by the user,
 as well as attribution such as the browsing context causing the function calls. This could enable an attacker
 to perform side-channel timing attacks to guess the user’s action, or identify the user. For example, a pattern of
@@ -1180,8 +1182,8 @@ widget. Detailed function call attribution would be used to determine the user�
 Mitigations for this are possible and can be implemented as needed:</p>
    <ul>
     <li data-md>
-     <p>Further clamp the long task duration provided by the API to make attacks harder to exploit (i.e. round the
-result or add random jitter to the value).</p>
+     <p>Further clamp or add random jitter to the long task duration provided by the API to make attacks harder to
+exploit.</p>
     <li data-md>
      <p>Limit the number of origins for which longtasks are exposed by the API, and obfuscate the attribution of
 any tasks afterwards. For instance, a page with 5 iframes could receive only attribution for tasks from 3
@@ -1196,10 +1198,10 @@ to execute.</p>
    </ul>
    <h3 class="heading settled" data-level="5.1" id="what-is-exposed"><span class="secno">5.1. </span><span class="content">What is Exposed to Observers?</span><a class="self-link" href="#what-is-exposed"></a></h3>
    <p>All observers within the top level page (i.e. all iframes in the page and the main frame) will receive
-notifications about presence of long tasks. We expose the start time of the task, its duration, and a
-pointer to the culprit frame. This information can already be observed today, and with higher resolution,
-using setTimeout. An attacker can do this by clearing everything else on the page and adding the
-vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
+notifications about presence of long tasks. We expose the start time of the task, its duration (with 1 ms
+granularity), and a pointer to the culprit frame. This information can already be observed today, and with
+higher resolution, using setTimeout. An attacker can do this by clearing everything else on the page and adding
+the vulnerable cross-origin resource to ensure that delays from the setTimeout are caused by that resource.
 Observers in other different pages (tabs or windows) should not receive notifications, regardless of the
 architecture of the user agent.</p>
    <p>Cross origin rules for what is exposed:</p>
