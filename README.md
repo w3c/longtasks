@@ -95,13 +95,10 @@ observer.observe({type: "longtask", buffered: true});
 **Long-task threshold is 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
 
 ### Demo
-For a quick demo of a partial implementation, in the latest Chrome Canary (version 55.0.2867.0 or up) go to [chrome://flags](chrome://flags) and enable the flag: "Experimental Web Platform features".
-Then visit this link:
-https://w3c.github.io/longtasks/render-jank-demo.html
+For a quick demo, visit this [website](https://w3c.github.io/longtasks/demo/render-jank-demo.html) on a browser which supports the Long Tasks API.
 
-For a demo of long tasks from same-origin & cross-origin frames see the demo below. Interacting with the iframed wikipedia page will generate cross-origin long task notifications.
-https://w3c.github.io/longtasks/demo.html
-
+For a demo of long tasks from same-origin & cross-origin frames, see this [website](https://w3c.github.io/longtasks/demo/demo.html).
+Interacting with the iframed wikipedia page will generate cross-origin long task notifications.
 
 ### Pointing to the culprit
 Long task represents the top level event loop task. Within this task, different types of work (such as script, layout, style etc) may be done, and they could be executed within different frame contexts. The type of work could also be global in nature such as a long GC that is process or frame-tree wide.
