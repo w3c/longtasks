@@ -95,9 +95,9 @@ observer.observe({type: "longtask", buffered: true});
 **Long-task threshold is 50ms.** That is, the UA should emit long-task events whenever it detects tasks whose execution time exceeds >50ms. 
 
 ### Demo
-For a quick demo, visit this [website](https://w3c.github.io/longtasks/demo/render-jank-demo.html) on a browser which supports the Long Tasks API.
+For a quick demo, visit this [website](https://longtasks.glitch.me/render-jank-demo.html) on a browser which supports the Long Tasks API.
 
-For a demo of long tasks from same-origin & cross-origin frames, see this [website](https://w3c.github.io/longtasks/demo/demo.html).
+For a demo of long tasks from same-origin & cross-origin frames, see this [website](https://longtasks.glitch.me/demo.html).
 Interacting with the iframed wikipedia page will generate cross-origin long task notifications.
 
 ### Pointing to the culprit
