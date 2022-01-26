@@ -153,6 +153,9 @@ The {{PerformanceEntry/name}} attribute's getter will return one of the followin
 : "<code><dfn>multiple-contexts</dfn></code>"
 :: The long task originated from an event loop <a>task</a> involving multiple <a>browsing contexts</a>.
 
+Note: There are some inconsistencies across these names, such as the "-unreachable" and the "-contexts" suffixes.
+These are kept because these names have been used for a long time in some user agents.
+
 The {{PerformanceEntry/entryType}} attribute's getter will return <code>"longtask"</code>.
 
 The {{PerformanceEntry/startTime}} attribute's getter will return a {{DOMHighResTimeStamp}} of when the task started.
