@@ -276,7 +276,7 @@ Report long tasks {#report-long-tasks}
         1. Add |topmostBC|'s [=active document=]'s [=relevant Realm=] to |destinationRealms|.
         1. Let |descendantBCs| be |topmostBC|'s [=active document=]'s [=list of the descendant browsing contexts=].
         1. Let |document| be |descendantBC|'s [=active document=].
-        1. For each |descendantBC| in |descendantBCs|, add (|document|'s [=relevant Realm=], |document|'s [=relevant settings object=]'s [=environment settings object/cross origin isolated capability=]) to |destinationRealms|.
+        1. For each |descendantBC| in |descendantBCs|, add (|document|'s [=relevant Realm=], |document|'s [=relevant settings object=]'s [=environment settings object/cross-origin isolated capability=]) to |destinationRealms|.
 
     1. A user agent may remove some [=JavaScript Realms=] from |destinationRealms|.
 
