@@ -6,7 +6,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
+  <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
 <style>
 dl {
@@ -650,7 +650,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Long Tasks API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-01-28">28 January 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-14">14 April 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -758,7 +758,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p>Some applications (and <a href="https://en.wikipedia.org/wiki/Real_user_monitoring">RUM</a> vendors) are already attempting to identify and track cases where "long tasks" happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive expirations: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the event loop. This approach mostly works but has several bad performance implications: by polling to detect long tasks, the application prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know what is causing the delay (e.g. first party or third party code).</p>
    <p>The <a href="https://developers.google.com/web/fundamentals/performance/rail">RAIL</a> performance model suggests that applications should respond to user input in less than 100ms (for touch move and scrolling, the threshold is 16ms). The goal of this API is to surface notifications about tasks that may prevent the application from hitting these targets. This API surfaces tasks that take 50ms or more. A website without these tasks should respond to user input in under 100ms: it will take less than 50ms to finish the task that is being executed when the user input is received and less than 50ms to execute the task to react to such user input.</p>
    <h3 class="heading settled" data-level="1.1" id="example"><span class="secno">1.1. </span><span class="content">Usage Example</span><a class="self-link" href="#example"></a></h3>
-<pre class="example highlight" id="example-872f1566"><a class="self-link" href="#example-872f1566"></a><c- a>const</c-> observer <c- o>=</c-> <c- k>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
+<pre class="example highlight" id="example-872f1566"><a class="self-link" href="#example-872f1566"></a><c- a>const</c-> observer <c- o>=</c-> <c- ow>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
     <c- k>for</c-> <c- p>(</c-><c- a>const</c-> entry <c- k>of</c-> list<c- p>.</c->getEntries<c- p>())</c-> <c- p>{</c->
         <c- c1>// Process long task notifications:</c->
         <c- c1>// report back for analytics and monitoring</c->
@@ -1028,7 +1028,9 @@ This allows developers to detect support for long tasks.</p>
        <li data-md>
         <p>Let <var>descendantBCs</var> be <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document①">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts②">list of the descendant browsing contexts</a>.</p>
        <li data-md>
-        <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add <var>descendantBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document②">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a> to <var>destinationRealms</var>.</p>
+        <p>Let <var>document</var> be <var>descendantBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document②">active document</a>.</p>
+       <li data-md>
+        <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add (<var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>, <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability" id="ref-for-concept-settings-object-cross-origin-isolated-capability">cross-origin isolated capability</a>) to <var>destinationRealms</var>.</p>
       </ol>
      <li data-md>
       <p>A user agent may remove some <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①">JavaScript Realms</a> from <var>destinationRealms</var>.</p>
@@ -1037,7 +1039,7 @@ This allows developers to detect support for long tasks.</p>
     <p class="issue" id="issue-63aa4f38"><a class="self-link" href="#issue-63aa4f38"></a> there is some ongoing discussion regarding the scope of which <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Documents</a></code> gain visibility over which long tasks, so this logic could change in the future. <a href="https://github.com/w3c/longtasks/issues/75">[Issue #75]</a></p>
     <ol>
      <li data-md>
-      <p>For each <var>destinationRealm</var> in <var>destinationRealms</var>:</p>
+      <p>For each (<var>destinationRealm</var>, <var>crossOriginIsolatedCapability</var>) in <var>destinationRealms</var>:</p>
       <ol>
        <li data-md>
         <p>Let <var>name</var> be the empty string. This will be used to report <a data-link-type="dfn" href="#minimal-culprit-attribution" id="ref-for-minimal-culprit-attribution">minimal culprit attribution</a>, below.</p>
@@ -1172,9 +1174,9 @@ This allows developers to detect support for long tasks.</p>
          <li data-md>
           <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype" id="ref-for-dom-performanceentry-entrytype③">entryType</a></code> attribute to "<code class="highlight">longtask</code>".</p>
          <li data-md>
-          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to <var>start time</var>.</p>
+          <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime③">startTime</a></code> attribute to the result of <a data-link-type="dfn" href="https://www.w3.org/TR/hr-time-3/#dfn-coarsen-time" id="ref-for-dfn-coarsen-time">coarsening</a> <var>start time</var> given <var>crossOriginIsolatedCapability</var>.</p>
          <li data-md>
-          <p>Let <var>dur</var> be <var>end time</var> minus <var>start time</var>.</p>
+          <p>Let <var>dur</var> be the result of <a data-link-type="dfn" href="https://www.w3.org/TR/hr-time-3/#dfn-coarsen-time" id="ref-for-dfn-coarsen-time①">coarsening</a> <var>end time</var> given <var>crossOriginIsolatedCapability</var>, minus <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime④">startTime</a></code>.</p>
          <li data-md>
           <p>Set <var>newEntry</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" id="ref-for-dom-performanceentry-duration③">duration</a></code> attribute to the integer part of <var>dur</var>.</p>
          <li data-md>
@@ -1343,6 +1345,12 @@ showing task type or additional attribution to untrusted cross origin observers.
     <li><a href="#ref-for-idl-def-domhighrestimestamp">3.1. PerformanceLongTaskTiming interface</a> <a href="#ref-for-idl-def-domhighrestimestamp①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-coarsen-time">
+   <a href="https://www.w3.org/TR/hr-time-3/#dfn-coarsen-time">https://www.w3.org/TR/hr-time-3/#dfn-coarsen-time</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-coarsen-time">4.1. Report long tasks</a> <a href="#ref-for-dfn-coarsen-time①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-window">
    <a href="https://html.spec.whatwg.org/multipage/window-object.html#window">https://html.spec.whatwg.org/multipage/window-object.html#window</a><b>Referenced in:</b>
    <ul>
@@ -1384,6 +1392,12 @@ showing task type or additional attribution to untrusted cross origin observers.
    <ul>
     <li><a href="#ref-for-browsing-context-container">2. Terminology</a>
     <li><a href="#ref-for-browsing-context-container①">4.1. Report long tasks</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-settings-object-cross-origin-isolated-capability">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability">https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-settings-object-cross-origin-isolated-capability">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-attr-object-data">
@@ -1472,6 +1486,12 @@ showing task type or additional attribution to untrusted cross origin observers.
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-relevant-realm">4.1. Report long tasks</a> <a href="#ref-for-concept-relevant-realm①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-relevant-settings-object">
+   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-relevant-settings-object">4.1. Report long tasks</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-same-origin">
@@ -1568,7 +1588,7 @@ showing task type or additional attribution to untrusted cross origin observers.
    <ul>
     <li><a href="#ref-for-dom-performanceentry-starttime">3.1. PerformanceLongTaskTiming interface</a>
     <li><a href="#ref-for-dom-performanceentry-starttime①">3.2. TaskAttributionTiming interface</a>
-    <li><a href="#ref-for-dom-performanceentry-starttime②">4.1. Report long tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a>
+    <li><a href="#ref-for-dom-performanceentry-starttime②">4.1. Report long tasks</a> <a href="#ref-for-dom-performanceentry-starttime③">(2)</a> <a href="#ref-for-dom-performanceentry-starttime④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-supportedentrytypes-attribute">
@@ -1629,6 +1649,11 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="term-for-idl-def-domhighrestimestamp">DOMHighResTimeStamp</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[hr-time-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-dfn-coarsen-time">coarsen time</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-window">Window</span>
@@ -1638,6 +1663,7 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="term-for-ancestor-browsing-context①">ancestor browsing context</span>
      <li><span class="dfn-paneled" id="term-for-window-bc">browsing context <small>(for Window)</small></span>
      <li><span class="dfn-paneled" id="term-for-browsing-context-container">browsing context container</span>
+     <li><span class="dfn-paneled" id="term-for-concept-settings-object-cross-origin-isolated-capability">cross-origin isolated capability</span>
      <li><span class="dfn-paneled" id="term-for-attr-object-data">data</span>
      <li><span class="dfn-paneled" id="term-for-the-embed-element">embed</span>
      <li><span class="dfn-paneled" id="term-for-event-loop">event loop</span>
@@ -1652,6 +1678,7 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="term-for-concept-settings-object-origin">origin</span>
      <li><span class="dfn-paneled" id="term-for-perform-a-microtask-checkpoint">perform a microtask checkpoint</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-realm">relevant realm</span>
+     <li><span class="dfn-paneled" id="term-for-relevant-settings-object">relevant settings object</span>
      <li><span class="dfn-paneled" id="term-for-same-origin">same origin</span>
      <li><span class="dfn-paneled" id="term-for-script-evaluation-environment-settings-object-set">script evaluation environment settings object set</span>
      <li><span class="dfn-paneled" id="term-for-concept-realm-settings-object">settings object</span>
@@ -1691,6 +1718,8 @@ showing task type or additional attribution to untrusted cross origin observers.
    <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-hr-time-2">[HR-TIME-2]
    <dd>Ilya Grigorik. <a href="https://www.w3.org/TR/hr-time-2/"><cite>High Resolution Time Level 2</cite></a>. 21 November 2019. REC. URL: <a href="https://www.w3.org/TR/hr-time-2/">https://www.w3.org/TR/hr-time-2/</a>
+   <dt id="biblio-hr-time-3">[HR-TIME-3]
+   <dd>Yoav Weiss. <a href="https://www.w3.org/TR/hr-time-3/"><cite>High Resolution Time</cite></a>. 28 January 2022. WD. URL: <a href="https://www.w3.org/TR/hr-time-3/">https://www.w3.org/TR/hr-time-3/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-performance-timeline">[PERFORMANCE-TIMELINE]
