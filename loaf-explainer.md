@@ -176,7 +176,7 @@ while (true) {
 }
 ```
 
-### Some notes about processing
+### Some notes
 
 1. relying on "discarded rendering opportunities" as the qualifier for sluggishness alongside (or
 instead of) millisecond duration allows us to omit noise related to invisible tabs, and also
@@ -195,6 +195,9 @@ mitigate this would be to only report LoAF to a top-level document if it:
 defined and can be quite implementation-specific. However, this info is
 observable today, by calling `getComputedStyle()` which triggers a
 style update or `getClientRects()` which triggers a layout.
+
+1. TBT & TTI are lighthouse values that rely on long tasks. Should they be modified to use long
+animation frames etc?
 
 ## Overlap with [Event Timing](https://w3c.github.io/event-timing/)
 
