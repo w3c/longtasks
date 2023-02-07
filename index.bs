@@ -41,6 +41,7 @@ urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
     type: dfn; text: current high resolution time; url: #dfn-current-high-resolution-time;
 urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #event-loop; text: event loop;
+    type: dfn; url: #event-loop-processing-model; text: event loop processing model;
     type: dfn; url: #browsing-context; text: browsing context;
     type: dfn; url: #calling-scripts; text: calling scripts;
     type: dfn; url: #list-of-the-descendant-browsing-contexts; text: list of the descendant browsing contexts;
@@ -110,6 +111,10 @@ Terminology {#sec-terminology}
 
 * A pause between the last step and the next first step of the <a>event loop processing model</a>. This captures any work that the user agent performs in its UI thread outside of the <a>event loop</a>.
 
+The <dfn>browsing context container</dfn> for a [=browsing context=] |bc| is |bc|'s [=navigable/active document=]'s [=node navigable=]'s [=navigable/container=].
+
+Note: This term is outdated, and the new terms should be reused when revamping this.
+
 <dfn>Culprit browsing context container</dfn> refers to the <a>browsing context container</a> (<{iframe}>, <{object}>, etc.) that is being implicated, on the whole, for a <a>long task</a>.
 
 <dfn>Attribution</dfn> refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task, as well as identifying which <a>culprit browsing context container</a> is responsible for that work.
@@ -139,13 +144,13 @@ The {{PerformanceEntry/name}} attribute's getter will return one of the followin
 : "<code><dfn>self</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within this <a>browsing context</a>.
 : "<code><dfn>same-origin-ancestor</dfn></code>"
-:: The long task originated from an event loop <a>task</a> within a <a lt="same origin">same-origin</a> <a>ancestor browsing context</a>.
+:: The long task originated from an event loop <a>task</a> within a <a lt="same origin">same-origin</a> <a>ancestor navigable</a>.
 : "<code><dfn>same-origin-descendant</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within a <a lt="same origin">same-origin</a> <a lt="list of the descendant browsing contexts">descendant browsing context</a>.
 : "<code><dfn>same-origin</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within a <a lt="same origin">same-origin</a> <a>browsing context</a> that is not an ancestor or descendant.
 : "<code><dfn>cross-origin-ancestor</dfn></code>"
-:: The long task originated from an event loop <a>task</a> within a cross-origin <a>ancestor browsing context</a>.
+:: The long task originated from an event loop <a>task</a> within a cross-origin <a>ancestor navigable</a>.
 : "<code><dfn>cross-origin-descendant</dfn></code>"
 :: The long task originated from an event loop <a>task</a> within a cross-origin <a lt="list of the descendant browsing contexts">descendant browsing context</a>.
 : "<code><dfn>cross-origin-unreachable</dfn></code>"
@@ -294,7 +299,7 @@ Report long tasks {#report-long-tasks}
             1. Otherwise, if |task|'s [=script evaluation environment settings object set=]'s length is greater than one: set |name| to "<code>[=multiple-contexts=]</code>" and |culpritSettings| to <code>null</code>.
             1. Otherwise, i.e. if |task|'s [=script evaluation environment settings object set=]'s length is one:
                 1. Set |culpritSettings| to the single item in |task|'s [=script evaluation environment settings object set=].
-                1. Let |destinationSettings| be |destinationRealm|'s [=Realm/settings object=].
+                1. Let |destinationSettings| be |destinationRealm|'s [=relevant settings object=].
                 1. Let |destinationOrigin| be |destinationSettings|'s [=environment settings object/origin=].
                 1. Let |destinationBC| be |destinationSettings|'s [=environment settings object/global object=]'s [=Window/browsing context=].
                 1. Let |culpritBC| be |culpritSettings|'s [=environment settings object/global object=]'s [=Window/browsing context=].
