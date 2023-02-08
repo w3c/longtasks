@@ -56,7 +56,7 @@ const someLongAnimationFrameEntry = {
     // This is a well-specified and interoperable time, but doesn't include presentation time
     paintTime,
 
-    duration: markPaintTimingTime - frameStartTime,
+    duration: paintTime - frameStartTime,
 
     // Time spent in style/layout due to JS ("layout thrashing"), e.g. getBoundingClientRect() or
     // getComputedStyle(). This is only taken into account if there is also a layout/style update
@@ -68,7 +68,7 @@ const someLongAnimationFrameEntry = {
     blocking: 'ui-event' | 'animation' | 'none',
 
     // The implementation-specific time when the frame was actually presented. Should be anytime
-    // between the previous task's |markPaintTimingTime| and this task's |taskStartTime|.
+    // between the previous task's |paintTime| and this task's |taskStartTime|.
     presentationTime,
     scripts: [
         {
