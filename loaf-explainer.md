@@ -38,11 +38,10 @@ It's the time measured between when the main thread started doing any work (see 
 includes all the rendering obsevers (requestAnimationFrame, ResizeObserver etc.) and
 may or may not include presentation time (as that is somewhat implementation specific).
 
-In addition to making the cadence fit better with what it measures, the entry would include extra information to help understand what made it long, and what kind of consequences it had:
+In addition to making the cadence fit better with what it measures, the entry could include extra information to help understand what made it long, and what kind of consequences it had:
 
 - Time spent in forced layout/style calculations - e.g. calling `getBoundingClientRect`, doing more processing, and then rendering (also known as "layout thrashing" or "forced reflow").
-- How many rendering opportuinities were missed - counting points in time where the browser was ready to receive a new paint but the main thread was busy with this LoAF.
-- Is the frame blocking animation/input-feedback *in practice*. Note that a frame that blocks actual UI events would also be accessible via [event timing](https://w3c.github.io/event-timing/).
+- Is the frame blocking input-feedback *in practice*. Note that a frame that blocks actual UI events would also be accessible via [event timing](https://w3c.github.io/event-timing/).
 - User scripts processed during the time of the frame, be it callbacks, event handlers, promise resolvers, or script block parsing and evaluation, and information about those scripts (source, how long they've been delayed for).
 
 ## How a LoAF entry might look like
@@ -50,23 +49,22 @@ In addition to making the cadence fit better with what it measures, the entry wo
 const someLongAnimationFrameEntry = {
     entryType: "long-animation-frame",
 
-    // https://html.spec.whatwg.org/#event-loop-processing-model, see |taskStartTime|
-    startTime: taskStartTime,
+    // See details below...
+    startTime: frameStartTime,
 
     // https://html.spec.whatwg.org/#event-loop-processing-model (17)
     // This is a well-specified and interoperable time, but doesn't include presentation time
-    duration: markPaintTimingTime - taskStartTime,
+    paintTime,
+
+    duration: markPaintTimingTime - frameStartTime,
 
     // Time spent in style/layout due to JS ("layout thrashing"), e.g. getBoundingClientRect() or
     // getComputedStyle(). This is only taken into account if there is also a layout/style update
     // in the final rendering phase.
     totalForcedStyleAndLayoutDuration,
 
-    // The number of times there was a render opportunity but the main thread was busy
-    // processing this frame
-    discardedRenderOpportunities,
-
     // Whether this long frame was blocking input/animation in practice
+    // A LOaF can block both, in which case ui-event would take precedent.
     blocking: 'ui-event' | 'animation' | 'none',
 
     // The implementation-specific time when the frame was actually presented. Should be anytime
@@ -119,6 +117,7 @@ can be roughly described as such:
 ```js
 while (true) {
     const startTime = performance.now();
+    // It's unspecified where UI events fit in. Does each have their own task?
     const task = eventQueue.pop();
     if (task)
         task.run();
@@ -141,11 +140,13 @@ while (true) {
     const task = eventQueue.pop();
     if (task)
         task.run();
+    uiEventQueue.processEvents({rafAligned: false});
     if (performance.now() - startTime > 50)
         reportLongTask();
 
     if (hasRenderingOpportunity()) {
         eventQueue.push(() => {
+            uiEventQueue.processEvents({rafAligned: true});
             callFrameAlignedCallbacks(); // e.g. requestAnimationFrame, ResizeObserver
             markPaintTiming();
             render();
@@ -157,8 +158,12 @@ while (true) {
 The new proposal:
 
 ```js
+
+let frameStartTime = null;
 while (true) {
-    const startTime = performance.now();
+    if (frameStartTime === null)
+        frameStartTime = performance.now();
+
     const task = eventQueue.pop();
     if (task)
         task.run();
@@ -168,19 +173,18 @@ while (true) {
         callFrameAlignedCallbacks(); // e.g. requestAnimationFrame, ResizeObserver
         markPaintTiming();
 
-        // Numbers are bikesheddable
-        if (totalRenderingOpportunities > 3 || performance.now() - startTime > 50)
+        // Maybe also count discarded render opportunities, or change the magic number
+        if (performance.now() - frameStartTime > 50)
             reportLongAnimationFrame();
         render();
+
+        // Next event loop iteration would reinitialize frameStartTime.
+        frameStartTime = null;
     }
 }
 ```
 
-### Some notes
-
-1. relying on "discarded rendering opportunities" as the qualifier for sluggishness alongside (or
-instead of) millisecond duration allows us to omit noise related to invisible tabs, and also
-doesn't bind us to the notion of a 60hz animations.
+### Notes, complexity, doubts, future ideas
 
 1. One complexity inherited from long tasks is the fact that the event loop is shared across
 windows of the same [agent](https://tc39.es/ecma262/#sec-agents) (or process). A possible way to
@@ -189,15 +193,20 @@ mitigate this would be to only report LoAF to a top-level document if it:
     1. Participates in either the work task or the rendering
 
 
-1. Exposing source locations might be a bit tricky or implementation defined. This can be an optional field but in any case requires some research.
+1. we might consider in the future to relyi on "discarded rendering opportunities" as the qualifier
+for sluggishness alongside (or instead of) millisecond duration allows us to omit noise related to
+invisible tabs, and also doesn't bind us to the notion of a 60hz animations.
+
+1. Exposing source locations might be a bit tricky or implementation defined.
+This can be an optional field but in any case requires some research.
 
 1. Exposing total layout/style time is delicate because those terms are not
 defined and can be quite implementation-specific. However, this info is
 observable today, by calling `getComputedStyle()` which triggers a
 style update or `getClientRects()` which triggers a layout.
 
-1. TBT & TTI are lighthouse values that rely on long tasks. Should they be modified to use long
-animation frames etc?
+1. TBT & TTI are lighthouse values that rely on long tasks. Should they be modified to use LoAFs
+instead? Are those metrics useful?
 
 ## Overlap with [Event Timing](https://w3c.github.io/event-timing/)
 
