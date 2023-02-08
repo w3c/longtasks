@@ -1,6 +1,9 @@
 # Long Animation Frames (LoAF)
 Long Tasks Revamped
 
+## Diclaimer
+This is work in progress. Feedback welcome, early for expectations :)
+
 ## History
 
 Long tasks have long been a way to diagnose and track lack of responsiveness or "jankiness", which eventually affects core web vital metrics like [INP](https://web.dev/inp/). Developers have been using them with varying degrees of success, and now we can learn from the
