@@ -2,7 +2,7 @@
 Long Tasks Revamped
 
 ## Diclaimer
-This is work in progress. Feedback welcome, early for expectations :)
+This is work in progress. Feedback welcome, lots of things might change etc.
 
 ## History
 
@@ -69,6 +69,12 @@ const someLongAnimationFrameEntry = {
     // Whether this long frame was blocking input/animation in practice
     // A LOaF can block both, in which case ui-event would take precedent.
     blocking: 'ui-event' | 'animation' | 'none',
+
+    // https://html.spec.whatwg.org/#update-the-rendering
+    renderStart,
+
+    // https://html.spec.whatwg.org/#update-the-rendering (#14)
+    styleAndLayoutStart,
 
     // The implementation-specific time when the frame was actually presented. Should be anytime
     // between the previous task's |paintTime| and this task's |taskStartTime|.
@@ -162,10 +168,12 @@ The new proposal:
 
 ```js
 
-let frameStartTime = null;
+let frameTiming = null;
 while (true) {
-    if (frameStartTime === null)
-        frameStartTime = performance.now();
+    if (frameTiming === null) {
+        frameTiming = new AnimationFrameTiming();
+        frameTiming.startTime = performance.now();
+    }
 
     const task = eventQueue.pop();
     if (task)
@@ -173,13 +181,21 @@ while (true) {
 
     if (hasRenderingOpportunity()) {
         // It doesn't matter if it's a new task...
-        callFrameAlignedCallbacks(); // e.g. requestAnimationFrame, ResizeObserver
-        markPaintTiming();
+        if (document.needsToRender()) {
+            invokeAnimationFrameCallbacks();
+            frameTiming.styleAndLayoutStart = performance.now();
+            while (document.needsStyleOrLayout()) {
+                document.calculateStyleAndLayout();
+                invokeResizeObserverCallbacks();
+            }
+            frameTiming.paintTime = performance.now();
+            markPaintTiming();
 
-        // Maybe also count discarded render opportunities, or change the magic number
-        if (performance.now() - frameStartTime > 50)
-            reportLongAnimationFrame();
-        render();
+            // Maybe also count discarded render opportunities, or change the magic number
+            if (performance.now() - frameStartTime > 50)
+                reportLongAnimationFrame();
+            render();
+        }
 
         // Next event loop iteration would reinitialize frameStartTime.
         frameStartTime = null;
