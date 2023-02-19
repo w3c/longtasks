@@ -133,7 +133,9 @@ const someLongAnimationFrameEntry = {
     startTime: frameStartTime,
 
     // https://html.spec.whatwg.org/#event-loop-processing-model (17)
-    // This is a well-specified and interoperable time, but doesn't include presentation time
+    // This is a well-specified and interoperable time, but doesn't include presentation time.
+    // It's the time after all the animations and observers are done, style and layout are done,
+    // and all that's left is painting & compositing.
     renderEndTime,
 
     duration: renderEnd - frameStartTime,
@@ -147,6 +149,10 @@ const someLongAnimationFrameEntry = {
     // A LOaF can block both, in which case ui-event would take precedent.
     blocking: 'ui-event' | 'animation' | 'none',
 
+    // Whether the work task (before rendering) cane from this window, a descendant, an ancestor,
+    // or adifferent window
+    taskAttribution: TaskAttributionTiming
+
     // https://html.spec.whatwg.org/#update-the-rendering
     renderStart,
 
@@ -158,22 +164,8 @@ const someLongAnimationFrameEntry = {
     presentationTime,
     scripts: [
         {
-            // This is an imported module or a <script> element
-            // So it includes parsing & evaluation. It may or may not execute code, depending on
-            // the script
-            entryType: "evaluate-script",
-            name: theScriptSrc,
-            initiator: "element" | "import",
-            startTime,
-            // The time after parse+compile
-            executionStartTime,
-            duration
-        },
-
-        {
-            entryType: "callback-script",
-
-            frameAttribution: TaskAttribution,
+            entryType: "callback" | "promise" | "classic-script" | "dynamic-module-import" |
+                        "module-script" | ""
 
             // these can be classic callbacks, event handlers, or promise resolvers
             // The name is the object.function of the registration function (the function initially
@@ -182,13 +174,24 @@ const someLongAnimationFrameEntry = {
 
             // when the function was invoked
             startTime,
-            // when the subsequent microtask queue has finished processing
+
+            // If this script was parsed/compiled, this would be the time after compilation.
+            // Otherwise it would be equal to startTime
+            executionStartTime,
+
+            // the duration between startTime and when the subsequent microtask queue has finished
+            // processing
             duration,
 
-            // The time when the callback was queued, e.g. the event timeStamp.
+            // Total time spent in forced layout/style inside this function
+            forcedStyleAndLayoutTime,
+
+            // The time when the callback was queued, e.g. the event timeStamp or the time when
+            // the timeout was supposed to be invoked.
             queueTime,
+
             // In the case of promise resolver this would be the invoker's source location
-            sourceLocation: "funcName@URL:line:col",
+            sourceLocation: "functionName@URL:line:col",
         }
     ]
 }
