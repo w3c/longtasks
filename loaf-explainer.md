@@ -201,6 +201,7 @@ The new proposal:
 ```js
 
 let frameTiming = null;
+
 while (true) {
     if (frameTiming === null) {
         frameTiming = new AnimationFrameTiming();
@@ -215,6 +216,8 @@ while (true) {
         frameTiming.renderEnd = performance.now();
         if (frameTiming.renderEnd - frameStartTime > 50)
             reportLongAnimationFrame();
+        frameTiming = null;
+        continue;
     }
 
     if (!hasRenderingOpportunity())
@@ -222,20 +225,23 @@ while (true) {
 
     invokeAnimationFrameCallbacks();
     frameTiming.styleAndLayoutStart = performance.now();
-    while (document.needsStyleOrLayout()) {
-        document.calculateStyleAndLayout();
-        invokeResizeObserverCallbacks();
+    for (const document of documentsInThisEventLoop) {
+        while (document.needsStyleOrLayout()) {
+            document.calculateStyleAndLayout();
+            invokeResizeObserverCallbacks();
+        }
     }
     frameTiming.renderEnd = performance.now();
     markPaintTiming();
     if (frameTiming.renderEnd - frameStartTime > 50)
         reportLongAnimationFrame();
 
+    frameTiming = null;
     render();
 }
 ```
 
-### Notes, complexity, doubts, future ideas
+### Notes, complexity, doubts, future ideas, TODOs
 
 1. One complexity inherited from long tasks is the fact that the event loop is shared across
 windows of the same [agent](https://tc39.es/ecma262/#sec-agents) (or process). The solution here is
@@ -251,15 +257,21 @@ a bit different but relies on similar principles:
     the existing [attribution](https://w3c.github.io/longtasks/#sec-TaskAttributionTiming).
 
 
-1. To avoid the magic 50hz number, we might consider in the future to make the threshold configurable,
+1. To avoid the magic 50hz number, consider making the threshold configurable,
 or rely on "discarded rendering opportunities" as the qualifier for sluggishness alongside (or
 instead of) millisecond duration.
+
+1. Consider separating layout & style durations.
 
 1. Exposing source locations might be a bit tricky or implementation defined.
 This can be an optional field but in any case requires some research.
 
 1. TBT & TTI are lighthouse values that rely on long tasks. Should they be modified to use LoAFs
 instead? Are those metrics useful?
+
+1. Clarify how this correlates to [JS Profiler markers](https://github.com/WICG/js-self-profiling/blob/main/markers.md). In general performance observer aspire to be expose succinct important information with
+minimal overhead, while profiling exposes "everything" with some more overhead, but the differences
+and relationship can be further understood.
 
 ## Overlap with [Event Timing](https://w3c.github.io/event-timing/)
 
