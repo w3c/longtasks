@@ -244,6 +244,21 @@ while (true) {
 }
 ```
 
+### Security & Privacy Considerations
+
+At the most part, LoAF only exposes information across same-origin windows. Information about
+scripts within a window is already observable, e.g. using resource timing or a service worker.
+
+However, LoAF might expose rendering information for a particular document tree that may be
+cross-origin (same-agent/site). The details about rendering the frame, such as
+`styleAndLayoutStartTime`, are proposed to be visible to all the same-agent windows that are
+rendered serially. That's because this information is already observable, by using
+`requestAnimationFrame` and `ResizeObserver` and measuring the delay between them. The premise is
+that global "update the rendering" timing information is already observable across same-agent
+windows, so exposing it directly does not leak new cross-origin information. However, the idea
+exposing less information to cross-origin same-agent subframes (as in, expose ) is open for
+discussion.
+
 ### Notes, complexity, doubts, future ideas, TODOs
 
 1. One complexity inherited from long tasks is the fact that the event loop is shared across
