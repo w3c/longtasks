@@ -136,22 +136,12 @@ const someLongAnimationFrameEntry = {
     // This is a well-specified and interoperable time, but doesn't include presentation time.
     // It's the time after all the animations and observers are done, style and layout are done,
     // and all that's left is painting & compositing.
-    renderEndTime,
-
-    duration: renderEnd - frameStartTime,
-
-    // Time spent in style/layout due to JS ("layout thrashing"), e.g. getBoundingClientRect() or
-    // getComputedStyle(). This is only taken into account if there is also a layout/style update
-    // in the final rendering phase.
-    totalForcedStyleAndLayoutDuration,
+    duration,
 
     // Whether this long frame was blocking input/animation in practice
     // A LOaF can block both, in which case ui-event would take precedent.
+    // (Not implemented yet)
     blocking: 'ui-event' | 'animation' | 'none',
-
-    // Whether the work task (before rendering) cane from this window, a descendant, an ancestor,
-    // or adifferent window
-    taskAttribution: TaskAttributionTiming
 
     // https://html.spec.whatwg.org/#update-the-rendering
     renderStart,
@@ -159,13 +149,22 @@ const someLongAnimationFrameEntry = {
     // https://html.spec.whatwg.org/#update-the-rendering (#14)
     styleAndLayoutStart,
 
+    // The time the animation frame was queued. This could be before startTime, which means that
+    // the animation frame was delayed, or after, which means that it was deferred - several updates
+    // were batched together before scheduling a frame.
+    desiredRenderStart,
+
     // The implementation-specific time when the frame was actually presented. Should be anytime
     // between the previous task's |paintTime| and this task's |taskStartTime|.
+    // (Not implemented yet)
     presentationTime,
+
+    // Time of the first UI event (mouse/keyboard etc.)
+    firstUIEventTimestamp,
     scripts: [
         {
-            entryType: "callback" | "promise" | "classic-script" | "dynamic-module-import" |
-                        "module-script" | ""
+            type: "user-callback" | "classic-script" |
+                        "module-script" | "event-listener" | "resolve-promise" | "reject-promise"
 
             // these can be classic callbacks, event handlers, or promise resolvers
             // The name is the object.function of the registration function (the function initially
@@ -177,21 +176,29 @@ const someLongAnimationFrameEntry = {
 
             // If this script was parsed/compiled, this would be the time after compilation.
             // Otherwise it would be equal to startTime
-            executionStartTime,
+            executionStart,
 
             // the duration between startTime and when the subsequent microtask queue has finished
             // processing
             duration,
 
             // Total time spent in forced layout/style inside this function
-            forcedStyleAndLayoutTime,
+            forcedStyleAndLayoutDuration,
 
             // The time when the callback was queued, e.g. the event timeStamp or the time when
             // the timeout was supposed to be invoked.
-            queueTime,
+            desiredExecutionStart,
 
             // In the case of promise resolver this would be the invoker's source location
             sourceLocation: "functionName@URL:line:col",
+
+            // Relationship between the (same-origin) window where this script was executed and
+            // this window.
+            windowAttribution: "self" | "descendant" | "ancestor" | "same-page" | "other"
+
+            // A reference to the same-origin window that originated the script, if it's still
+            // alive.
+            window,
         }
     ]
 }
