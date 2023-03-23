@@ -130,7 +130,7 @@ const someLongAnimationFrameEntry = {
     entryType: "long-animation-frame",
 
     // See details below...
-    startTime: frameStartTime,
+    startTime,
 
     // https://html.spec.whatwg.org/#event-loop-processing-model (17)
     // This is a well-specified and interoperable time, but doesn't include presentation time.
@@ -144,6 +144,7 @@ const someLongAnimationFrameEntry = {
     blocking: 'ui-event' | 'animation' | 'none',
 
     // https://html.spec.whatwg.org/#update-the-rendering
+    // Equivalent to BeginMainFrame in Chromium
     renderStart,
 
     // https://html.spec.whatwg.org/#update-the-rendering (#14)
@@ -163,15 +164,24 @@ const someLongAnimationFrameEntry = {
     firstUIEventTimestamp,
     scripts: [
         {
+            // Scripts are essenatially script blocks (either classic or module), user callbacks
+            // (e.g. requestAnimationFrame/setTimeout callback), event listeners, and promise
+            // handlers (.then / .catch)
             type: "user-callback" | "classic-script" |
                         "module-script" | "event-listener" | "resolve-promise" | "reject-promise"
 
-            // these can be classic callbacks, event handlers, or promise resolvers
-            // The name is the object.function of the registration function (the function initially
-            // called to generate this callback).
-            name: "HTMLImgElement.onload" | "Window.requestAnimationFrame" | "Response.json",
+            // The name tries to give as much information about the *invoker* of the script.
+            // For callbacks: Object.functionName of the invoker, e.g. Window.setTimeout
+            // For element event listeners: TAGNAME#id.onevent, or TAGNAME[src=src].onevent
+            // For script blocks: the script source URL
+            // For promises: The invoker of the promise, e.g. Window.fetch.then
+            // Note that for promise resolvers, all of the handlers of the promise are mixed
+            // together as one long script.
+            name: "IMG#id.onload" | "Window.requestAnimationFrame" |
+                  "Response.json.then",
 
-            // when the function was invoked
+            // when the function was invoked. Note that this is the startTime of the script, not
+            // the startTime of the frame (each entry in the pefrormance timeline has a startTime)
             startTime,
 
             // If this script was parsed/compiled, this would be the time after compilation.
@@ -224,7 +234,7 @@ while (true) {
 
     if (!hasDocumentThatNeedsRender()) {
         frameTiming.renderEnd = performance.now();
-        if (frameTiming.renderEnd - frameStartTime > 50)
+        if (frameTiming.renderEnd - frameTiming.startTime > 50)
             reportLongAnimationFrame();
         frameTiming = null;
         continue;
@@ -243,7 +253,7 @@ while (true) {
     }
     frameTiming.renderEnd = performance.now();
     markPaintTiming();
-    if (frameTiming.renderEnd - frameStartTime > 50)
+    if (frameTiming.renderEnd - frameTiming.StartTime > 50)
         reportLongAnimationFrame();
 
     frameTiming = null;
