@@ -14,10 +14,12 @@ experience and see what can be improved going forward.
 
 ## Where long tasks fall short
 
-Long tasks rely on the underlying notion of a [task](https://html.spec.whatwg.org/#concept-task).
-This is a somewhat well-specified term, but we found that it has a few shortcomings:
+Long tasks rely on the underlying notion of a
+[task](https://html.spec.whatwg.org/multipage/webappapis.html#concept-task). This is a somewhat
+well-specified term, but we found that it has a few shortcomings:
 
-1. A task does not include the [update the rendering](https://html.spec.whatwg.org/#update-the-rendering)
+1. A task does not include the
+[update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering)
 phase. That phase includes `requestAnimationFrame` callbacks, resize observers, scroll observers and
 so on. This means that a lot of the busy time that blocks feedback or animation is not actually
 counted as part of the "long task", and developers can game their long task timing by moving long
@@ -39,11 +41,11 @@ it sometimes confusing to decipher what was the root cause of a long task.
 All of the above are part of the same issue - a task is an incomplete and inaccurate cadence to
 measure main-thread blocking. It's either too granular (as several tasks together may be the cause
 of blocking) or too coarse (as it may batch together several event handlers, and callbacks such as
-`requestAnimationFrame` are not tasks in themselves).
+[`requestAnimationFrame`](https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe) are not tasks in themselves).
 
 ### The Current Situation
 
-The [HTML event loop processing model](https://html.spec.whatwg.org/#event-loop-processing-model)
+The [HTML event loop processing model](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)
 can be roughly described as such:
 
 ```js
@@ -101,16 +103,16 @@ while (true) {
 
 ## Introducing LoAF
 
-LoAF (long animation frame) is a new proposed cadence (period of time) and performance entry type,
-meant to be a progression of the long task concept.
+LoAF (long animation frame) is a new proposed erformance entry type, meant to be a progression of
+the long task concept.
 
 It's the time measured between when the main thread started doing any work (see `startTime`
-[here](https://html.spec.whatwg.org/#event-loop-processing-model)), until it is either
-[ready to paint](https://html.spec.whatwg.org/#event-loop-processing-model:mark-paint-timing) or
-idle (has nothing to do). It may include more than one task, though usually up to 2. Because it ends
-at the paint-mark time, it includes all the rendering obsevers
-(requestAnimationFrame, ResizeObserver etc.) and may or may not include presentation time
-(as that is somewhat implementation specific).
+[here](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)), until it is either
+[ready to paint](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing) or
+idle (has nothing to do). It may include more than one task, though usually up to two. Because it
+ends at the paint-mark time, it includes all the rendering obsever callbacks (requestAnimationFrame,
+ResizeObserver etc.) and may or may not include presentation time ("pixels on screen" time), as that
+is an implementation-specific term.
 
 In addition to making the cadence fit better with what it measures, the entry could include extra
 information to help understand what made it long, and what kind of consequences it had:
@@ -129,7 +131,7 @@ long they've been delayed for).
 const someLongAnimationFrameEntry = {
     entryType: "long-animation-frame",
 
-    // See details below...
+    //
     startTime,
 
     // https://html.spec.whatwg.org/#event-loop-processing-model (17)
@@ -143,11 +145,17 @@ const someLongAnimationFrameEntry = {
     // (Not implemented yet)
     blocking: 'ui-event' | 'animation' | 'none',
 
-    // https://html.spec.whatwg.org/#update-the-rendering
+    // https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering
+    // The time where the rendering cycle has started. The rendering cycle includes
+    // requestAnimationFrame callbacks, style and layout calculation, resize observer and
+    // intersection observer callbacks. In Chromium it may also include some event listeners,
+    // particularly for animation-aligned events such as mouse/touch events.
     // Equivalent to BeginMainFrame in Chromium
     renderStart,
 
-    // https://html.spec.whatwg.org/#update-the-rendering (#14)
+    // https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering (#14)
+    // Beginning of the time period spend in style and layout calculations. This includes
+    // ResizeObserver callbacks
     styleAndLayoutStart,
 
     // The time the animation frame was queued. This could be before startTime, which means that
@@ -160,15 +168,35 @@ const someLongAnimationFrameEntry = {
     // (Not implemented yet)
     presentationTime,
 
-    // Time of the first UI event (mouse/keyboard etc.)
+    // Time of the first UI event (mouse/keyboard etc.) to be handled during the course of this
+    // frame. The timestamp is the event's
+    // [timestamp](https://dom.spec.whatwg.org/#dom-event-timestamp), i.e. the time it was queued
+    // which could be long before it was processed.
     firstUIEventTimestamp,
+
+    // A list of long scripts that were executed over the course of the long frame. Scripts reported
+    // here must be at least 5ms in duration, and were executed in windows of the same origin as the
+    // current window (e.g. the same window, iframes, popups of the same origin).
+    // Note that these scripts are entry points to JS: the place where the platform calls a script.
     scripts: [
         {
-            // Scripts are essenatially script blocks (either classic or module), user callbacks
-            // (e.g. requestAnimationFrame/setTimeout callback), event listeners, and promise
-            // handlers (.then / .catch)
-            type: "user-callback" | "classic-script" |
-                        "module-script" | "event-listener" | "resolve-promise" | "reject-promise"
+            // The different script types help us understand the scenario from which the long script
+            // was invoked
+            type:
+                // A known callback registered from a web platform API, e.g. setTimeout,
+                // requestAnimationFrame.
+                "user-callback" |
+
+                // A listener to a platform event, e.g. click, load, keyup, etc.
+                "event-listener" |
+
+                // Handler of a platform promise, e.g. fetch(). Note that in the case of promises,
+                // all the handlers of the same promises are mixed together as one "script".
+                "resolve-promise" | "reject-promise" |
+
+                // Script evaluation (e.g. <script> or import())
+                "classic-script" |
+                "module-script"
 
             // The name tries to give as much information about the *invoker* of the script.
             // For callbacks: Object.functionName of the invoker, e.g. Window.setTimeout
