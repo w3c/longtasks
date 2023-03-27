@@ -140,11 +140,6 @@ const someLongAnimationFrameEntry = {
     // and all that's left is painting & compositing.
     duration,
 
-    // Whether this long frame was blocking input/animation in practice
-    // A LOaF can block both, in which case ui-event would take precedent.
-    // (Not implemented yet)
-    blocking: 'ui-event' | 'animation' | 'none',
-
     // https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering
     // The time where the rendering cycle has started. The rendering cycle includes
     // requestAnimationFrame callbacks, style and layout calculation, resize observer and
