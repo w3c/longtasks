@@ -1,7 +1,7 @@
 # Long Animation Frames (LoAF)
 Long Tasks Revamped
 
-## Diclaimer
+## Disclaimer
 This is work in progress. Feedback welcome, lots of things might change etc.
 
 ## History
@@ -103,14 +103,14 @@ while (true) {
 
 ## Introducing LoAF
 
-LoAF (long animation frame) is a new proposed erformance entry type, meant to be a progression of
+LoAF (long animation frame) is a new proposed performance entry type, meant to be a progression of
 the long task concept.
 
 It's the time measured between when the main thread started doing any work (see `startTime`
 [here](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)), until it is either
 [ready to paint](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model:mark-paint-timing) or
 idle (has nothing to do). It may include more than one task, though usually up to two. Because it
-ends at the paint-mark time, it includes all the rendering obsever callbacks (requestAnimationFrame,
+ends at the paint-mark time, it includes all the rendering observer callbacks (requestAnimationFrame,
 ResizeObserver etc.) and may or may not include presentation time ("pixels on screen" time), as that
 is an implementation-specific term.
 
@@ -204,7 +204,7 @@ const someLongAnimationFrameEntry = {
                   "Response.json.then",
 
             // when the function was invoked. Note that this is the startTime of the script, not
-            // the startTime of the frame (each entry in the pefrormance timeline has a startTime)
+            // the startTime of the frame (each entry in the performance timeline has a startTime)
             startTime,
 
             // If this script was parsed/compiled, this would be the time after compilation.
