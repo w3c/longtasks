@@ -290,14 +290,14 @@ At the most part, LoAF only exposes information across same-origin windows. Info
 scripts within a window is already observable, e.g. using resource timing or a service worker.
 
 However, LoAF might expose rendering information for a particular document tree that may be
-cross-origin (same-agent/site). The details about rendering the frame, such as
+cross-origin (same-agent). The details about rendering the frame, such as
 `styleAndLayoutStartTime`, are proposed to be visible to all the same-agent windows that are
 rendered serially. That's because this information is already observable, by using
 `requestAnimationFrame` and `ResizeObserver` and measuring the delay between them. The premise is
 that global "update the rendering" timing information is already observable across same-agent
 windows, so exposing it directly does not leak new cross-origin information. However, the idea
-exposing less information to cross-origin same-agent subframes (as in, expose ) is open for
-discussion.
+exposing less information to cross-origin same-agent subframes (as in, expose the rendering info
+only to the main frame) is open for discussion.
 
 ### Notes, complexity, doubts, future ideas, TODOs
 
@@ -315,7 +315,7 @@ a bit different but relies on similar principles:
     the existing [attribution](https://w3c.github.io/longtasks/#sec-TaskAttributionTiming).
 
 
-1. To avoid the magic 50hz number, consider making the threshold configurable,
+1. To avoid the magic 50ms number, consider making the threshold configurable,
 or rely on "discarded rendering opportunities" as the qualifier for sluggishness alongside (or
 instead of) millisecond duration.
 
