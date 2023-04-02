@@ -7,7 +7,7 @@ This is work in progress. Feedback welcome, lots of things might change etc.
 ## History
 
 Long tasks have long been a way to diagnose and track lack of responsiveness or "jankiness", which
-eventually affects core web vital metrics like [INP](https://web.dev/inp/), or Lighthouse metrics
+eventually affects Core Web Vital metrics like [INP](https://web.dev/inp/), or Lighthouse metrics
 like [Total Blocking Time](https://developer.chrome.com/en/docs/lighthouse/performance/lighthouse-total-blocking-time/).
 Developers have been using them with varying degrees of success, and now we can learn from the
 experience and see what can be improved going forward.
@@ -32,7 +32,7 @@ the use of tasks there is implementation-specific.
 1. A task in implementations is used for internal scheduling, and not just as an
 implementation of the spec concept of task. This means that changes to implementation detail related
 to scheduling affects the measurement of long tasks, sometimes in unexpected, incompatible or
-arbitrary ways. A big implementation change in chrome silently changed the meaning of long tasks,
+arbitrary ways. A big implementation change in Chrome silently changed the meaning of long tasks,
 when we started updating the rendering as part of a new task.
 
 1. A task may contain multiple callbacks, e.g. dispatch several events. This makes
@@ -100,6 +100,12 @@ while (true) {
 }
 ```
 
+This means that in Chromium, several implementation details affect how long tasks are measured:
+1. Rendering gets its own task, which may be long.
+2. Event handlers sometimes execute in their own task, sometimes as part of the work task, sometimes as part of the rendering task.
+
+This demonstrates how relying on tasks is brittle.
+
 
 ## Introducing LoAF
 
@@ -121,11 +127,60 @@ information to help understand what made it long, and what kind of consequences 
 - Time spent in forced layout/style calculations - e.g. calling `getBoundingClientRect`, doing more
 processing, and then rendering (also known as "layout thrashing" or "forced reflow").
 - Is the frame blocking input-feedback *in practice*. Note that a frame that blocks actual UI event
- would also be accessible via [event timing](https://w3c.github.io/event-timing/).
+ would also be accessible via [Event Timing](https://w3c.github.io/event-timing/).
 - User scripts processed during the time of the frame, be it callbacks, event handlers, promise
 resolvers, or script block parsing and evaluation, and information about those scripts (source, how
 long they've been delayed for).
 
+
+### Processing model
+
+The new proposal:
+
+```js
+
+let frameTiming = null;
+
+while (true) {
+    if (frameTiming === null) {
+        frameTiming = new AnimationFrameTiming();
+        frameTiming.startTime = performance.now();
+    }
+
+    const task = eventQueue.pop();
+    if (task)
+        task.run();
+
+    if (!hasDocumentThatNeedsRender()) {
+        frameTiming.renderEnd = performance.now();
+        if (frameTiming.renderEnd - frameTiming.startTime > 50)
+            reportLongAnimationFrame();
+        frameTiming = null;
+        continue;
+    }
+
+    if (!hasRenderingOpportunity())
+        continue;
+
+    invokeAnimationFrameCallbacks();
+    frameTiming.styleAndLayoutStart = performance.now();
+    for (const document of documentsInThisEventLoop) {
+        while (document.needsStyleOrLayout()) {
+            document.calculateStyleAndLayout();
+            invokeResizeObserverCallbacks();
+        }
+    }
+    frameTiming.renderEnd = performance.now();
+    markPaintTiming();
+    if (frameTiming.renderEnd - frameTiming.StartTime > 50)
+        reportLongAnimationFrame();
+
+    frameTiming = null;
+    render();
+}
+```
+
+ g
 ## How a LoAF entry might look like
 ```js
 const someLongAnimationFrameEntry = {
@@ -234,53 +289,6 @@ const someLongAnimationFrameEntry = {
             window,
         }
     ]
-}
-```
-
-### Processing model
-
-The new proposal:
-
-```js
-
-let frameTiming = null;
-
-while (true) {
-    if (frameTiming === null) {
-        frameTiming = new AnimationFrameTiming();
-        frameTiming.startTime = performance.now();
-    }
-
-    const task = eventQueue.pop();
-    if (task)
-        task.run();
-
-    if (!hasDocumentThatNeedsRender()) {
-        frameTiming.renderEnd = performance.now();
-        if (frameTiming.renderEnd - frameTiming.startTime > 50)
-            reportLongAnimationFrame();
-        frameTiming = null;
-        continue;
-    }
-
-    if (!hasRenderingOpportunity())
-        continue;
-
-    invokeAnimationFrameCallbacks();
-    frameTiming.styleAndLayoutStart = performance.now();
-    for (const document of documentsInThisEventLoop) {
-        while (document.needsStyleOrLayout()) {
-            document.calculateStyleAndLayout();
-            invokeResizeObserverCallbacks();
-        }
-    }
-    frameTiming.renderEnd = performance.now();
-    markPaintTiming();
-    if (frameTiming.renderEnd - frameTiming.StartTime > 50)
-        reportLongAnimationFrame();
-
-    frameTiming = null;
-    render();
 }
 ```
 
