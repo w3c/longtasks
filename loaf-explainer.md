@@ -223,6 +223,13 @@ const someLongAnimationFrameEntry = {
     // [timestamp](https://dom.spec.whatwg.org/#dom-event-timestamp), i.e. the time it was queued
     // which could be long before it was processed.
     firstUIEventTimestamp,
+    
+    // The duration in milliseconds that the LoAF was blocking in practice. Since a LoAF can be consisted
+    // of more than one task, and those tasks are not necessarily long, only the long tasks (>50ms) are
+    // counted towards blocking duration. To account for the rendering time, which can be attributed to
+    // any of the tasks, the render duration is added to the duration of the longest task, so for the purpose
+    // of computing blockingTime it would become a long task if its duration + the render duration was > 50ms. 
+    blockingDuration,
 
     // A list of long scripts that were executed over the course of the long frame. Scripts reported
     // here must be at least 5ms in duration, and were executed in windows of the same origin as the
