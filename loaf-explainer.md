@@ -228,7 +228,7 @@ const someLongAnimationFrameEntry = {
     // Given that LoAFs can contain multiple tasks, we consider the following as blocking durations:
     // * Long tasks
     // * The longest task + the rendering time, if their sum exceeds the Long Task threshold of 50ms.
-    // The blockingDuration would be the sum of those long task durations, with 50ms subtracted form each.
+    // The blockingDuration would be the sum of those long task durations, with 50ms subtracted from each.
     blockingDuration,
 
     // A list of long scripts that were executed over the course of the long frame. Scripts reported
