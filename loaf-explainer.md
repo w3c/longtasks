@@ -346,6 +346,15 @@ instead? Are those metrics useful?
 minimal overhead, while profiling exposes "everything" with some more overhead, but the differences
 and relationship can be further understood.
 
+## Relationship with TBT
+
+TBT ([total blocking time](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/)) is a [lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) metric that allows measuring how responsive/sluggish the experience is during page load.
+
+Once long animation frames are stable, the current (potential) plan is to compute TBT based on the LoAF entries' `blockingDuration`.
+This would have the following benefits:
+- Long animation frames are more representative of blocking, see above.
+- It would be easier to find the cause of TBT, e.g. by finding the LoAFs and analyzing them. 
+
 ## Overlap with [Event Timing](https://w3c.github.io/event-timing/)
 
 With all the new data that LoAFs expose, their overlap with event timing grows. This is true, but it's only a problem if we look at them as separate APIs.
