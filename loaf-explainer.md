@@ -7,8 +7,8 @@ This is work in progress. Feedback welcome, lots of things might change etc.
 ## History
 
 Long tasks have long been a way to diagnose and track lack of responsiveness or "jankiness", which
-eventually affects Core Web Vital metrics like [INP](https://web.dev/inp/), or Lighthouse metrics
-like [Total Blocking Time](https://developer.chrome.com/en/docs/lighthouse/performance/lighthouse-total-blocking-time/).
+eventually affects Core Web Vital metrics like [INP](https://web.dev/inp/), or metrics
+like [Total Blocking Time](https://web.dev/tbt/).
 Developers have been using them with varying degrees of success, and now we can learn from the
 experience and see what can be improved going forward.
 
@@ -339,18 +339,16 @@ instead of) millisecond duration.
 1. Exposing source locations might be a bit tricky or implementation defined.
 This can be an optional field but in any case requires some research.
 
-1. TBT & TTI are lighthouse values that rely on long tasks. Should they be modified to use LoAFs
-instead? Are those metrics useful?
-
 1. Clarify how this correlates to [JS Profiler markers](https://github.com/WICG/js-self-profiling/blob/main/markers.md). In general performance observer aspire to be expose succinct important information with
 minimal overhead, while profiling exposes "everything" with some more overhead, but the differences
 and relationship can be further understood.
 
 ## Relationship with TBT
 
-TBT ([total blocking time](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/)) is a [lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) metric that allows measuring how responsive/sluggish the experience is during page load.
+TBT ([total blocking time](https://web.dev/tbt/)) is a metric that allows measuring how responsive/sluggish the experience is during page load.
+It's mostly considered a lab metric, e.g. for [lighthouse](https://developer.chrome.com/docs/lighthouse/overview/), but it's also measurable in the field.
 
-Once long animation frames are stable, the current (potential) plan is to compute TBT based on the LoAF entries' `blockingDuration`.
+Once the definition & implementation of long animation frames are stable, the current (potential) plan is to compute TBT based on the LoAF entries' `blockingDuration`.
 This would have the following benefits:
 - Long animation frames are more representative of blocking, see above.
 - It would be easier to find the cause of TBT, e.g. by finding the LoAFs and analyzing them. 
