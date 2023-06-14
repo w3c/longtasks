@@ -180,7 +180,6 @@ while (true) {
 }
 ```
 
- g
 ## How a LoAF entry might look like
 ```js
 const someLongAnimationFrameEntry = {
@@ -348,7 +347,7 @@ and relationship can be further understood.
 TBT ([total blocking time](https://web.dev/tbt/)) is a metric that allows measuring how responsive/sluggish the experience is during page load.
 It's mostly considered a lab metric, e.g. for [lighthouse](https://developer.chrome.com/docs/lighthouse/overview/), but it's also measurable in the field.
 
-Once the definition & implementation of long animation frames are stable, the current (potential) plan is to compute TBT based on the LoAF entries' `blockingDuration`.
+Once the definition & implementation of long animation frames is stable, the current (potential) plan is to compute TBT based on the LoAF entries' `blockingDuration`.
 This would have the following benefits:
 - Long animation frames are more representative of blocking, see above.
 - It would be easier to find the cause of TBT, e.g. by finding the LoAFs and analyzing them. 
