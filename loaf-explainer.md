@@ -14,7 +14,7 @@ Long animation frames (LoAF), as a revamp of `longtasks`, aim to assist with tha
 point in time, the browser was busy, in such a way that it took a long time from the beginning of a task until updating the rendering
 (or until the point where it was clear that no render was necessary).
 
-Since having busy ("LoAF-heavy|_ sequences can potentially cause delayed response to interactions, and the LoAF entries themselves contain information about
+Since having busy ("LoAF-heavy") sequences can potentially cause delayed response to interactions, and the LoAF entries themselves contain information about
 what was blocking, e.g. long scripts or layout, LoAF can potentially become a powerful tool, enabling the use of real-user monitoring (RUM) to diagnose
 for this type of performance issue.
 
