@@ -5,9 +5,9 @@ Status: ED
 Shortname: longtasks
 Level: 1
 URL: https://w3c.github.io/longtasks/
-FormerEditor: Shubhie Panicker, Google https://google.com, panicker@chromium.org, w3cid 92587
-FormerEditor: Ilya Grigorik, Google https://google.com, igrigorik@chromium.org, w3cid 56102
-FormerEditor: Domenic Denicola, Google https://google.com, domenic@chromium.org, w3cid 52873
+Former Editor: Shubhie Panicker, Google https://google.com, panicker@chromium.org, w3cid 92587
+Former Editor: Ilya Grigorik, Google https://google.com, igrigorik@chromium.org, w3cid 56102
+Former Editor: Domenic Denicola, Google https://google.com, domenic@chromium.org, w3cid 52873
 Editor: Noam Rosenthal, Google https://google.com, nrosenthal@google.com, w3cid 121539
 Repository: w3c/longtasks
 Test Suite: http://w3c-test.org/longtask-timing/
