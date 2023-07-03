@@ -21,3 +21,4 @@ jobs:
           W3C_NOTIFICATIONS_CC: "${{ secrets.CC }}"
           W3C_BUILD_OVERRIDE: |
             status: WD
+            TR: https://www.w3.org/TR/longtasks-1/
