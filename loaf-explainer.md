@@ -4,6 +4,20 @@ Long Tasks Revamped
 ## Disclaimer
 This is work in progress. Feedback welcome, lots of things might change etc.
 
+## Overview
+
+"Jankiness" - the feeling that "this page is not responsive to interactions", is a common problem for users on the web today.
+By introducing [INP](https://web.dev/inp/) into Core Web Vitals, we hope that authors can have a better indication as to
+how their pages are doing in that regard. But INP shows you the effect, but not the cause of the jankiness.
+
+Long animation frames (LoAF), as a revamp of `longtasks`, aim to assist with that: a LoAF is an indication that in a particular
+point in time, the browser was busy, in such a way that it took a long time from the beginning of a task until updating the rendering
+(or until the point where it was clear that no render was necessary).
+
+Since having busy ("LoAF-heavy") sequences can potentially cause delayed response to interactions, and the LoAF entries themselves contain information about
+what was blocking, e.g. long scripts or layout, LoAF can potentially become a powerful tool, enabling the use of real-user monitoring (RUM) to diagnose
+for this type of performance issue.
+
 ## History
 
 Long tasks have long been a way to diagnose and track lack of responsiveness or "jankiness", which
