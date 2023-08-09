@@ -36,15 +36,15 @@ Attribute definitions of PerformanceLongTaskTiming:
 * startTime: `DOMHighResTimeStamp` of when long task started
 * duration: elapsed time (as `DOMHighResTimeStamp`) between start and finish of task
 * name: minimal frame attribution, eg. "same-origin", "cross-origin", "unknown" etc. Possible values are:
- * "self"
- * "same-origin-ancestor"
- * "same-origin-descendant"
- * "same-origin"
- * "cross-origin-ancestor"
- * "cross-origin-descendant"
- * "cross-origin-unreachable"
- * "multiple-contexts"
- * "unknown"
+  * "self"
+  * "same-origin-ancestor"
+  * "same-origin-descendant"
+  * "same-origin"
+  * "cross-origin-ancestor"
+  * "cross-origin-descendant"
+  * "cross-origin-unreachable"
+  * "multiple-contexts"
+  * "unknown"
 
 * attribution: `sequence` of `TaskAttributionTiming`, a new `PerformanceEntry` object to report attribution within long tasks. To see how `attribute` is populated for different values of `name` see the section below: [Pointing to the culprit](#pointing-to-the-culprit)
 
