@@ -6,21 +6,33 @@ This is work in progress. Feedback welcome, lots of things might change etc.
 
 ## Overview
 
-"Jankiness" - the feeling that "this page is not responsive to interactions", is a common problem for users on the web today.
-By introducing [INP](https://web.dev/inp/) into Core Web Vitals, we hope that authors can have a better indication as to
-how their pages are doing in that regard. But INP shows you the effect, but not the cause of the jankiness.
+"Sluggishness" - the feeling that "this page is not responsive to interactions", is a common problem for users on the web today.
+By introducing [INP](https://web.dev/inp/) into Core Web Vitals, we hope that authors can have a better indication as to how their pages are doing in that regard. But INP shows you the effect, but not the cause of the sluggishness.
 
-Long animation frames (LoAF), as a revamp of `longtasks`, aim to assist with that: a LoAF is an indication that in a particular
-point in time, the browser was busy, in such a way that it took a long time from the beginning of a task until updating the rendering
-(or until the point where it was clear that no render was necessary).
+Long animation frames (LoAF), as a revamp of `longtasks`, aim to assist with that: a LoAF is an indication that at a particular point in time, the browser was congested, in such a way that it took a long time from the beginning of a task until updating the rendering (or until the point where it was clear that no render was necessary).
 
 Since having busy ("LoAF-heavy") sequences can potentially cause delayed response to interactions, and the LoAF entries themselves contain information about
-what was blocking, e.g. long scripts or layout, LoAF can potentially become a powerful tool, enabling the use of real-user monitoring (RUM) to diagnose
-for this type of performance issue.
+what was blocking, e.g. long scripts or layout, LoAF can potentially become a powerful tool, enabling the use of real-user monitoring (RUM) to diagnose for this type of performance issue.
+
+## Value to End Users & Publishers
+
+The value to end users here is enabling web pages to measure and fix sluggishness - thus making the web more responsive for everyone.
+
+See [this success story](https://www.linkedin.com/posts/erwinhofman_performance-javascript-corewebvital-activity-7122519650461958144-FFK5/) from
+a participant of the origin trial - they ran LoAF (using [RUMVision](https://www.rumvision.com/)) in user sessions, and identified that using a particular 3P JavaScript was causing sluggishness (bad INP). They refactored to not use that 3rd party, and their responsiveness
+changed dramatically.
+
+### Business Value
+
+Several case studies like [The Economic times](https://web.dev/economic-times-inp/#how-has-improving-inp-helped-the-economic-times) and [RedBus](https://web.dev/redbus-inp/#business-impact), demonstrate that improving page responsiveness via the INP metric directly helps with user delight and has a business impact.
+
+### Actionability
+
+Main-thread congestion is one of the main causes for long INP, but INP itself doesn't help diagnose the root cause. By giving a powerful diagnostic API like LoAF, we give developers a tool with which they can act and make their pages more responsive by monitoring what makes them unresponsive in the field.
 
 ## History
 
-Long tasks have long been a way to diagnose and track lack of responsiveness or "jankiness", which
+Long tasks have long been a way to diagnose and track lack of responsiveness or "sluggishness", which
 eventually affects Core Web Vital metrics like [INP](https://web.dev/inp/), or metrics
 like [Total Blocking Time](https://web.dev/tbt/).
 Developers have been using them with varying degrees of success, and now we can learn from the
