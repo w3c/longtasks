@@ -18,7 +18,15 @@ what was blocking, e.g. long scripts or layout, LoAF can potentially become a po
 
 The value to end users here is enabling web pages to measure and fix sluggishness - thus making the web more responsive for everyone.
 
+See [this success story](https://www.linkedin.com/posts/erwinhofman_performance-javascript-corewebvital-activity-7122519650461958144-FFK5/) from
+a participant of the origin trial - they ran LoAF (using [RUMVision](https://www.rumvision.com/)) in user sessions, and identified that using a particular 3P JavaScript was causing sluggishness (bad INP). They refactored to not use that 3rd party, and their responsiveness
+changed dramatically.
+
+### Business Value
+
 Several case studies like [The Economic times](https://web.dev/economic-times-inp/#how-has-improving-inp-helped-the-economic-times) and [RedBus](https://web.dev/redbus-inp/#business-impact), demonstrate that improving page responsiveness via the INP metric directly helps with user delight and has a business impact.
+
+### Actionability
 
 Main-thread congestion is one of the main causes for long INP, but INP itself doesn't help diagnose the root cause. By giving a powerful diagnostic API like LoAF, we give developers a tool with which they can act and make their pages more responsive by monitoring what makes them unresponsive in the field.
 
