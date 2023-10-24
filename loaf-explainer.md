@@ -20,11 +20,11 @@ The value to end users here is enabling web pages to measure and fix sluggishnes
 
 See [this success story](https://www.linkedin.com/posts/erwinhofman_performance-javascript-corewebvital-activity-7122519650461958144-FFK5/) from
 a participant of the origin trial - they ran LoAF (using [RUMVision](https://www.rumvision.com/)) in user sessions, and identified that using a particular 3P JavaScript was causing sluggishness (bad INP). They refactored to not use that 3rd party, and their responsiveness
-changed dramatically.
+improved dramatically.
 
 ### Business Value
 
-Several case studies like [The Economic times](https://web.dev/economic-times-inp/#how-has-improving-inp-helped-the-economic-times) and [RedBus](https://web.dev/redbus-inp/#business-impact), demonstrate that improving page responsiveness via the INP metric directly helps with user delight and has a business impact.
+Several case studies like [The Economic times](https://web.dev/economic-times-inp/#how-has-improving-inp-helped-the-economic-times) and [RedBus](https://web.dev/redbus-inp/#business-impact), demonstrate that improving page responsiveness via the INP metric directly helps with user delight and has a positive business impact.
 
 ### Actionability
 
