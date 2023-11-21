@@ -99,7 +99,30 @@ Usage Example {#example}
     observer.observe({type: "longtask", buffered: true});
     // Long script execution after this will result in queueing
     // and receiving "longtask" entries in the observer.
+
+    // Register observer for previous and future long animation frame notifications.
+    // After this, long periods where the main thread is busy will result in queueing
+    // and receiving "long-animation-frame" entries in the observer.
+    observer.observe({type: "long-animation-frame", buffered: true});
 </pre>
+
+Long Animation Frames vs. Long Tasks {#loaf-vs-longtasks}
+---------------------------------------------------------
+
+While both long tasks and long animation frames measure congestion and jank, long animation frames
+provide information that has a better correlation with how user preceive this type of congestion.
+That's because long animation frames measure a sequence that begins when the main thread is idle,
+and end when the frame either renders or the user agents decides there is nothing to render.
+
+The [=task=] term is somewhat of an implementation detail, and the long animation frame addition
+attempts to remedy that by introducing a more user-centric metric of the same phenomenon of main
+thread congestion/jank.
+
+Because long animation frames are guaranteed to have a maximum of one rendering phase, we can also
+use them to expose additional information about the rendering phase itself, such as
+{{PerformanceLongAnimationFrameTiming/renderStart}} and {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}}.
+
+For a detailed explanation about long animation frames, see the <a href="https://github.com/w3c/longtasks/blob/main/loaf-explainer.md">explainer</a>.
 
 Terminology {#sec-terminology}
 ==============================
@@ -119,6 +142,12 @@ Note: This term is outdated, and the new terms should be reused when revamping t
 <dfn>Culprit browsing context container</dfn> refers to the <a>browsing context container</a> (<{iframe}>, <{object}>, etc.) that is being implicated, on the whole, for a <a>long task</a>.
 
 <dfn>Attribution</dfn> refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task, as well as identifying which <a>culprit browsing context container</a> is responsible for that work.
+
+<dfn export>Long animation frame</dfn> refers to any of the following occurrences whose duration exceeds 50ms:
+
+* A [=task=], after which updating the rendering is not necessary.
+
+* A [=task=] after which updating the rendering is necessary, up until rendering is updated.
 
 Long Task Timing {#sec-longtask-timing}
 =======================================
@@ -259,10 +288,60 @@ These fields are not independent. The following gives an overview of how they ar
 
 </div>
 
+Long Animation Frame Timing {#sec-loaf-timing}
+=======================================
+
+Long Animation Frame timing involves the following new interfaces:
+
+{{PerformanceLongAnimationFrameTiming}} interface {#sec-PerformanceLongAnimationFrameTiming}
+------------------------------------------------------------------------
+
+<pre class="idl">
+    [Exposed=Window]
+    interface PerformanceLongAnimationFrameTiming : PerformanceEntry {
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMHighResTimeStamp renderStart;
+        readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
+        readonly attribute DOMHighResTimeStamp blockingDuration;
+
+        [Default] object toJSON();
+    };
+</pre>
+
+A {{PerformanceLongAnimationFrameTiming}} has a [=frame timing info=] <dfn for=PerformanceLongAnimationFrameTiming>timing info</dfn>.
+
+The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+
+The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+
+The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s  [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
+
+    1. Let |workDuration| be [=this=]'s [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/longest task duration=].
+    1. Let |renderDuration| be the 0.
+    1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info=/update the rendering  start time=] is not zero, then:
+        1. Set |renderDuration| to the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and
+            the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=].
+    1. If |workDuration| + |renderDuration| is greater than 50, then return |workDuration| + |renderDuration| - 50.
+    1. Return 0.
+
+</div>
 Processing model {#sec-processing-model}
 ========================================
 
-Note: A user agent implementing the Long Tasks API would need to include <code>"longtask"</code> in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts.
+Note: A user agent implementing the Long Tasks or Long Animation Frame API would need to include <code>"l
+ongtask"</code> or <code>"long-animation-frame</code>" in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts, respectively.
+
 This allows developers to detect support for long tasks.
 
 Report long tasks {#report-long-tasks}
@@ -369,6 +448,110 @@ Report long tasks {#report-long-tasks}
         1. [=Queue the PerformanceEntry=] |newEntry|.
 </div>
 
+
+Frame Timing Info {#sec-frame-timing-info}
+------------------------------------------
+<dfn export>frame timing info</dfn> is a [=struct=] used as a bookkeeping detail by the long animation frame algorithms.
+It has the following [=struct/items=]:
+
+<dl dfn-for="frame timing info">
+    : <dfn>start time</dfn>
+    : <dfn>current task start time</dfn>
+    : <dfn>update the rendering start time</dfn>
+    : <dfn>style and layout start time</dfn>
+    : <dfn>longest task duration</dfn>
+    : <dfn>end time</dfn>
+    :: A {{DOMHighResTimeStamp}}, initially 0.
+</dl>
+
+A {{Document}} has a null-or-[=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
+
+
+Report Long Animation Frames {#loaf-processing-model}
+------------------------------------------
+
+<div algorithm="Accessing the frame timing info">
+    To get the <dfn>nearest same-origin root</dfn> for a {{Document}} |document|:
+    1. Let |ancestors| be the [=ancestor navigables=] of |document|.
+
+    1. [=list/For each=] |ancestorNavigable| in |ancestors|:
+        If |ancestorNavigable|'s [=navigable/active document=]'s [=Document/origin=] is [=same origin=] with |document|'s [=Document/origin=],
+            and |ancestorNavigable|'s [=navigable/active document=]'s [=relevant agent=] is |document|'s [=relevant agent=],
+            then return |ancestorNavigable|'s [=navigable/active document=].
+
+    1. Return |document|.
+
+    The <dfn>relevant frame timing info</dfn> for a {{Document}} |document| is its [=nearest same-origin root=]'s [=current frame timing info=].
+</div>
+
+<div algorithm="Report task start time">
+    To <dfn export>report task start time</dfn> given an {{DOMHighResTimeStamp}} |taskStartTime|, and a {{Document}} |document|:
+
+    1. Let |root| be |document|'s [=nearest same-origin root=].
+
+    1. If |root|'s [=current frame timing info=] is null,
+        then set |root|'s [=current frame timing info=] to a new [=frame timing info=] whose [=frame timing info/start time=] is |taskStartTime|.
+
+    1. Set |timingInfo|'s [=current frame timing info=]'s [=frame timing info/current task start time=] to |taskStartTime|.
+
+    1. If |timingInfo|'s [=frame timing info/start time=] is 0, then set |timingInfo|'s [=frame timing info/start time=] to |taskStartTime|.
+</div>
+
+<div algorithm="Report task end time">
+    To <dfn export>report task end time</dfn> given an {{DOMHighResTimeStamp}} |taskEndTime|, and a {{Document}} |document|:
+
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+
+    1. If |timingInfo| is null, then return.
+
+        Note: This can occur if the browser becomes hidden during the sequence.
+
+    1. Let |safeTaskEndTime| be the [=relative high resolution time=] given |taskEndTime| and |document|'s [=relevant global object=].
+
+    1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |document|'s [=relevant global object=].
+
+    1. Let |currentTaskDuration| be the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime|.
+
+    1. If |currentTaskDuration| is greater than |timingInfo|'s [=frame timing info/longest task duration=], then set |timingInfo|'s [=frame timing info/longest task duration=] to |currentTaskDuration|.
+
+    1. If the user agent believes that updating the rendering of |document|'s [=node navigable=] would have no visible effect, then [=flush frame timing=] given |document| and return.
+</div>
+
+<div algorithm="Report rendering time">
+    To <dfn export>report rendering time</dfn> given a {{Document}} |document|, and a {{DOMHighResTimeStamp}} |styleAndLayoutStart|:
+
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+
+    1. If |timingInfo| is null, then return.
+
+        Note: This can occur if the browser becomes hidden during the sequence.
+
+    1. Set |timingInfo|'s [=frame timing info/update the rendering start time=] to |timingInfo|'s [=frame timing info/current task start time=].
+
+    1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |styleAndLayoutStart|.
+
+    1. [=Flush frame timing=] given |document| and the [=unsafe shared current time=].
+</div>
+
+<div algorithm="Queue frame timing">
+    To <dfn export>flush frame timing</dfn> given a {{Document}} |document| and a {{DOMHighResTimeStamp}} |endTime|:
+
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+
+    1. Assert: |timingInfo| is not null.
+
+    1. Let |global| be |document|'s [=relevant global object=].
+
+    1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
+        and the [=relative high resolution time=] given |endTime| and |global|.
+
+    1. If |frameDuration| is greater than 50 milliseconds, then
+        [=queue a PerformanceEntry|Queue=] a new {{PerformanceLongAnimationFrameTiming}} in |document|'s [=relevant realm=],
+        whose [=PerformanceLongAnimationFrameTiming/timing info=] is |timingInfo|.
+
+    1. set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
+</div>
+
 Security & privacy considerations {#priv-sec}
 ===============================================
 
@@ -431,3 +614,15 @@ The following are the timing attacks considered:
 
 These scenarios are addressed by the 50ms threshold AND respecting cross-origin boundary i.e. not
 showing task type or additional attribution to untrusted cross origin observers.
+
+Additional information exposed by the Long Animation Frames API {#loaf-sec-priv}
+--------------------------------------------------------------------------------
+Since several cross-origin documents can share the same event loop, they can also render as part of
+the same frame sequence and influence each other's rendering time. This makes it so that these timings
+are already somewhat observable cross-origin, e.g. by requesting an animation frame and observing if it is delayed,
+though long animation frames exposes them at a higher fidelity.
+
+To mitigate this, long animation frames are only reported to "participating local roots": only documents
+that are associated with a work task that contributed to the sequence, or that were rendered as part of the frame,
+are eligible to observe the long animation frame, and that long animation frame would be available only in
+their nearest ancestor that is either topmost or has a cross-origin parent.
