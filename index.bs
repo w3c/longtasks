@@ -299,10 +299,6 @@ Long Animation Frame timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongAnimationFrameTiming : PerformanceEntry {
-        readonly attribute DOMString name;
-        readonly attribute DOMString entryType;
-        readonly attribute DOMHighResTimeStamp startTime;
-        readonly attribute DOMHighResTimeStamp duration;
         readonly attribute DOMHighResTimeStamp renderStart;
         readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
         readonly attribute DOMHighResTimeStamp blockingDuration;
@@ -313,13 +309,13 @@ Long Animation Frame timing involves the following new interfaces:
 
 A {{PerformanceLongAnimationFrameTiming}} has a [=frame timing info=] <dfn for=PerformanceLongAnimationFrameTiming>timing info</dfn>.
 
-The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceEntry/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceEntry/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceEntry/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceEntry/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
@@ -327,20 +323,20 @@ The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's gett
 
 The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
 
-    1. Let |workDuration| be [=this=]'s [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/longest task duration=].
+    1. Let |workDuration| be [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/longest task duration=].
     1. Let |renderDuration| be the 0.
-    1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info=/update the rendering  start time=] is not zero, then:
+    1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering  start time=] is not zero, then:
         1. Set |renderDuration| to the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and
             the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=].
-    1. If |workDuration| + |renderDuration| is greater than 50, then return |workDuration| + |renderDuration| - 50.
+    1. If |workDuration| + |renderDuration| is greater than 50, then return |workDuration| + |renderDuration| - 50 milliseconds.
     1. Return 0.
 
 </div>
 Processing model {#sec-processing-model}
 ========================================
 
-Note: A user agent implementing the Long Tasks or Long Animation Frame API would need to include <code>"l
-ongtask"</code> or <code>"long-animation-frame</code>" in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts, respectively.
+Note: A user agent implementing the Long Tasks or Long Animation Frame API would need to include <code>"longtask"</code> or <code>"long-animation-frame"</code>
+    in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts, respectively.
 
 This allows developers to detect support for long tasks.
 
@@ -459,9 +455,14 @@ It has the following [=struct/items=]:
     : <dfn>current task start time</dfn>
     : <dfn>update the rendering start time</dfn>
     : <dfn>style and layout start time</dfn>
-    : <dfn>longest task duration</dfn>
     : <dfn>end time</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
+        Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
+            and should be [=coarsen time|coarsened=] when exposed via an API.
+
+    : <dfn>longest task duration</dfn>
+    :: A {{DOMHighResTimeStamp}}, initially 0.
+
 </dl>
 
 A {{Document}} has a null-or-[=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
@@ -485,20 +486,20 @@ Report Long Animation Frames {#loaf-processing-model}
 </div>
 
 <div algorithm="Report task start time">
-    To <dfn export>report task start time</dfn> given an {{DOMHighResTimeStamp}} |taskStartTime|, and a {{Document}} |document|:
+    To <dfn export>report task start time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskStartTime|, and a {{Document}} |document|:
 
     1. Let |root| be |document|'s [=nearest same-origin root=].
 
     1. If |root|'s [=current frame timing info=] is null,
-        then set |root|'s [=current frame timing info=] to a new [=frame timing info=] whose [=frame timing info/start time=] is |taskStartTime|.
+        then set |root|'s [=current frame timing info=] to a new [=frame timing info=] whose [=frame timing info/start time=] is |unsafeTaskStartTime|.
 
-    1. Set |timingInfo|'s [=current frame timing info=]'s [=frame timing info/current task start time=] to |taskStartTime|.
+    1. Set |root|'s [=current frame timing info=]'s [=frame timing info/current task start time=] to |unsafeTaskStartTime|.
 
-    1. If |timingInfo|'s [=frame timing info/start time=] is 0, then set |timingInfo|'s [=frame timing info/start time=] to |taskStartTime|.
+    1. If |root|'s [=current frame timing info=]'s 's [=frame timing info/start time=] is 0, then set |root|'s [=current frame timing info=]'s [=frame timing info/start time=] to |unsafeTaskStartTime|.
 </div>
 
 <div algorithm="Report task end time">
-    To <dfn export>report task end time</dfn> given an {{DOMHighResTimeStamp}} |taskEndTime|, and a {{Document}} |document|:
+    To <dfn export>report task end time</dfn> given an {{DOMHighResTimeStamp}} |unsafeTaskEndTime|, and a {{Document}} |document|:
 
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
 
@@ -506,7 +507,7 @@ Report Long Animation Frames {#loaf-processing-model}
 
         Note: This can occur if the browser becomes hidden during the sequence.
 
-    1. Let |safeTaskEndTime| be the [=relative high resolution time=] given |taskEndTime| and |document|'s [=relevant global object=].
+    1. Let |safeTaskEndTime| be the [=relative high resolution time=] given |unsafeTaskEndTime| and |document|'s [=relevant global object=].
 
     1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |document|'s [=relevant global object=].
 
@@ -515,10 +516,12 @@ Report Long Animation Frames {#loaf-processing-model}
     1. If |currentTaskDuration| is greater than |timingInfo|'s [=frame timing info/longest task duration=], then set |timingInfo|'s [=frame timing info/longest task duration=] to |currentTaskDuration|.
 
     1. If the user agent believes that updating the rendering of |document|'s [=node navigable=] would have no visible effect, then [=flush frame timing=] given |document| and return.
+
+        Note: even though there was no actual visual update, we mark a [=long animation frame=] here because it would be blocking in a scenario where it coincided with an unrelated visual update.
 </div>
 
 <div algorithm="Report rendering time">
-    To <dfn export>report rendering time</dfn> given a {{Document}} |document|, and a {{DOMHighResTimeStamp}} |styleAndLayoutStart|:
+    To <dfn export>report rendering time</dfn> given a {{Document}} |document|, and a {{DOMHighResTimeStamp}} |unsafeStyleAndLayoutStart|:
 
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
 
@@ -528,13 +531,13 @@ Report Long Animation Frames {#loaf-processing-model}
 
     1. Set |timingInfo|'s [=frame timing info/update the rendering start time=] to |timingInfo|'s [=frame timing info/current task start time=].
 
-    1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |styleAndLayoutStart|.
+    1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |unsafeStyleAndLayoutStart|.
 
     1. [=Flush frame timing=] given |document| and the [=unsafe shared current time=].
 </div>
 
 <div algorithm="Queue frame timing">
-    To <dfn export>flush frame timing</dfn> given a {{Document}} |document| and a {{DOMHighResTimeStamp}} |endTime|:
+    To <dfn export>flush frame timing</dfn> given a {{Document}} |document| and a {{DOMHighResTimeStamp}} |unsafeEndTime|:
 
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
 
@@ -543,7 +546,7 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Let |global| be |document|'s [=relevant global object=].
 
     1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
-        and the [=relative high resolution time=] given |endTime| and |global|.
+        and the [=relative high resolution time=] given |unsafeEndTime| and |global|.
 
     1. If |frameDuration| is greater than 50 milliseconds, then
         [=queue a PerformanceEntry|Queue=] a new {{PerformanceLongAnimationFrameTiming}} in |document|'s [=relevant realm=],
