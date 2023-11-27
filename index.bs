@@ -161,6 +161,12 @@ Long Task timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongTaskTiming : PerformanceEntry {
+        // Overloading PerformanceEntry
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute FrozenArray&lt;TaskAttributionTiming> attribution;
         [Default] object toJSON();
     };
@@ -192,11 +198,11 @@ The {{PerformanceEntry/name}} attribute's getter will return one of the followin
 Note: There are some inconsistencies across these names, such as the "-unreachable" and the "-contexts" suffixes.
 These names are kept for backward compatibility reasons.
 
-The {{PerformanceEntry/entryType}} attribute's getter will return <code>"longtask"</code>.
+The {{PerformanceLongTaskTiming/entryType}} attribute's getter step is to return <code>"longtask"</code>.
 
-The {{PerformanceEntry/startTime}} attribute's getter will return a {{DOMHighResTimeStamp}} of when the task started.
+The {{PerformanceLongTaskTiming/startTime}} attribute's getter step is to return a {{DOMHighResTimeStamp}} of when the task started.
 
-The {{PerformanceEntry/duration}} attribute's getter will return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task, with a 1 ms granularity.
+The {{PerformanceLongTaskTiming/duration}} attribute's getter step is to return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task, with a 1 ms granularity.
 
 The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's getter will return a frozen array of {{TaskAttributionTiming}} entries.
 
@@ -206,6 +212,12 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
 <pre class="def idl">
     [Exposed=Window]
     interface TaskAttributionTiming : PerformanceEntry {
+        // Overloading PerformanceEntry
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute DOMString containerType;
         readonly attribute DOMString containerSrc;
         readonly attribute DOMString containerId;
@@ -216,13 +228,13 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
 
 The values of the attributes of a {{TaskAttributionTiming}} are set in the processing model in [[#report-long-tasks]]. The following provides an informative summary of how they will be set.
 
-The {{PerformanceEntry/name}} attribute's getter will always return "<code>unknown</code>".
+The {{TaskAttributionTiming/name}} attribute's getter will always return "<code>unknown</code>".
 
-The {{PerformanceEntry/entryType}} attribute's getter will always return "<code>taskattribution</code>".
+The {{TaskAttributionTiming/entryType}} attribute's getter will always return "<code>taskattribution</code>".
 
-The {{PerformanceEntry/startTime}} attribute's getter will always return 0.
+The {{TaskAttributionTiming/startTime}} attribute's getter will always return 0.
 
-The {{PerformanceEntry/duration}} attribute's getter will always return 0.
+The {{TaskAttributionTiming/duration}} attribute's getter will always return 0.
 
 The <dfn attribute for=TaskAttributionTiming>containerType</dfn> attribute's getter will return the type of the <a>culprit browsing context container</a>, such as "<code>iframe</code>", "<code>embed</code>", or "<code>object</code>". If no single <a>culprit browsing context container</a> is found, it will return "<code>window</code>".
 
@@ -300,6 +312,12 @@ Long Animation Frame timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongAnimationFrameTiming : PerformanceEntry {
+        // Overloading PerformanceEntry
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute DOMHighResTimeStamp renderStart;
         readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
         readonly attribute DOMHighResTimeStamp blockingDuration;
@@ -310,13 +328,13 @@ Long Animation Frame timing involves the following new interfaces:
 
 A {{PerformanceLongAnimationFrameTiming}} has a [=frame timing info=] <dfn for=PerformanceLongAnimationFrameTiming>timing info</dfn>.
 
-The {{PerformanceEntry/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceEntry/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceEntry/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceEntry/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
