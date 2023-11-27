@@ -50,6 +50,7 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #unit-of-related-browsing-contexts; text: unit of related browsing contexts
     type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set
     type: dfn; url: #integration-with-the-javascript-agent-cluster-formalism; text: agent cluster
+    type: dfn; url: #concept-task-document; for: task; text: document;
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -346,6 +347,8 @@ Report long tasks {#report-long-tasks}
 <div algorithm="Report long tasks">
     Given |start time|, |end time|, |top-level browsing contexts|, and |task|, perform the following algorithm:
 
+    1. [=Report task end time=] given |end time| and |task|'s [=task/document=].
+
     1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
     1. Let |destinationRealms| be an empty set.
@@ -553,6 +556,30 @@ Report Long Animation Frames {#loaf-processing-model}
         whose [=PerformanceLongAnimationFrameTiming/timing info=] is |timingInfo|.
 
     1. set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
+</div>
+
+Monkey-patches to the HTML standard {#html-monkey-patches}
+=======================================
+
+<div algorithm="Monkey patch to report task start">
+    Insert step after step 2.3 of the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">event loop processing model</a>,
+    after setting |taskStartTime| and |oldestTask|:
+
+    1. [=Report task start time=] given |taskStartTime| and |oldestTask|'s [=task/document=].
+</div>
+
+<div algorithm="Monkey patch to report rendering end">
+    Insert a step before [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.14,
+    right before the loop that calculates style and layout for each {{Document}}:
+
+    1. Let |unsafeStyleAndLayoutStartTime| be the [=unsafe shared current time=].
+
+    Insert the following steps after [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.18,
+    right after calling [=mark paint timing=], using the existing |docs| variable:
+
+    1. Let |unsafeRenderingEndTime| be the [=unsafe shared current time=].
+    1. [=Report rendering time=] for each [=fully active=] {{Document}} object in |docs| given |unsafeRenderingEndTime| |unsafeStyleAndLayoutStartTime|.
+
 </div>
 
 Security & privacy considerations {#priv-sec}
