@@ -161,7 +161,7 @@ Long Task timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongTaskTiming : PerformanceEntry {
-        // Overloading PerformanceEntry
+        /* Overloading PerformanceEntry */
         readonly attribute DOMHighResTimeStamp startTime;
         readonly attribute DOMHighResTimeStamp duration;
         readonly attribute DOMString name;
@@ -212,7 +212,7 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
 <pre class="def idl">
     [Exposed=Window]
     interface TaskAttributionTiming : PerformanceEntry {
-        // Overloading PerformanceEntry
+        /* Overloading PerformanceEntry */
         readonly attribute DOMHighResTimeStamp startTime;
         readonly attribute DOMHighResTimeStamp duration;
         readonly attribute DOMString name;
@@ -312,7 +312,7 @@ Long Animation Frame timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongAnimationFrameTiming : PerformanceEntry {
-        // Overloading PerformanceEntry
+        /* Overloading PerformanceEntry */
         readonly attribute DOMHighResTimeStamp startTime;
         readonly attribute DOMHighResTimeStamp duration;
         readonly attribute DOMString name;
