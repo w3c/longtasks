@@ -760,6 +760,7 @@ Report Long Animation Frames {#loaf-processing-model}
             [=Set source url for script block=] given |scriptTimingInfo| and |originalSourceURL|.
 
     To <dfn>report classic script execution start</dfn> given a [=classic script=] |script|:
+        1. If |script|'s [=classic script/muted errors=] is true, then return.
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
