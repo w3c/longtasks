@@ -53,6 +53,7 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #concept-task-document; for: task; text: document;
     type: dfn; url: #running-script; text: running script;
     type: dfn; url: #muted-errors; for: classic script; text: muted errors;
+    type: dfn; url: #cors-cross-origin; text: CORS cross-origin;
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -823,9 +824,9 @@ The {{Promise}} interface has an associated string <dfn for=Promise>script url w
 Append the following steps to <a href="https://webidl.spec.whatwg.org/#a-new-promise">creating a new promise</a>, before returning the {{Promise}}:
     1. Let |interfaceName| be a string representing the [=interface=] responsible for creating this promise.
     1. Let |attributeName| be a string representing the [=attribute=] in the interface responsible for creating this promise.
+    1. Set the created {{Promise}}'s [=Promise/script url when created=] to the [=running script=]'s [=script/base URL=].
     1. The user-agent may set the created {{Promise}}'s [=Promise/invoker name when created=] to the last known [=concatenate|concatenation=] of
         « |interfaceName|, ".", |attributeName| »
-    1. The user-agent may set the created {{Promise}}'s [=Promise/script url when created=] to the current script URL.
 
 Prepend the following step to <a href="https://webidl.spec.whatwg.org/#resolve">resolve a promise</a> given {{Promise}} |p|:
     [=Report promise resolver=] given |p| and "`resolve-promise`".
@@ -957,7 +958,7 @@ Cross origin rules for what is exposed:
     occurrred in its cross-origin ancestor but does not receive any information about it.
 
 Attack Scenarios Considered {#attack-scenarios}
---------------------------------------------------------
+-----------------------------------------------
 
 The following are the timing attacks considered:
 
@@ -986,3 +987,10 @@ To mitigate this, long animation frames are only reported to "participating loca
 that are associated with a work task that contributed to the sequence, or that were rendered as part of the frame,
 are eligible to observe the long animation frame, and that long animation frame would be available only in
 their nearest ancestor that is either topmost or has a cross-origin parent.
+
+{{PerformanceScriptTiming}} and opaque scripts {#loaf-opaque-scripts-sec}
+-----------------------------------------------
+Since {{PerformanceScriptTiming}} exposes information about script execution, we need to make sure it
+doesn't expose too much information about [=CORS cross-origin=] scripts that cannot be easily deduced otherwise.
+To do that, we use the existing [=classic script/muted errors=] boolean, and report an empty {{PerformanceScriptTiming/sourceLocation}}
+in such cases.
