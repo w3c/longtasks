@@ -750,22 +750,28 @@ Report Long Animation Frames {#loaf-processing-model}
 </div>
 
 <div algorithm="Report script execution start">
-    To <dfn>report script execution start</dfn> given a [=/script=] |script|:
-        1. Let |scheme| be |script|'s [=script/base URL=]'s [=url/scheme=].
-        1. If |scheme| is neither "`http`", "`https`", "`blob`", or "`data`", return.
+    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo| and a [=/URL=] |url|:
+        1. If |url|'s [=url/scheme=] is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
+        1. Otherwise, if |url|'s [=url/scheme=] is "`blob`" or "`data`" then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |url|'s [=url/scheme=], ":"" ».
 
-            Note: this also excludes CORS cross-origin scripts, as they would have a [=script/base URL=] of <code>about:blank</code>.
-
-        1. Let |type| be "`module-script`" if |script| is a [=module script=], otherwise "`classic-script`".
-
-        1. [=Create script entry point=] with |script|'s [=script/settings object=], |type|,
+    To <dfn>report classic script creation</dfn> given a [=/script=] |script| and a [=/URL=] |originalSourceURL|:
+        1. [=Create script entry point=] with |script|'s [=script/settings object=], "`classic-script`",
             and the following step given a [=script timing info=] |scriptTimingInfo|:
-            1. If |script| is a [=classic script=] then:
-                1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to |scriptTimingInfo|'s [=script timing info/start time=].
-                1. Set |scriptTimingInfo|'s [=script timing info/start time=] to |script|'s [=classic script/creation time=].
-            1. If |scheme| is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
-            1. Otherwise, set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |scheme|, ":"" ».
+            [=Set source url for script block=] given |scriptTimingInfo| and |originalSourceURL|.
 
+    To <dfn>report classic script execution start</dfn> given a [=classic script=] |script|:
+        1. If |settings| is not a {{Window}}, then return.
+        1. Let |document| be |settings|'s {{Window/document}}.
+        1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. If |frameTimingInfo| is null or if |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
+        1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/type=] is "`classic-script`".
+        1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
+
+    To <dfn>report module script execution start</dfn> given a [=module script=] |script|:
+        [=Create script entry point=] with |script|'s [=script/settings object=], "`module-script`",
+            and the following step given a [=script timing info=] |scriptTimingInfo|:
+            1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to |script|'s |scriptTimingInfo|'s [=script timing info/start time=].
+            1. [=Set source url for script block=] given |scriptTimingInfo| and |script|'s [=script/base URL=].
 </div>
 
 <div algorithm="Create script entry point">
@@ -892,19 +898,17 @@ Monkey-patches to the HTML standard {#html-monkey-patches}
 <div algorithm="Monkey patches to script execution">
     The [=classic script=] [=struct=] has an additional item:
 
-    <dfn for="classic script">creation time</dfn>, a {{DOMHighResTimeStamp}}.
-
     Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#creating-a-classic-script">create a classic script</a> steps,
-        before parsing the script, assuming the |script| variable is populated:
-        Set |script|'s [=classic script/creation time=] to the [=unsafe shared current time=].
+        before parsing the script, assuming the |script| variable is populated, assuming a |url| variable:
+        [=Report classic script creation=] given |script| and |url|.
 
     Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-classic-script">run a classic script</a> steps,
         before preparing to run a script (between steps 2 and 3):
-        [=Report script execution start=] given |script|.
+        [=Report classic script execution start=] given |script|.
 
     Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-module-script">run a module script</a> steps,
         before preparing to run a script (between steps 2 and 3):
-        [=Report script execution start=] given |script|.
+        [=Report module script execution start=] given |script|.
 </div>
 
 <div algorithm="Monkey patch to microtrask checkpoint">
