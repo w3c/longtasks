@@ -589,24 +589,24 @@ It has the following [=struct/items=]:
 <dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
 
 <dl dfn-for="script timing info">
-    : <dfn>type</dfn>
+    <dt><dfn>type</dfn>
     :: A {{ScriptTimingType}}.
 
-    : <dfn>start time</dfn>
-    : <dfn>end time</dfn>
-    : <dfn>execution start time</dfn>
+    <dt><dfn>start time</dfn>
+    <dt><dfn>end time</dfn>
+    <dt><dfn>execution start time</dfn>
     :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
 
-    : <dfn>invoker name</dfn>
-    : <dfn>source url</dfn>
-    : <dfn>source function name</dfn>
-    : <dfn>event type</dfn>
-    : <dfn>event target element id</dfn>
-    : <dfn>event target element src attribute</dfn>
-    :: A string, initially the empty string.
+    <dt><dfn>invoker name</dfn>
+    <dt><dfn>source url</dfn>
+    <dt><dfn>source function name</dfn>
+    <dt><dfn>event type</dfn>
+    <dt><dfn>event target element id</dfn>
+    <dt><dfn>event target element src attribute</dfn>
+    <dd>A string, initially the empty string.
 
-    : <dfn>source character position</dfn>
-    :: A number, initially -1.
+    <dt><dfn>source character position</dfn>
+    <dd>A number, initially -1.
 </dl>
 
 A {{Document}} has a null or [=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
