@@ -566,31 +566,31 @@ Frame Timing Info {#sec-frame-timing-info}
 It has the following [=struct/items=]:
 
 <dl dfn-for="frame timing info">
-    : <dfn>start time</dfn>
-    : <dfn>current task start time</dfn>
-    : <dfn>update the rendering start time</dfn>
-    : <dfn>style and layout start time</dfn>
-    : <dfn>first ui event timestamp</dfn>
-    : <dfn>end time</dfn>
-    :: A {{DOMHighResTimeStamp}}, initially 0.
+    <dt><dfn>start time</dfn>
+    <dt><dfn>current task start time</dfn>
+    <dt><dfn>update the rendering start time</dfn>
+    <dt><dfn>style and layout start time</dfn>
+    <dt><dfn>first ui event timestamp</dfn>
+    <dt><dfn>end time</dfn>
+    <dd>A {{DOMHighResTimeStamp}}, initially 0.
         Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
             and should be [=coarsen time|coarsened=] when exposed via an API.
 
-    : <dfn>longest task duration</dfn>
-    :: A {{DOMHighResTimeStamp}}, initially 0.
+    <dt><dfn>longest task duration</dfn>
+    <dd>A {{DOMHighResTimeStamp}}, initially 0.
 
-    : <dfn>scripts</dfn>
-    :: A [=/list=] of [=script timing info=], initially empty.
+    <dt><dfn>scripts</dfn>
+    <dd>A [=/list=] of [=script timing info=], initially empty.
 
-    : <dfn>pending script</dfn>
-    :: Null or a [=script timing info=], initially null.
+    <dt><dfn>pending script</dfn>
+    <dd>Null or a [=script timing info=], initially null.
 </dl>
 
 <dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
 
 <dl dfn-for="script timing info">
     <dt><dfn>type</dfn>
-    :: A {{ScriptTimingType}}.
+    <dd>A {{ScriptTimingType}}.
 
     <dt><dfn>start time</dfn>
     <dt><dfn>end time</dfn>
