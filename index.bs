@@ -406,29 +406,29 @@ The {{PerformanceScriptTiming/name}} attribute's getter steps are:
 
         : "`classic-script`"
         : "`module-script`"
-            :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
+        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
 
         : "`event-listener`"
-            ::
-                1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
-                1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
-                    Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
-                1. Else, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
-                    Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
-                1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
+        ::
+            1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
+            1. Else, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
+            1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
 
         : "`user-callback`"
-            :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
 
         : "`resolve-promise`"
         : "`reject-promise`"
-            ::
-                1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
-                    then:
-                        1. If |this|'s {{PerformanceScriptTiming/type}} is "`resolve-promise`", then return "`Promise.resolve`".
-                        1. Otherwise, return "`Promise.reject`".
-                1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; Otherwise "`reject-promise`".
-                1. Return the [=concatenate|concatenation=] of « [=script timing info/invoker name=], ".", |thenOrCatch| ».
+        ::
+            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
+                then:
+                    1. If |this|'s {{PerformanceScriptTiming/type}} is "`resolve-promise`", then return "`Promise.resolve`".
+                    1. Otherwise, return "`Promise.reject`".
+            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; Otherwise "`reject-promise`".
+            1. Return the [=concatenate|concatenation=] of « [=script timing info/invoker name=], ".", |thenOrCatch| ».
 
 The {{PerformanceScriptTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/start time=] and [=this=]'s [=relevant global object=].
 
@@ -566,47 +566,47 @@ Frame Timing Info {#sec-frame-timing-info}
 It has the following [=struct/items=]:
 
 <dl dfn-for="frame timing info">
-    <dt><dfn>start time</dfn>
-    <dt><dfn>current task start time</dfn>
-    <dt><dfn>update the rendering start time</dfn>
-    <dt><dfn>style and layout start time</dfn>
-    <dt><dfn>first ui event timestamp</dfn>
-    <dt><dfn>end time</dfn>
-    <dd>A {{DOMHighResTimeStamp}}, initially 0.
+    : <dfn>start time</dfn>
+    : <dfn>current task start time</dfn>
+    : <dfn>update the rendering start time</dfn>
+    : <dfn>style and layout start time</dfn>
+    : <dfn>first ui event timestamp</dfn>
+    : <dfn>end time</dfn>
+    :: A {{DOMHighResTimeStamp}}, initially 0.
         Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
-            and should be [=coarsen time|coarsened=] when exposed via an API.
+        and should be [=coarsen time|coarsened=] when exposed via an API.
 
-    <dt><dfn>longest task duration</dfn>
-    <dd>A {{DOMHighResTimeStamp}}, initially 0.
+    : <dfn>longest task duration</dfn>
+    :: A {{DOMHighResTimeStamp}}, initially 0.
 
-    <dt><dfn>scripts</dfn>
-    <dd>A [=/list=] of [=script timing info=], initially empty.
+    : <dfn>scripts</dfn>
+    :: A [=/list=] of [=script timing info=], initially empty.
 
-    <dt><dfn>pending script</dfn>
-    <dd>Null or a [=script timing info=], initially null.
+    : <dfn>pending script</dfn>
+    :: Null or a [=script timing info=], initially null.
 </dl>
 
 <dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
 
 <dl dfn-for="script timing info">
-    <dt><dfn>type</dfn>
-    <dd>A {{ScriptTimingType}}.
+    : <dfn>type</dfn>
+    :: A {{ScriptTimingType}}.
 
-    <dt><dfn>start time</dfn>
-    <dt><dfn>end time</dfn>
-    <dt><dfn>execution start time</dfn>
+    : <dfn>start time</dfn>
+    : <dfn>end time</dfn>
+    : <dfn>execution start time</dfn>
     :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
 
-    <dt><dfn>invoker name</dfn>
-    <dt><dfn>source url</dfn>
-    <dt><dfn>source function name</dfn>
-    <dt><dfn>event type</dfn>
-    <dt><dfn>event target element id</dfn>
-    <dt><dfn>event target element src attribute</dfn>
-    <dd>A string, initially the empty string.
+    : <dfn>invoker name</dfn>
+    : <dfn>source url</dfn>
+    : <dfn>source function name</dfn>
+    : <dfn>event type</dfn>
+    : <dfn>event target element id</dfn>
+    : <dfn>event target element src attribute</dfn>
+    :: A string, initially the empty string.
 
-    <dt><dfn>source character position</dfn>
-    <dd>A number, initially -1.
+    : <dfn>source character position</dfn>
+    :: A number, initially -1.
 </dl>
 
 A {{Document}} has a null or [=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
