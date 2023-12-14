@@ -60,8 +60,8 @@ urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
     type: attribute; for: Element;
         text: id; url: #dom-element-id;
 urlPrefix: https://webidl.spec.whatwg.org/; spec: WEBIDL;
-    type: dfn; text: identifier; url: #identifier;
-    type: dfn; text: attribute; url: #attribute;
+    type: dfn; text: identifier; url: #dfn-identifier;
+    type: dfn; text: attribute; url: #dfn-attribute;
 </pre>
 
 <pre class=link-defaults>
