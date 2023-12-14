@@ -837,6 +837,9 @@ Append the following steps to <a href="https://webidl.spec.whatwg.org/#a-new-pro
     1. The user-agent may set the created {{Promise}}'s [=Promise/invoker name when created=] to the last known [=concatenate|concatenation=] of
         « |interfaceName|, ".", |attributeName| »
 
+        Issue: this is quite handwavy, because this is difficult to do in a normative way. Need to see if
+        that can be improved, or if the source location for promise handlers would remain a bit implementation-defined.
+
 Prepend the following step to <a href="https://webidl.spec.whatwg.org/#resolve">resolve a promise</a> given {{Promise}} |p|:
     [=Report promise resolver=] given |p| and "`resolve-promise`".
 
