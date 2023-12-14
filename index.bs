@@ -360,7 +360,7 @@ The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter 
     1. Return 0.
 
 The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
-    1. Let |scripts| be « ».
+    1. Let |scripts| be a [=/list=] « ».
     1. [=list/For each=] |scriptInfo| in [=this=]'s [=frame timing info=]'s [=frame timing info/scripts=]:
         1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
              whose [=PerformanceScriptTiming/timing info=] is |scriptInfo|.
@@ -416,6 +416,8 @@ The {{PerformanceScriptTiming/name}} attribute's getter steps are:
             1. Else, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
+
+            Issue: this feels a bit custom, need to discuss name generation.
 
         : "`user-callback`"
         :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
