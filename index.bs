@@ -50,11 +50,18 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #unit-of-related-browsing-contexts; text: unit of related browsing contexts
     type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set
     type: dfn; url: #integration-with-the-javascript-agent-cluster-formalism; text: agent cluster
+    type: dfn; url: #concept-task-document; for: task; text: document;
+    type: dfn; url: #running-script; text: running script;
+    type: dfn; url: #muted-errors; for: classic script; text: muted errors;
+    type: dfn; url: #cors-cross-origin; text: CORS cross-origin;
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
     type: attribute; for: Element;
         text: id; url: #dom-element-id;
+urlPrefix: https://webidl.spec.whatwg.org/; spec: WEBIDL;
+    type: dfn; text: identifier; url: #dfn-identifier;
+    type: dfn; text: attribute; url: #dfn-attribute;
 </pre>
 
 <pre class=link-defaults>
@@ -160,6 +167,12 @@ Long Task timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongTaskTiming : PerformanceEntry {
+        /* Overloading PerformanceEntry */
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute FrozenArray&lt;TaskAttributionTiming> attribution;
         [Default] object toJSON();
     };
@@ -191,11 +204,11 @@ The {{PerformanceEntry/name}} attribute's getter will return one of the followin
 Note: There are some inconsistencies across these names, such as the "-unreachable" and the "-contexts" suffixes.
 These names are kept for backward compatibility reasons.
 
-The {{PerformanceEntry/entryType}} attribute's getter will return <code>"longtask"</code>.
+The {{PerformanceLongTaskTiming/entryType}} attribute's getter step is to return <code>"longtask"</code>.
 
-The {{PerformanceEntry/startTime}} attribute's getter will return a {{DOMHighResTimeStamp}} of when the task started.
+The {{PerformanceLongTaskTiming/startTime}} attribute's getter step is to return a {{DOMHighResTimeStamp}} of when the task started.
 
-The {{PerformanceEntry/duration}} attribute's getter will return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task, with a 1 ms granularity.
+The {{PerformanceLongTaskTiming/duration}} attribute's getter step is to return a {{DOMHighResTimeStamp}} equal to the elapsed time between the start and end of task, with a 1 ms granularity.
 
 The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's getter will return a frozen array of {{TaskAttributionTiming}} entries.
 
@@ -205,6 +218,12 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
 <pre class="def idl">
     [Exposed=Window]
     interface TaskAttributionTiming : PerformanceEntry {
+        /* Overloading PerformanceEntry */
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute DOMString containerType;
         readonly attribute DOMString containerSrc;
         readonly attribute DOMString containerId;
@@ -215,13 +234,13 @@ The <dfn attribute for=PerformanceLongTaskTiming>attribution</dfn> attribute's g
 
 The values of the attributes of a {{TaskAttributionTiming}} are set in the processing model in [[#report-long-tasks]]. The following provides an informative summary of how they will be set.
 
-The {{PerformanceEntry/name}} attribute's getter will always return "<code>unknown</code>".
+The {{TaskAttributionTiming/name}} attribute's getter will always return "<code>unknown</code>".
 
-The {{PerformanceEntry/entryType}} attribute's getter will always return "<code>taskattribution</code>".
+The {{TaskAttributionTiming/entryType}} attribute's getter will always return "<code>taskattribution</code>".
 
-The {{PerformanceEntry/startTime}} attribute's getter will always return 0.
+The {{TaskAttributionTiming/startTime}} attribute's getter will always return 0.
 
-The {{PerformanceEntry/duration}} attribute's getter will always return 0.
+The {{TaskAttributionTiming/duration}} attribute's getter will always return 0.
 
 The <dfn attribute for=TaskAttributionTiming>containerType</dfn> attribute's getter will return the type of the <a>culprit browsing context container</a>, such as "<code>iframe</code>", "<code>embed</code>", or "<code>object</code>". If no single <a>culprit browsing context container</a> is found, it will return "<code>window</code>".
 
@@ -299,27 +318,36 @@ Long Animation Frame timing involves the following new interfaces:
 <pre class="idl">
     [Exposed=Window]
     interface PerformanceLongAnimationFrameTiming : PerformanceEntry {
+        /* Overloading PerformanceEntry */
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
         readonly attribute DOMHighResTimeStamp renderStart;
         readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
         readonly attribute DOMHighResTimeStamp blockingDuration;
-
+        readonly attribute DOMHighResTimeStamp firstUIEventTimestamp;
+        [SameObject] readonly attribute FrozenArray&lt;PerformanceScriptTiming&gt; scripts;
         [Default] object toJSON();
     };
 </pre>
 
 A {{PerformanceLongAnimationFrameTiming}} has a [=frame timing info=] <dfn for=PerformanceLongAnimationFrameTiming>timing info</dfn>.
 
-The {{PerformanceEntry/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceEntry/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
 
-The {{PerformanceEntry/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceEntry/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s  [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
 
@@ -331,7 +359,94 @@ The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter 
     1. If |workDuration| + |renderDuration| is greater than 50, then return |workDuration| + |renderDuration| - 50 milliseconds.
     1. Return 0.
 
-</div>
+The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
+    1. Let |scripts| be a [=/list=] « ».
+    1. [=list/For each=] |scriptInfo| in [=this=]'s [=frame timing info=]'s [=frame timing info/scripts=]:
+        1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
+             whose [=PerformanceScriptTiming/timing info=] is |scriptInfo|.
+        1. [=list/Append=] |scriptEntry| to |scripts|.
+    1. Return |scripts|.
+
+{{PerformanceScriptTiming}} interface {#sec-PerformanceScriptTiming}
+------------------------------------------------------------------------
+
+<pre class="idl">
+    enum ScriptTimingType {
+        "classic-script",
+        "module-script",
+        "event-listener",
+        "user-callback",
+        "resolve-promise",
+        "reject-promise"
+    };
+
+    [Exposed=Window]
+    interface PerformanceScriptTiming : PerformanceEntry {
+        /* Overloading PerformanceEntry */
+        readonly attribute DOMHighResTimeStamp startTime;
+        readonly attribute DOMHighResTimeStamp duration;
+        readonly attribute DOMString name;
+        readonly attribute DOMString entryType;
+
+        readonly attribute ScriptTimingType type;
+        readonly attribute DOMHighResTimeStamp executionStart;
+        readonly attribute DOMString sourceLocation;
+        [Default] object toJSON();
+    };
+</pre>
+
+A {{PerformanceScriptTiming}} has an associated [=script timing info=] <dfn for=PerformanceScriptTiming>timing info</dfn>.
+
+The {{PerformanceScriptTiming/entryType}} attribute's getter step is to return <code>"script"</code>.
+
+The {{PerformanceScriptTiming/type}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/type=].
+
+The {{PerformanceScriptTiming/name}} attribute's getter steps are:
+    1.  Switch on |this|'s {{PerformanceScriptTiming/type}}:
+
+        : "`classic-script`"
+        : "`module-script`"
+        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
+
+        : "`event-listener`"
+        ::
+            1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
+            1. Otherwise, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
+            1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
+
+            Issue: this feels a bit custom, need to discuss name generation.
+
+        : "`user-callback`"
+        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+
+        : "`resolve-promise`"
+        : "`reject-promise`"
+        ::
+            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
+                then:
+                    1. If |this|'s {{PerformanceScriptTiming/type}} is "`resolve-promise`", then return "`Promise.resolve`".
+                    1. Otherwise, return "`Promise.reject`".
+            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; otherwise "`reject-promise`".
+            1. Return the [=concatenate|concatenation=] of « [=script timing info/invoker name=], ".", |thenOrCatch| ».
+
+The {{PerformanceScriptTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceScriptTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceScriptTiming/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/end time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] is 0; Otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceScriptTiming/sourceLocation}} attribute's getter steps are:
+    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=] is the empty string, return the empty string.
+    1. Let |serializedSourceLocation| be [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
+    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=] is not the empty string, then
+        set |serializedSourceLocation| to the [=concatenate|concatenation=] of « [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=], "@", |serializedSourceLocation| ».
+    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] is greater than -1, then
+        set |serializedSourceLocation| to the [=concatenate|concatenation=] of «|serializedSourceLocation|, ":", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] ».
+    1. Return |serializedSourceLocation|.
+
 Processing model {#sec-processing-model}
 ========================================
 
@@ -345,6 +460,8 @@ Report long tasks {#report-long-tasks}
 
 <div algorithm="Report long tasks">
     Given |start time|, |end time|, |top-level browsing contexts|, and |task|, perform the following algorithm:
+
+    1. [=Report task end time=] given |end time| and |task|'s [=task/document=].
 
     1. If |end time| minus |start time| is less than the long tasks threshold of 50 ms, abort these steps.
 
@@ -455,14 +572,43 @@ It has the following [=struct/items=]:
     : <dfn>current task start time</dfn>
     : <dfn>update the rendering start time</dfn>
     : <dfn>style and layout start time</dfn>
+    : <dfn>first ui event timestamp</dfn>
     : <dfn>end time</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
         Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
-            and should be [=coarsen time|coarsened=] when exposed via an API.
+        and should be [=coarsen time|coarsened=] when exposed via an API.
 
     : <dfn>longest task duration</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
 
+    : <dfn>scripts</dfn>
+    :: A [=/list=] of [=script timing info=], initially empty.
+
+    : <dfn>pending script</dfn>
+    :: Null or a [=script timing info=], initially null.
+</dl>
+
+<dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
+
+<dl dfn-for="script timing info">
+    : <dfn>type</dfn>
+    :: A {{ScriptTimingType}}.
+
+    : <dfn>start time</dfn>
+    : <dfn>end time</dfn>
+    : <dfn>execution start time</dfn>
+    :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
+
+    : <dfn>invoker name</dfn>
+    : <dfn>source url</dfn>
+    : <dfn>source function name</dfn>
+    : <dfn>event type</dfn>
+    : <dfn>event target element id</dfn>
+    : <dfn>event target element src attribute</dfn>
+    :: A string, initially the empty string.
+
+    : <dfn>source character position</dfn>
+    :: A number, initially -1.
 </dl>
 
 A {{Document}} has a null or [=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
@@ -470,6 +616,8 @@ A {{Document}} has a null or [=frame timing info=] <dfn>current frame timing inf
 
 Report Long Animation Frames {#loaf-processing-model}
 ------------------------------------------
+
+### Long Animation Frame Monitoring {#loaf-monitoring}
 
 <div algorithm="Accessing the frame timing info">
     To get the <dfn>nearest same-origin root</dfn> for a {{Document}} |document|:
@@ -555,6 +703,234 @@ Report Long Animation Frames {#loaf-processing-model}
     1. set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
 </div>
 
+### Long Script Monitoring ### {#long-script-monitoring}
+
+<div algorithm="Report pending user callback">
+    To <dfn>report user callback</dfn> given a [=callback function=] |callback| and an [=environment settings object=] |settings|:
+    [=Create script entry point=] given |settings|, "`user-callback`", and the following steps given a [=script timing info=] |scriptTimingInfo|:
+
+        1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |callback|'s [=identifier=].
+        1. [=Apply source location=] for |scriptTimingInfo| given |callback|.
+</div>
+
+<div algorithm="Report pending timer">
+    To <dfn>report timer handler</dfn> given a string or {{Function}} |handler|, an [=environment settings object=] |settings|, and a boolean |repeat|:
+        [=Create script entry point=] given |settings|, "`user-callback`",
+            and the following steps given a [=script timing info=] |scriptTimingInfo|:
+
+            1. Let |setTimeoutOrInterval| be "setInterval" if |repeat| is true, "setTimeout" otherwise.
+            1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to [=concatenate|concatenation=] of
+                « TimerHandler:", |setTimeoutOrInterval| ».
+            1. If |handler| is a {{Function}}, then [=apply source location=] for |scriptTimingInfo| given |handler|.
+</div>
+
+<div algorithm="Report event handler">
+    To <dfn>report event handler</dfn> given an {{Event}} |event| and an {{EventListener}} |listener|:
+        [=Create script entry point=] given |listener|'s [=relevant settings object=], "`event-listener`",
+        and the following steps given a [=script timing info=] |scriptTimingInfo| and a [=frame timing info=] |frameTimingInfo|:
+
+        1. Set |scriptTimingInfo|'s [=script timing info/event type=] to |event|'s {{Event/type}}.
+        1. Let |target| be |event|'s {{Event/currentTarget}}.
+        1. If |target| is a {{Node}}, then:
+            1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s {{Node/nodeName}}.
+            1. If |target| is an {{Element}}, then:
+                1. Set |scriptTimingInfo|'s [=script timing info/event target element id=] to |target|'s [=Element/id=].
+                1. Set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to the result of [=get an attribute by name|getting an attribute value by name=] "`src`" and |target|.
+        1. Else, set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s interface name.
+        1. [=Apply source location=] for |scriptTimingInfo| given |listener|'s [=event listener/callback=].
+        1. If |event| is a {{UIEvent}}, and |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] is 0,
+            then set |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] to |event|'s {{Event/timeStamp}}.
+</div>
+
+<div algorithm="Report promise resolver">
+    To <dfn>report promise resolver</dfn> given a {{Promise}} |promise| and a "`resolve-promise`" or "`reject-promise`" |type|:
+    1. [=Create script entry point=] given |promise|'s [=relevant realm=]'s [=realm/settings object=], |type|,
+        and the following steps given a [=script timing info=] |scriptTimingInfo|:
+
+        1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |promise|'s [=Promise/invoker name when created=].
+        1. Set |scriptTimingInfo|'s [=script timing info/source url=] to |promise|'s [=Promise/script url when created=].
+</div>
+
+<div algorithm="Set source URL for script block">
+    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo|, a [=/script=] |script|, and a [=/URL=] |url|:
+        1. If |url|'s [=url/scheme=] is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
+        1. Otherwise, if |url|'s [=url/scheme=] is "`blob`" or "`data`" then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |url|'s [=url/scheme=], ":"" ».
+</div>
+
+<div algorithm="Report classic script execution">
+    To <dfn>report classic script creation</dfn> given a [=/script=] |script| and a [=/URL=] |originalSourceURL|:
+        1. [=Create script entry point=] with |script|'s [=script/settings object=], "`classic-script`",
+            and the following step given a [=script timing info=] |scriptTimingInfo|:
+            [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |originalSourceURL|.
+</div>
+
+<div algorithm="Report classic script execution start">
+    To <dfn>report classic script execution start</dfn> given a [=classic script=] |script|:
+        1. Let |settings| be |script|'s [=script/settings object=].
+        1. If |script|'s [=classic script/muted errors=] is true, then return.
+        1. If |settings| is not a {{Window}}, then return.
+        1. Let |document| be |settings|'s {{Window/document}}.
+        1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. If |frameTimingInfo| is null or if |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
+        1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/type=] is "`classic-script`".
+        1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
+</div>
+
+<div algorithm="Report module script execution start">
+    To <dfn>report module script execution start</dfn> given a [=module script=] |script|:
+        [=Create script entry point=] with |script|'s [=script/settings object=], "`module-script`",
+            and the following step given a [=script timing info=] |scriptTimingInfo|:
+            1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to |script|'s |scriptTimingInfo|'s [=script timing info/start time=].
+            1. [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/base URL=].
+</div>
+
+<div algorithm="Create script entry point">
+    To <dfn>create script entry point</dfn> given an [=environment settings object=] |settings|,
+        a {{ScriptTimingType}} |type|, and |steps|,
+        which is an algorithm that takes a [=script timing info=] and an optional [=frame timing info=]:
+
+        1. If |settings| is not a {{Window}}, then return.
+        1. Let |document| be |settings|'s {{Window/document}}.
+        1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
+        1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. If |frameTimingInfo| is null, then return.
+        1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
+        1. Let |scriptTimingInfo| be a new [=script timing info=]
+            whose [=script timing info/start time=] is the [=unsafe shared current time=],
+            and whose [=script timing info/type=] is |type|.
+        1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
+        1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
+</div>
+
+<div algorithm="Flush script entry point">
+    To <dfn>flush script entry point</dfn>:
+
+    1. Let |script| be the [=running script=].
+    1. Let |settings| be |script|'s [=script/settings object=].
+    1. Let |document| be |settings|'s {{Window/document}}.
+    1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
+    1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+    1. Let |scriptTimingInfo| be |frameTimingInfo|'s [=frame timing info/pending script=].
+    1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to null.
+    1. If |scriptTimingInfo| is null, then return.
+    1. Set |scriptTimingInfo|'s [=script timing info/end time=] to the [=unsafe shared current time=].
+    1. If |script| is a [=classic script=] whose [=classic script/muted errors=] is true, then:
+        1. set |scriptTimingInfo|'s [=script timing info/source url=] to the empty string.
+        1. set |scriptTimingInfo|'s [=script timing info/source character position=] to -1.
+        1. set |scriptTimingInfo|'s [=script timing info/source function name=] to the empty string.
+    1. If the [=duration=] between |scriptTimingInfo|'s [=script timing info/start time=] and |scriptTimingInfo|'s [=script timing info/end time=] is greater than 5 milliseconds, then
+        [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
+</div>
+
+<div algorithm="Applying source location">
+    To <dfn>apply source location</dfn> to a [=script timing info=] |scriptTimingInfo| given a [=callback function=] or {{Function}} |callback|:
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to the source URL of the script where |callback| was defined.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source function name=] to the function name of |callback|.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the character position where |callback| was defined.
+</div>
+
+Additions to existing standards {#other-standards}
+==================================================
+
+Monkey-patches to the WebIDL standard {#webidl-monkey-patches}
+----------------------------------------------------------
+<div algorithm="Monkey patches to promise handling">
+The {{Promise}} interface has an associated string <dfn for=Promise>invoker name when created</dfn>, initially "`Promise`".
+The {{Promise}} interface has an associated string <dfn for=Promise>script url when created</dfn>, initially the empty string.
+
+Append the following steps to <a href="https://webidl.spec.whatwg.org/#a-new-promise">creating a new promise</a>, before returning the {{Promise}}:
+    1. Let |interfaceName| be a string representing the [=interface=] responsible for creating this promise.
+    1. Let |attributeName| be a string representing the [=attribute=] in the interface responsible for creating this promise.
+    1. Set the created {{Promise}}'s [=Promise/script url when created=] to the [=running script=]'s [=script/base URL=].
+    1. The user-agent may set the created {{Promise}}'s [=Promise/invoker name when created=] to the last known [=concatenate|concatenation=] of
+        « |interfaceName|, ".", |attributeName| »
+
+        Issue: this is quite handwavy, because this is difficult to do in a normative way. Need to see if
+        that can be improved, or if the source location for promise handlers would remain a bit implementation-defined.
+
+Prepend the following step to <a href="https://webidl.spec.whatwg.org/#resolve">resolve a promise</a> given {{Promise}} |p|:
+    [=Report promise resolver=] given |p| and "`resolve-promise`".
+
+Prepend the following step to <a href="https://webidl.spec.whatwg.org/#reject">reject a promise</a> given {{Promise}} |p|:
+    [=Report promise resolver=] given |p| and "`reject-promise`".
+</div>
+
+<div algorithm="Monkey patch to callback invocation">
+Insert the following steps to <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">invoke a callback function</a>,
+    once we have an [=environment settings object=] |relevant settings| and a [=callback function=] |F|:
+        [=Report user callback=] given |F| and |relevant settings|.
+</div>
+
+
+Monkey-patches to the DOM standard {#dom-monkey-patches}
+----------------------------------------------------------
+<div algorithm="Monkey patch to event handling">
+    Insert the following step to the <a href="https://dom.spec.whatwg.org/#concept-event-listener-inner-invoke">inner invoke</a> steps,
+    after determining that |global| is a {{Window}} (after step 8.2), assuming an [=event listener=] |listener|:
+        [=Report event handler=] given |global|'s {{Window/event}} and |listener|.
+</div>
+
+
+Monkey-patches to the HTML standard {#html-monkey-patches}
+----------------------------------------------------------
+<div algorithm="Monkey patch to report task start">
+    Insert step after step 2.3 of the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">event loop processing model</a>,
+    after setting |taskStartTime| and |oldestTask|:
+
+    1. [=Report task start time=] given |taskStartTime| and |oldestTask|'s [=task/document=].
+</div>
+
+<div algorithm="Monkey patch to report rendering end">
+    Insert a step before [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.14,
+    right before the loop that calculates style and layout for each {{Document}}:
+
+    1. Let |unsafeStyleAndLayoutStartTime| be the [=unsafe shared current time=].
+
+    Insert the following steps after [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.18,
+    right after calling [=mark paint timing=], using the existing |docs| variable:
+
+    1. Let |unsafeRenderingEndTime| be the [=unsafe shared current time=].
+    1. [=Report rendering time=] for each [=fully active=] {{Document}} object in |docs| given |unsafeRenderingEndTime| |unsafeStyleAndLayoutStartTime|.
+</div>
+
+<div algorithm="Monkey patch to timers">
+    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timer-initialisation-steps">timer initialisation steps</a>,
+        after asserting that the timer ID exists in the map of active timers (After step 8.1),
+        assuming a {{Function}} or string |handler|, a {{WindowOrWorkerGlobalScope}} |global|, and a boolean |repeat|:
+
+        1. [=Report timer handler=] given |handler|, |global|'s [=relevant settings object=], and |repeat|.
+
+    1. Let |unsafeStyleAndLayoutStartTime| be the [=unsafe shared current time=].
+
+    Insert the following steps after [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.18,
+    right after calling [=mark paint timing=], using the existing |docs| variable:
+
+    1. Let |unsafeRenderingEndTime| be the [=unsafe shared current time=].
+    1. [=Report rendering time=] for each [=fully active=] {{Document}} object in |docs| given |unsafeRenderingEndTime| |unsafeStyleAndLayoutStartTime|.
+</div>
+
+<div algorithm="Monkey patches to script execution">
+    The [=classic script=] [=struct=] has an additional item:
+
+    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#creating-a-classic-script">create a classic script</a> steps,
+        before parsing the script, assuming the |script| variable is populated, assuming a |url| variable:
+        [=Report classic script creation=] given |script| and |url|.
+
+    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-classic-script">run a classic script</a> steps,
+        before preparing to run a script (between steps 2 and 3):
+        [=Report classic script execution start=] given |script|.
+
+    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-module-script">run a module script</a> steps,
+        before preparing to run a script (between steps 2 and 3):
+        [=Report module script execution start=] given |script|.
+</div>
+
+<div algorithm="Monkey patch to microtrask checkpoint">
+    Append the following step to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint">perform a microtask checkpoint</a>:
+        [=Flush script entry point=].
+
+</div>
+
 Security & privacy considerations {#priv-sec}
 ===============================================
 
@@ -600,7 +976,7 @@ Cross origin rules for what is exposed:
     occurrred in its cross-origin ancestor but does not receive any information about it.
 
 Attack Scenarios Considered {#attack-scenarios}
---------------------------------------------------------
+-----------------------------------------------
 
 The following are the timing attacks considered:
 
@@ -629,3 +1005,10 @@ To mitigate this, long animation frames are only reported to "participating loca
 that are associated with a work task that contributed to the sequence, or that were rendered as part of the frame,
 are eligible to observe the long animation frame, and that long animation frame would be available only in
 their nearest ancestor that is either topmost or has a cross-origin parent.
+
+{{PerformanceScriptTiming}} and opaque scripts {#loaf-opaque-scripts-sec}
+-----------------------------------------------
+Since {{PerformanceScriptTiming}} exposes information about script execution, we need to make sure it
+doesn't expose too much information about [=CORS cross-origin=] scripts that cannot be easily deduced otherwise.
+To do that, we use the existing [=classic script/muted errors=] boolean, and report an empty {{PerformanceScriptTiming/sourceLocation}}
+in such cases.
