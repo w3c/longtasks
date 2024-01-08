@@ -413,7 +413,7 @@ The {{PerformanceScriptTiming/name}} attribute's getter steps are:
             1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
             1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
-            1. Else, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
+            1. Otherwise, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
 
@@ -429,7 +429,7 @@ The {{PerformanceScriptTiming/name}} attribute's getter steps are:
                 then:
                     1. If |this|'s {{PerformanceScriptTiming/type}} is "`resolve-promise`", then return "`Promise.resolve`".
                     1. Otherwise, return "`Promise.reject`".
-            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; Otherwise "`reject-promise`".
+            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; otherwise "`reject-promise`".
             1. Return the [=concatenate|concatenation=] of « [=script timing info/invoker name=], ".", |thenOrCatch| ».
 
 The {{PerformanceScriptTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/start time=] and [=this=]'s [=relevant global object=].
@@ -707,16 +707,15 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Report pending user callback">
     To <dfn>report user callback</dfn> given a [=callback function=] |callback| and an [=environment settings object=] |settings|:
-        [=Create script entry point=] given "`user-callback`", |settings|,
-            and the following steps given a [=script timing info=] |scriptTimingInfo|:
+    [=Create script entry point=] given |settings|, "`user-callback`", and the following steps given a [=script timing info=] |scriptTimingInfo|:
 
-            1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |callback|'s [=identifier=].
-            1. [=Apply source location=] for |scriptTimingInfo| given |callback|.
+        1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |callback|'s [=identifier=].
+        1. [=Apply source location=] for |scriptTimingInfo| given |callback|.
 </div>
 
 <div algorithm="Report pending timer">
     To <dfn>report timer handler</dfn> given a string or {{Function}} |handler|, an [=environment settings object=] |settings|, and a boolean |repeat|:
-        [=Create script entry point=] given "`user-callback`", |settings|,
+        [=Create script entry point=] given |settings|, "`user-callback`",
             and the following steps given a [=script timing info=] |scriptTimingInfo|:
 
             1. Let |setTimeoutOrInterval| be "setInterval" if |repeat| is true, "setTimeout" otherwise.
@@ -727,15 +726,16 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Report event handler">
     To <dfn>report event handler</dfn> given an {{Event}} |event| and an {{EventListener}} |listener|:
-        [=Create script entry point=] given "`event-listener`", |target|'s [=relevant settings object=],
+        [=Create script entry point=] given |listener|'s [=relevant settings object=], "`event-listener`",
         and the following steps given a [=script timing info=] |scriptTimingInfo| and a [=frame timing info=] |frameTimingInfo|:
 
         1. Set |scriptTimingInfo|'s [=script timing info/event type=] to |event|'s {{Event/type}}.
+        1. Let |target| be |event|'s {{Event/currentTarget}}.
         1. If |target| is a {{Node}}, then:
             1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s {{Node/nodeName}}.
             1. If |target| is an {{Element}}, then:
                 1. Set |scriptTimingInfo|'s [=script timing info/event target element id=] to |target|'s [=Element/id=].
-                1. Set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to the result of [=get an attribute by name|getting an attribute value by name] "`src`" and |target|.
+                1. Set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to the result of [=get an attribute by name|getting an attribute value by name=] "`src`" and |target|.
         1. Else, set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s interface name.
         1. [=Apply source location=] for |scriptTimingInfo| given |listener|'s [=event listener/callback=].
         1. If |event| is a {{UIEvent}}, and |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] is 0,
@@ -744,37 +744,44 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Report promise resolver">
     To <dfn>report promise resolver</dfn> given a {{Promise}} |promise| and a "`resolve-promise`" or "`reject-promise`" |type|:
-    1. [=Create script entry point=] given |type|, |promise|'s [=relevant realm=]'s [=realm/settings object=],
+    1. [=Create script entry point=] given |promise|'s [=relevant realm=]'s [=realm/settings object=], |type|,
         and the following steps given a [=script timing info=] |scriptTimingInfo|:
 
         1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |promise|'s [=Promise/invoker name when created=].
         1. Set |scriptTimingInfo|'s [=script timing info/source url=] to |promise|'s [=Promise/script url when created=].
 </div>
 
-<div algorithm="Report script execution start">
-    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo| and a [=/URL=] |url|:
+<div algorithm="Set source URL for script block">
+    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo|, a [=/script=] |script|, and a [=/URL=] |url|:
         1. If |url|'s [=url/scheme=] is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
         1. Otherwise, if |url|'s [=url/scheme=] is "`blob`" or "`data`" then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |url|'s [=url/scheme=], ":"" ».
+</div>
 
+<div algorithm="Report classic script execution">
     To <dfn>report classic script creation</dfn> given a [=/script=] |script| and a [=/URL=] |originalSourceURL|:
         1. [=Create script entry point=] with |script|'s [=script/settings object=], "`classic-script`",
             and the following step given a [=script timing info=] |scriptTimingInfo|:
-            [=Set source url for script block=] given |scriptTimingInfo| and |originalSourceURL|.
+            [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |originalSourceURL|.
+</div>
 
+<div algorithm="Report classic script execution start">
     To <dfn>report classic script execution start</dfn> given a [=classic script=] |script|:
+        1. Let |settings| be |script|'s [=script/settings object=].
         1. If |script|'s [=classic script/muted errors=] is true, then return.
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
         1. If |frameTimingInfo| is null or if |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/type=] is "`classic-script`".
-        1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
+        1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
+</div>
 
+<div algorithm="Report module script execution start">
     To <dfn>report module script execution start</dfn> given a [=module script=] |script|:
         [=Create script entry point=] with |script|'s [=script/settings object=], "`module-script`",
             and the following step given a [=script timing info=] |scriptTimingInfo|:
             1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to |script|'s |scriptTimingInfo|'s [=script timing info/start time=].
-            1. [=Set source url for script block=] given |scriptTimingInfo| and |script|'s [=script/base URL=].
+            1. [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/base URL=].
 </div>
 
 <div algorithm="Create script entry point">
@@ -786,6 +793,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. Let |document| be |settings|'s {{Window/document}}.
         1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. If |frameTimingInfo| is null, then return.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |scriptTimingInfo| be a new [=script timing info=]
             whose [=script timing info/start time=] is the [=unsafe shared current time=],
