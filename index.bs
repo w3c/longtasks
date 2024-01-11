@@ -363,18 +363,30 @@ The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter 
 
 The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
     1. Let |scripts| be a [=/list=] « ».
+    1. Let |entryWindow| be |this|'s [=relevant global object=].
     1. [=list/For each=] |scriptInfo| in [=this=]'s [=frame timing info=]'s [=frame timing info/scripts=]:
+        1. Let |scriptWindow| be |scriptInfo|'s [=script timing info/window=].
         1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
-            whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the result of the following steps:
+            whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the value corresponding to the first matching statement:
 
-            1. Let |scriptWindow| be |scriptInfo|'s [=script timing info/window=].
-            1. Let |entryWindow| be |this|'s [=relevant global object=].
-            1. If |scriptWindow| is undefined, then return {{ScriptWindowAttribution/other}}.
-            1. If |scriptWindow| is |entryWindow|, then return {{ScriptWindowAttribution/self}}.
-            1. If |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |scriptWindow|'s associated {{Document}}'s [=node navigable=], then return {{ScriptWindowAttribution/ancestor}}.
-            1. If |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |entryWindow|'s associated {{Document}}'s [=node navigable=], then return {{ScriptWindowAttribution/descendant}}.
-            1. If |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=] is |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=], then return {{ScriptWindowAttribution/same-page}}.
-            1. Return {{ScriptWindowAttribution/other}}.
+            :  |scriptWindow| is undefined
+            :: {{ScriptWindowAttribution/other}}
+
+            :  |scriptWindow| is |entryWindow|
+            :: {{ScriptWindowAttribution/self}}
+
+            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |scriptWindow|'s associated {{Document}}'s [=node navigable=]
+            :: {{ScriptWindowAttribution/ancestor}}
+
+            : |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |entryWindow|'s associated {{Document}}'s [=node navigable=]
+            :: {{ScriptWindowAttribution/descendant}}
+
+            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=] is |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=]
+            :: {{ScriptWindowAttribution/same-page}}
+
+            : Otherwise
+            :: {{ScriptWindowAttribution/other}}.
+
         1. [=list/Append=] |scriptEntry| to |scripts|.
     1. Return |scripts|.
 
@@ -461,7 +473,7 @@ The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to ret
 
 The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style and layout synchronously, e.g. by calling {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
 
-    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout?
+    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to [=PerformanceScriptTiming/timing info=] once that's resolved.
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
@@ -879,9 +891,7 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
     1. If |frameTimingInfo| is null, then return.
     1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
-    1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info=/pause duration=] by the milliseconds value of |duration|.
-
-
+    1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
 </div>
 
 Additions to existing standards {#other-standards}
@@ -988,8 +998,9 @@ Monkey-patches to the HTML standard {#html-monkey-patches}
 <div algorithm="Monkey patch to pausing">
     Add the following steps to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#pause">pause</a>:
 
-    Prepend the following step: Let |timeBeforePause| be the [=monotonic clock/unsafe current time=].
-    Append the following step: [=Report pause duration=] given the [=duration=] between |timeBeforePause| and the [=monotonic clock/unsafe current time=].
+        Prepend the following step: Let |timeBeforePause| be the [=monotonic clock/unsafe current time=].
+
+        Append the following step: [=Report pause duration=] given the [=duration=] between |timeBeforePause| and the [=monotonic clock/unsafe current time=].
 </div>
 
 Security & privacy considerations {#priv-sec}
