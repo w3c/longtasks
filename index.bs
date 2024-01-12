@@ -62,6 +62,8 @@ urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
 urlPrefix: https://webidl.spec.whatwg.org/; spec: WEBIDL;
     type: dfn; text: identifier; url: #dfn-identifier;
     type: dfn; text: attribute; url: #dfn-attribute;
+urlPrefix: https://tc39.es/ecma262/multipage/managing-memory.html
+    type: dfn; text: weakrefderef; url: #sec-weakrefderef;
 </pre>
 
 <pre class=link-defaults>
@@ -361,9 +363,30 @@ The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter 
 
 The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
     1. Let |scripts| be a [=/list=] « ».
+    1. Let |entryWindow| be |this|'s [=relevant global object=].
     1. [=list/For each=] |scriptInfo| in [=this=]'s [=frame timing info=]'s [=frame timing info/scripts=]:
+        1. Let |scriptWindow| be |scriptInfo|'s [=script timing info/window=].
         1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
-             whose [=PerformanceScriptTiming/timing info=] is |scriptInfo|.
+            whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the value corresponding to the first matching statement:
+
+            :  |scriptWindow| is undefined
+            :: {{ScriptWindowAttribution/other}}
+
+            :  |scriptWindow| is |entryWindow|
+            :: {{ScriptWindowAttribution/self}}
+
+            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |scriptWindow|'s associated {{Document}}'s [=node navigable=]
+            :: {{ScriptWindowAttribution/ancestor}}
+
+            : |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |entryWindow|'s associated {{Document}}'s [=node navigable=]
+            :: {{ScriptWindowAttribution/descendant}}
+
+            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=] is |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=]
+            :: {{ScriptWindowAttribution/same-page}}
+
+            : Otherwise
+            :: {{ScriptWindowAttribution/other}}.
+
         1. [=list/Append=] |scriptEntry| to |scripts|.
     1. Return |scripts|.
 
@@ -380,6 +403,10 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         "reject-promise"
     };
 
+    enum ScriptWindowAttribution {
+        "self", "descendant", "ancestor", "same-page", "other"
+    };
+
     [Exposed=Window]
     interface PerformanceScriptTiming : PerformanceEntry {
         /* Overloading PerformanceEntry */
@@ -391,11 +418,17 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute ScriptTimingType type;
         readonly attribute DOMHighResTimeStamp executionStart;
         readonly attribute DOMString sourceLocation;
+        readonly attribute DOMHighResTimeStamp pauseDuration;
+        readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
+        readonly attribute Window? window;
+        readonly attribute ScriptWindowAttribution windowAttribution;
         [Default] object toJSON();
     };
 </pre>
 
 A {{PerformanceScriptTiming}} has an associated [=script timing info=] <dfn for=PerformanceScriptTiming>timing info</dfn>.
+
+A {{PerformanceScriptTiming}} has an associated {{ScriptWindowAttribution}} <dfn for=PerformanceScriptTiming>window attribution</dfn>.
 
 The {{PerformanceScriptTiming/entryType}} attribute's getter step is to return <code>"script"</code>.
 
@@ -438,6 +471,12 @@ The {{PerformanceScriptTiming/duration}} attribute's getter step is to return th
 
 The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] is 0; Otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] and [=this=]'s [=relevant global object=].
 
+The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style and layout synchronously, e.g. by calling {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
+
+    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to [=PerformanceScriptTiming/timing info=] once that's resolved.
+
+The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
+
 The {{PerformanceScriptTiming/sourceLocation}} attribute's getter steps are:
     1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=] is the empty string, return the empty string.
     1. Let |serializedSourceLocation| be [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
@@ -446,6 +485,12 @@ The {{PerformanceScriptTiming/sourceLocation}} attribute's getter steps are:
     1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] is greater than -1, then
         set |serializedSourceLocation| to the [=concatenate|concatenation=] of «|serializedSourceLocation|, ":", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] ».
     1. Return |serializedSourceLocation|.
+
+The {{PerformanceScriptTiming/window}} attribute's getter steps are:
+    1. Let |window| be the result of calling [=weakrefderef|deref=] on [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/window=].
+    1. If |window| is undefined, then return null; Otherwise return |window|.
+
+The {{PerformanceScriptTiming/windowAttribution}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/window attribution=].
 
 Processing model {#sec-processing-model}
 ========================================
@@ -599,6 +644,9 @@ It has the following [=struct/items=]:
     : <dfn>execution start time</dfn>
     :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
 
+    : <dfn>pause duration</dfn>
+    :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
+
     : <dfn>invoker name</dfn>
     : <dfn>source url</dfn>
     : <dfn>source function name</dfn>
@@ -609,6 +657,9 @@ It has the following [=struct/items=]:
 
     : <dfn>source character position</dfn>
     :: A number, initially -1.
+
+    : <dfn>window</dfn>
+    :: A {{WeakRef}} to a {{Window}}.
 </dl>
 
 A {{Document}} has a null or [=frame timing info=] <dfn>current frame timing info</dfn>, initially null.
@@ -799,6 +850,7 @@ Report Long Animation Frames {#loaf-processing-model}
             whose [=script timing info/start time=] is the [=unsafe shared current time=],
             and whose [=script timing info/type=] is |type|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
+        1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
 </div>
 
@@ -827,6 +879,19 @@ Report Long Animation Frames {#loaf-processing-model}
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to the source URL of the script where |callback| was defined.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source function name=] to the function name of |callback|.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the character position where |callback| was defined.
+</div>
+
+<div algorithm="Report pause duration">
+    To <dfn>report pause duration</dfn> given a [=duration=] |duration|:
+    1. Let |script| be the [=running script=].
+    1. Let |settings| be |script|'s [=script/settings object=].
+    1. If |settings| is not a {{Window}}, then return.
+    1. Let |document| be |settings|'s {{Window/document}}.
+    1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
+    1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |frameTimingInfo| is null, then return.
+    1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
+    1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
 </div>
 
 Additions to existing standards {#other-standards}
@@ -928,7 +993,14 @@ Monkey-patches to the HTML standard {#html-monkey-patches}
 <div algorithm="Monkey patch to microtrask checkpoint">
     Append the following step to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint">perform a microtask checkpoint</a>:
         [=Flush script entry point=].
+</div>
 
+<div algorithm="Monkey patch to pausing">
+    Add the following steps to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#pause">pause</a>:
+
+        Prepend the following step: Let |timeBeforePause| be the [=monotonic clock/unsafe current time=].
+
+        Append the following step: [=Report pause duration=] given the [=duration=] between |timeBeforePause| and the [=monotonic clock/unsafe current time=].
 </div>
 
 Security & privacy considerations {#priv-sec}
