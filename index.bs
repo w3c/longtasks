@@ -394,7 +394,7 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
 ------------------------------------------------------------------------
 
 <pre class="idl">
-    enum ScriptTimingType {
+    enum ScriptInvokerType {
         "classic-script",
         "module-script",
         "event-listener",
@@ -415,7 +415,8 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute DOMString name;
         readonly attribute DOMString entryType;
 
-        readonly attribute ScriptTimingType type;
+        readonly attribute ScriptInvokerType invokerType;
+        readonly attribute DOMString invoker;
         readonly attribute DOMHighResTimeStamp executionStart;
         readonly attribute DOMString sourceLocation;
         readonly attribute DOMHighResTimeStamp pauseDuration;
@@ -432,10 +433,12 @@ A {{PerformanceScriptTiming}} has an associated {{ScriptWindowAttribution}} <dfn
 
 The {{PerformanceScriptTiming/entryType}} attribute's getter step is to return <code>"script"</code>.
 
-The {{PerformanceScriptTiming/type}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/type=].
+The {{PerformanceScriptTiming/name}} attribute's getter step is to return <code>"script"</code>.
 
-The {{PerformanceScriptTiming/name}} attribute's getter steps are:
-    1.  Switch on |this|'s {{PerformanceScriptTiming/type}}:
+The {{PerformanceScriptTiming/invokerType}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker type=].
+
+The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
+    1.  Switch on |this|'s {{PerformanceScriptTiming/invokerType}}:
 
         : "`classic-script`"
         : "`module-script`"
@@ -460,9 +463,9 @@ The {{PerformanceScriptTiming/name}} attribute's getter steps are:
         ::
             1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
                 then:
-                    1. If |this|'s {{PerformanceScriptTiming/type}} is "`resolve-promise`", then return "`Promise.resolve`".
+                    1. If |this|'s {{PerformanceScriptTiming/invokerType}} is "`resolve-promise`", then return "`Promise.resolve`".
                     1. Otherwise, return "`Promise.reject`".
-            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/type}} is "`resolve-promise`"; otherwise "`reject-promise`".
+            1. Let |thenOrCatch| be "`then`" if {{PerformanceScriptTiming/invokerType}} is "`resolve-promise`"; otherwise "`reject-promise`".
             1. Return the [=concatenate|concatenation=] of « [=script timing info/invoker name=], ".", |thenOrCatch| ».
 
 The {{PerformanceScriptTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/start time=] and [=this=]'s [=relevant global object=].
@@ -636,8 +639,8 @@ It has the following [=struct/items=]:
 <dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
 
 <dl dfn-for="script timing info">
-    : <dfn>type</dfn>
-    :: A {{ScriptTimingType}}.
+    : <dfn>invoker type</dfn>
+    :: A {{ScriptInvokerType}}.
 
     : <dfn>start time</dfn>
     : <dfn>end time</dfn>
@@ -823,7 +826,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
         1. If |frameTimingInfo| is null or if |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
-        1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/type=] is "`classic-script`".
+        1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/invoker type=] is "`classic-script`".
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
 </div>
 
@@ -837,7 +840,7 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Create script entry point">
     To <dfn>create script entry point</dfn> given an [=environment settings object=] |settings|,
-        a {{ScriptTimingType}} |type|, and |steps|,
+        a {{ScriptInvokerType}} |invokerType|, and |steps|,
         which is an algorithm that takes a [=script timing info=] and an optional [=frame timing info=]:
 
         1. If |settings| is not a {{Window}}, then return.
@@ -848,7 +851,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |scriptTimingInfo| be a new [=script timing info=]
             whose [=script timing info/start time=] is the [=unsafe shared current time=],
-            and whose [=script timing info/type=] is |type|.
+            and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
         1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
