@@ -1287,13 +1287,13 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
      <p>Return <var>scripts</var>.</p>
    </ol>
    <h3 class="heading settled" data-level="4.2" id="sec-PerformanceScriptTiming"><span class="secno">4.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming②">PerformanceScriptTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceScriptTiming"></a></h3>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scripttimingtype"><code class="highlight"><c- g>ScriptTimingType</c-></code></dfn> {
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-classic-script"><code class="highlight"><c- s><c- u>"classic-script"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-classic-script"></a></dfn>,
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-module-script"><code class="highlight"><c- s><c- u>"module-script"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-module-script"></a></dfn>,
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-event-listener"><code class="highlight"><c- s><c- u>"event-listener"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-event-listener"></a></dfn>,
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-user-callback"><code class="highlight"><c- s><c- u>"user-callback"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-user-callback"></a></dfn>,
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-resolve-promise"><code class="highlight"><c- s><c- u>"resolve-promise"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-resolve-promise"></a></dfn>,
-    <dfn class="idl-code" data-dfn-for="ScriptTimingType" data-dfn-type="enum-value" data-export id="dom-scripttimingtype-reject-promise"><code class="highlight"><c- s><c- u>"reject-promise"</c-></c-></code><a class="self-link" href="#dom-scripttimingtype-reject-promise"></a></dfn>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scriptinvokertype"><code class="highlight"><c- g>ScriptInvokerType</c-></code></dfn> {
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-classic-script"><code class="highlight"><c- s><c- u>"classic-script"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-classic-script"></a></dfn>,
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-module-script"><code class="highlight"><c- s><c- u>"module-script"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-module-script"></a></dfn>,
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-event-listener"><code class="highlight"><c- s><c- u>"event-listener"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-event-listener"></a></dfn>,
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-user-callback"><code class="highlight"><c- s><c- u>"user-callback"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-user-callback"></a></dfn>,
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-resolve-promise"><code class="highlight"><c- s><c- u>"resolve-promise"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-resolve-promise"></a></dfn>,
+    <dfn class="idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-reject-promise"><code class="highlight"><c- s><c- u>"reject-promise"</c-></c-></code><a class="self-link" href="#dom-scriptinvokertype-reject-promise"></a></dfn>
 };
 
 <c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scriptwindowattribution"><code class="highlight"><c- g>ScriptWindowAttribution</c-></code></dfn> {
@@ -1308,9 +1308,10 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①⓪"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMString" id="dom-performancescripttiming-name"><code class="highlight"><c- g>name</c-></code></dfn>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMString" id="dom-performancescripttiming-entrytype"><code class="highlight"><c- g>entryType</c-></code></dfn>;
 
-    <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scripttimingtype" id="ref-for-enumdef-scripttimingtype"><c- n>ScriptTimingType</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="ScriptTimingType" id="dom-performancescripttiming-type"><code class="highlight"><c- g>type</c-></code></dfn>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scriptinvokertype" id="ref-for-enumdef-scriptinvokertype"><c- n>ScriptInvokerType</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="ScriptInvokerType" id="dom-performancescripttiming-invokertype"><code class="highlight"><c- g>invokerType</c-></code></dfn>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMString" id="dom-performancescripttiming-invoker"><code class="highlight"><c- g>invoker</c-></code></dfn>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①④"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-performancescripttiming-executionstart"><code class="highlight"><c- g>executionStart</c-></code></dfn>;
-    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMString" id="dom-performancescripttiming-sourcelocation"><code class="highlight"><c- g>sourceLocation</c-></code></dfn>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMString" id="dom-performancescripttiming-sourcelocation"><code class="highlight"><c- g>sourceLocation</c-></code></dfn>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑤"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-performancescripttiming-pauseduration"><code class="highlight"><c- g>pauseDuration</c-></code></dfn>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑥"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-performancescripttiming-forcedstyleandlayoutduration"><code class="highlight"><c- g>forcedStyleAndLayoutDuration</c-></code></dfn>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window"><c- n>Window</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceScriptTiming" data-dfn-type="attribute" data-export data-readonly data-type="Window?" id="dom-performancescripttiming-window"><code class="highlight"><c- g>window</c-></code></dfn>;
@@ -1321,11 +1322,12 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
    <p>A <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming③">PerformanceScriptTiming</a></code> has an associated <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info">script timing info</a> <dfn class="dfn-paneled" data-dfn-for="PerformanceScriptTiming" data-dfn-type="dfn" data-noexport id="performancescripttiming-timing-info">timing info</dfn>.</p>
    <p>A <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming④">PerformanceScriptTiming</a></code> has an associated <code class="idl"><a data-link-type="idl" href="#enumdef-scriptwindowattribution" id="ref-for-enumdef-scriptwindowattribution①">ScriptWindowAttribution</a></code> <dfn class="dfn-paneled" data-dfn-for="PerformanceScriptTiming" data-dfn-type="dfn" data-noexport id="performancescripttiming-window-attribution">window attribution</dfn>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-entrytype" id="ref-for-dom-performancescripttiming-entrytype">entryType</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"script"</c-></code>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-type" id="ref-for-dom-performancescripttiming-type">type</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-type" id="ref-for-script-timing-info-type">type</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-name" id="ref-for-dom-performancescripttiming-name">name</a></code> attribute’s getter steps are:</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-name" id="ref-for-dom-performancescripttiming-name">name</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"script"</c-></code>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype">invokerType</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type">invoker type</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invoker" id="ref-for-dom-performancescripttiming-invoker">invoker</a></code> attribute’s getter steps are:</p>
    <ol>
     <li data-md>
-     <p>Switch on <var>this</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-type" id="ref-for-dom-performancescripttiming-type①">type</a></code>:</p>
+     <p>Switch on <var>this</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype①">invokerType</a></code>:</p>
      <dl>
       <dt data-md>"`classic-script`"
       <dt data-md>"`module-script`"
@@ -1358,12 +1360,12 @@ Set <var>targetName</var> to the <a data-link-type="dfn" href="https://infra.spe
 then:</p>
          <ol>
           <li data-md>
-           <p>If <var>this</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-type" id="ref-for-dom-performancescripttiming-type②">type</a></code> is "`resolve-promise`", then return "`Promise.resolve`".</p>
+           <p>If <var>this</var>’s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype②">invokerType</a></code> is "`resolve-promise`", then return "`Promise.resolve`".</p>
           <li data-md>
            <p>Otherwise, return "`Promise.reject`".</p>
          </ol>
         <li data-md>
-         <p>Let <var>thenOrCatch</var> be "`then`" if <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-type" id="ref-for-dom-performancescripttiming-type③">type</a></code> is "`resolve-promise`"; otherwise "`reject-promise`".</p>
+         <p>Let <var>thenOrCatch</var> be "`then`" if <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype③">invokerType</a></code> is "`resolve-promise`"; otherwise "`reject-promise`".</p>
         <li data-md>
          <p>Return the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate③">concatenation</a> of « <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name③">invoker name</a>, ".", <var>thenOrCatch</var> ».</p>
        </ol>
@@ -1606,9 +1608,9 @@ and should be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-c
    </dl>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="script-timing-info">script timing info</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct①">struct</a>. It has the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item①">items</a>:</p>
    <dl>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-for="script timing info" data-dfn-type="dfn" data-noexport id="script-timing-info-type">type</dfn>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-for="script timing info" data-dfn-type="dfn" data-noexport id="script-timing-info-invoker-type">invoker type</dfn>
     <dd data-md>
-     <p>A <code class="idl"><a data-link-type="idl" href="#enumdef-scripttimingtype" id="ref-for-enumdef-scripttimingtype①">ScriptTimingType</a></code>.</p>
+     <p>A <code class="idl"><a data-link-type="idl" href="#enumdef-scriptinvokertype" id="ref-for-enumdef-scriptinvokertype①">ScriptInvokerType</a></code>.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="script timing info" data-dfn-type="dfn" data-noexport id="script-timing-info-start-time">start time</dfn>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="script timing info" data-dfn-type="dfn" data-noexport id="script-timing-info-end-time">end time</dfn>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="script timing info" data-dfn-type="dfn" data-noexport id="script-timing-info-execution-start-time">execution start time</dfn>
@@ -1821,7 +1823,7 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
      <li data-md>
       <p>If <var>frameTimingInfo</var> is null or if <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script">pending script</a> is not null, then return.</p>
      <li data-md>
-      <p class="assertion">Assert: <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script①">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-type" id="ref-for-script-timing-info-type①">type</a> is "`classic-script`".</p>
+      <p class="assertion">Assert: <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script①">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type①">invoker type</a> is "`classic-script`".</p>
      <li data-md>
       <p>Set <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script②">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time②">execution start time</a> to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time①">unsafe shared current time</a>.</p>
     </ol>
@@ -1838,7 +1840,7 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
    </div>
    <div class="algorithm" data-algorithm="Create script entry point">
      To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-script-entry-point">create script entry point</dfn> given an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>settings</var>,
-        a <code class="idl"><a data-link-type="idl" href="#enumdef-scripttimingtype" id="ref-for-enumdef-scripttimingtype②">ScriptTimingType</a></code> <var>type</var>, and <var>steps</var>,
+        a <code class="idl"><a data-link-type="idl" href="#enumdef-scriptinvokertype" id="ref-for-enumdef-scriptinvokertype②">ScriptInvokerType</a></code> <var>invokerType</var>, and <var>steps</var>,
         which is an algorithm that takes a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①⓪">script timing info</a> and an optional <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info⑤">frame timing info</a>: 
     <ol>
      <li data-md>
@@ -1855,7 +1857,7 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
       <p>If <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script③">pending script</a> is not null, then return.</p>
      <li data-md>
       <p>Let <var>scriptTimingInfo</var> be a new <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①①">script timing info</a> whose <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time②">start time</a> is the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time②">unsafe shared current time</a>,
-and whose <a data-link-type="dfn" href="#script-timing-info-type" id="ref-for-script-timing-info-type②">type</a> is <var>type</var>.</p>
+and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type②">invoker type</a> is <var>invokerType</var>.</p>
      <li data-md>
       <p>Run <var>steps</var> given <var>scriptTimingInfo</var> and <var>frameTimingInfo</var>.</p>
      <li data-md>
@@ -2148,7 +2150,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <li><a href="#dom-performancelongtasktiming-attribution">attribution</a><span>, in § 3.1</span>
    <li><a href="#dom-performancelonganimationframetiming-blockingduration">blockingDuration</a><span>, in § 4.1</span>
    <li><a href="#browsing-context-container">browsing context container</a><span>, in § 2</span>
-   <li><a href="#dom-scripttimingtype-classic-script">"classic-script"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-classic-script">"classic-script"</a><span>, in § 4.2</span>
    <li><a href="#dom-taskattributiontiming-containerid">containerId</a><span>, in § 3.2</span>
    <li><a href="#dom-taskattributiontiming-containername">containerName</a><span>, in § 3.2</span>
    <li><a href="#dom-taskattributiontiming-containersrc">containerSrc</a><span>, in § 3.2</span>
@@ -2183,7 +2185,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><a href="#dom-performancescripttiming-entrytype">attribute for PerformanceScriptTiming</a><span>, in § 4.2</span>
      <li><a href="#dom-taskattributiontiming-entrytype">attribute for TaskAttributionTiming</a><span>, in § 3.2</span>
     </ul>
-   <li><a href="#dom-scripttimingtype-event-listener">"event-listener"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-event-listener">"event-listener"</a><span>, in § 4.2</span>
    <li><a href="#script-timing-info-event-target-element-id">event target element id</a><span>, in § 5.2</span>
    <li><a href="#script-timing-info-event-target-element-src-attribute">event target element src attribute</a><span>, in § 5.2</span>
    <li><a href="#script-timing-info-event-type">event type</a><span>, in § 5.2</span>
@@ -2195,13 +2197,16 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <li><a href="#flush-script-entry-point">flush script entry point</a><span>, in § 5.3.2</span>
    <li><a href="#dom-performancescripttiming-forcedstyleandlayoutduration">forcedStyleAndLayoutDuration</a><span>, in § 4.2</span>
    <li><a href="#frame-timing-info">frame timing info</a><span>, in § 5.2</span>
+   <li><a href="#dom-performancescripttiming-invoker">invoker</a><span>, in § 4.2</span>
    <li><a href="#script-timing-info-invoker-name">invoker name</a><span>, in § 5.2</span>
    <li><a href="#promise-invoker-name-when-created">invoker name when created</a><span>, in § 6.1</span>
+   <li><a href="#script-timing-info-invoker-type">invoker type</a><span>, in § 5.2</span>
+   <li><a href="#dom-performancescripttiming-invokertype">invokerType</a><span>, in § 4.2</span>
    <li><a href="#long-animation-frame">Long animation frame</a><span>, in § 2</span>
    <li><a href="#frame-timing-info-longest-task-duration">longest task duration</a><span>, in § 5.2</span>
    <li><a href="#long-task">Long task</a><span>, in § 2</span>
    <li><a href="#minimal-culprit-attribution">minimal culprit attribution</a><span>, in § 3.3</span>
-   <li><a href="#dom-scripttimingtype-module-script">"module-script"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-module-script">"module-script"</a><span>, in § 4.2</span>
    <li><a href="#multiple-contexts">multiple-contexts</a><span>, in § 3.1</span>
    <li>
     name
@@ -2219,7 +2224,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <li><a href="#performancelonganimationframetiming">PerformanceLongAnimationFrameTiming</a><span>, in § 4.1</span>
    <li><a href="#performancelongtasktiming">PerformanceLongTaskTiming</a><span>, in § 3.1</span>
    <li><a href="#performancescripttiming">PerformanceScriptTiming</a><span>, in § 4.2</span>
-   <li><a href="#dom-scripttimingtype-reject-promise">"reject-promise"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-reject-promise">"reject-promise"</a><span>, in § 4.2</span>
    <li><a href="#relevant-frame-timing-info">relevant frame timing info</a><span>, in § 5.3.1</span>
    <li><a href="#dom-performancelonganimationframetiming-renderstart">renderStart</a><span>, in § 4.1</span>
    <li><a href="#report-classic-script-creation">report classic script creation</a><span>, in § 5.3.2</span>
@@ -2233,11 +2238,12 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <li><a href="#report-task-start-time">report task start time</a><span>, in § 5.3.1</span>
    <li><a href="#report-timer-handler">report timer handler</a><span>, in § 5.3.2</span>
    <li><a href="#report-user-callback">report user callback</a><span>, in § 5.3.2</span>
-   <li><a href="#dom-scripttimingtype-resolve-promise">"resolve-promise"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-resolve-promise">"resolve-promise"</a><span>, in § 4.2</span>
    <li><a href="#same-origin">same-origin</a><span>, in § 3.1</span>
    <li><a href="#same-origin-ancestor">same-origin-ancestor</a><span>, in § 3.1</span>
    <li><a href="#same-origin-descendant">same-origin-descendant</a><span>, in § 3.1</span>
    <li><a href="#dom-scriptwindowattribution-same-page">"same-page"</a><span>, in § 4.2</span>
+   <li><a href="#enumdef-scriptinvokertype">ScriptInvokerType</a><span>, in § 4.2</span>
    <li>
     scripts
     <ul>
@@ -2245,7 +2251,6 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><a href="#frame-timing-info-scripts">dfn for frame timing info</a><span>, in § 5.2</span>
     </ul>
    <li><a href="#script-timing-info">script timing info</a><span>, in § 5.2</span>
-   <li><a href="#enumdef-scripttimingtype">ScriptTimingType</a><span>, in § 4.2</span>
    <li><a href="#promise-script-url-when-created">script url when created</a><span>, in § 6.1</span>
    <li><a href="#enumdef-scriptwindowattribution">ScriptWindowAttribution</a><span>, in § 4.2</span>
    <li><a href="#dom-scriptwindowattribution-self">"self"</a><span>, in § 4.2</span>
@@ -2286,15 +2291,9 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><a href="#dom-performancescripttiming-tojson">method for PerformanceScriptTiming</a><span>, in § 4.2</span>
      <li><a href="#dom-taskattributiontiming-tojson">method for TaskAttributionTiming</a><span>, in § 3.2</span>
     </ul>
-   <li>
-    type
-    <ul>
-     <li><a href="#dom-performancescripttiming-type">attribute for PerformanceScriptTiming</a><span>, in § 4.2</span>
-     <li><a href="#script-timing-info-type">dfn for script timing info</a><span>, in § 5.2</span>
-    </ul>
    <li><a href="#unknown">unknown</a><span>, in § 3.1</span>
    <li><a href="#frame-timing-info-update-the-rendering-start-time">update the rendering start time</a><span>, in § 5.2</span>
-   <li><a href="#dom-scripttimingtype-user-callback">"user-callback"</a><span>, in § 4.2</span>
+   <li><a href="#dom-scriptinvokertype-user-callback">"user-callback"</a><span>, in § 4.2</span>
    <li>
     window
     <ul>
@@ -2549,13 +2548,13 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
     [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Default"><c- g>Default</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-object"><c- b>object</c-></a> <a href="#dom-performancelonganimationframetiming-tojson"><code class="highlight"><c- g>toJSON</c-></code></a>();
 };
 
-<c- b>enum</c-> <a href="#enumdef-scripttimingtype"><code class="highlight"><c- g>ScriptTimingType</c-></code></a> {
-    <a href="#dom-scripttimingtype-classic-script"><code class="highlight"><c- s><c- u>"classic-script"</c-></c-></code></a>,
-    <a href="#dom-scripttimingtype-module-script"><code class="highlight"><c- s><c- u>"module-script"</c-></c-></code></a>,
-    <a href="#dom-scripttimingtype-event-listener"><code class="highlight"><c- s><c- u>"event-listener"</c-></c-></code></a>,
-    <a href="#dom-scripttimingtype-user-callback"><code class="highlight"><c- s><c- u>"user-callback"</c-></c-></code></a>,
-    <a href="#dom-scripttimingtype-resolve-promise"><code class="highlight"><c- s><c- u>"resolve-promise"</c-></c-></code></a>,
-    <a href="#dom-scripttimingtype-reject-promise"><code class="highlight"><c- s><c- u>"reject-promise"</c-></c-></code></a>
+<c- b>enum</c-> <a href="#enumdef-scriptinvokertype"><code class="highlight"><c- g>ScriptInvokerType</c-></code></a> {
+    <a href="#dom-scriptinvokertype-classic-script"><code class="highlight"><c- s><c- u>"classic-script"</c-></c-></code></a>,
+    <a href="#dom-scriptinvokertype-module-script"><code class="highlight"><c- s><c- u>"module-script"</c-></c-></code></a>,
+    <a href="#dom-scriptinvokertype-event-listener"><code class="highlight"><c- s><c- u>"event-listener"</c-></c-></code></a>,
+    <a href="#dom-scriptinvokertype-user-callback"><code class="highlight"><c- s><c- u>"user-callback"</c-></c-></code></a>,
+    <a href="#dom-scriptinvokertype-resolve-promise"><code class="highlight"><c- s><c- u>"resolve-promise"</c-></c-></code></a>,
+    <a href="#dom-scriptinvokertype-reject-promise"><code class="highlight"><c- s><c- u>"reject-promise"</c-></c-></code></a>
 };
 
 <c- b>enum</c-> <a href="#enumdef-scriptwindowattribution"><code class="highlight"><c- g>ScriptWindowAttribution</c-></code></a> {
@@ -2570,7 +2569,8 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-readonly data-type="DOMString" href="#dom-performancescripttiming-name"><code class="highlight"><c- g>name</c-></code></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-readonly data-type="DOMString" href="#dom-performancescripttiming-entrytype"><code class="highlight"><c- g>entryType</c-></code></a>;
 
-    <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scripttimingtype"><c- n>ScriptTimingType</c-></a> <a data-readonly data-type="ScriptTimingType" href="#dom-performancescripttiming-type"><code class="highlight"><c- g>type</c-></code></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scriptinvokertype"><c- n>ScriptInvokerType</c-></a> <a data-readonly data-type="ScriptInvokerType" href="#dom-performancescripttiming-invokertype"><code class="highlight"><c- g>invokerType</c-></code></a>;
+    <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-readonly data-type="DOMString" href="#dom-performancescripttiming-invoker"><code class="highlight"><c- g>invoker</c-></code></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <a data-readonly data-type="DOMHighResTimeStamp" href="#dom-performancescripttiming-executionstart"><code class="highlight"><c- g>executionStart</c-></code></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-readonly data-type="DOMString" href="#dom-performancescripttiming-sourcelocation"><code class="highlight"><c- g>sourceLocation</c-></code></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <a data-readonly data-type="DOMHighResTimeStamp" href="#dom-performancescripttiming-pauseduration"><code class="highlight"><c- g>pauseDuration</c-></code></a>;
@@ -3138,7 +3138,7 @@ window.dfnpanelData['de4bb79b'] = {"dfnID": "de4bb79b", "url": "https://w3c.gith
 window.dfnpanelData['92000da2'] = {"dfnID": "92000da2", "url": "https://w3c.github.io/uievents/#uievent", "dfnText": "UIEvent", "refSections": [{"refs": [{"id": "ref-for-uievent"}], "title": "5.3.2. Long Script Monitoring"}], "external": true};
 window.dfnpanelData['3a711be7'] = {"dfnID": "3a711be7", "url": "https://url.spec.whatwg.org/#concept-url-scheme", "dfnText": "scheme", "refSections": [{"refs": [{"id": "ref-for-concept-url-scheme"}, {"id": "ref-for-concept-url-scheme\u2460"}, {"id": "ref-for-concept-url-scheme\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": true};
 window.dfnpanelData['dcffbccd'] = {"dfnID": "dcffbccd", "url": "https://url.spec.whatwg.org/#concept-url", "dfnText": "url", "refSections": [{"refs": [{"id": "ref-for-concept-url"}, {"id": "ref-for-concept-url\u2460"}], "title": "5.3.2. Long Script Monitoring"}], "external": true};
-window.dfnpanelData['8855a9aa'] = {"dfnID": "8855a9aa", "url": "https://webidl.spec.whatwg.org/#idl-DOMString", "dfnText": "DOMString", "refSections": [{"refs": [{"id": "ref-for-idl-DOMString"}, {"id": "ref-for-idl-DOMString\u2460"}], "title": "3.1. PerformanceLongTaskTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2461"}, {"id": "ref-for-idl-DOMString\u2462"}, {"id": "ref-for-idl-DOMString\u2463"}, {"id": "ref-for-idl-DOMString\u2464"}, {"id": "ref-for-idl-DOMString\u2465"}, {"id": "ref-for-idl-DOMString\u2466"}], "title": "3.2. TaskAttributionTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2467"}, {"id": "ref-for-idl-DOMString\u2468"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2460\u24ea"}, {"id": "ref-for-idl-DOMString\u2460\u2460"}, {"id": "ref-for-idl-DOMString\u2460\u2461"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": true};
+window.dfnpanelData['8855a9aa'] = {"dfnID": "8855a9aa", "url": "https://webidl.spec.whatwg.org/#idl-DOMString", "dfnText": "DOMString", "refSections": [{"refs": [{"id": "ref-for-idl-DOMString"}, {"id": "ref-for-idl-DOMString\u2460"}], "title": "3.1. PerformanceLongTaskTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2461"}, {"id": "ref-for-idl-DOMString\u2462"}, {"id": "ref-for-idl-DOMString\u2463"}, {"id": "ref-for-idl-DOMString\u2464"}, {"id": "ref-for-idl-DOMString\u2465"}, {"id": "ref-for-idl-DOMString\u2466"}], "title": "3.2. TaskAttributionTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2467"}, {"id": "ref-for-idl-DOMString\u2468"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-idl-DOMString\u2460\u24ea"}, {"id": "ref-for-idl-DOMString\u2460\u2460"}, {"id": "ref-for-idl-DOMString\u2460\u2461"}, {"id": "ref-for-idl-DOMString\u2460\u2462"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": true};
 window.dfnpanelData['f4531911'] = {"dfnID": "f4531911", "url": "https://webidl.spec.whatwg.org/#Default", "dfnText": "Default", "refSections": [{"refs": [{"id": "ref-for-Default"}], "title": "3.1. PerformanceLongTaskTiming interface"}, {"refs": [{"id": "ref-for-Default\u2460"}], "title": "3.2. TaskAttributionTiming interface"}, {"refs": [{"id": "ref-for-Default\u2461"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-Default\u2462"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": true};
 window.dfnpanelData['889e932f'] = {"dfnID": "889e932f", "url": "https://webidl.spec.whatwg.org/#Exposed", "dfnText": "Exposed", "refSections": [{"refs": [{"id": "ref-for-Exposed"}], "title": "3.1. PerformanceLongTaskTiming interface"}, {"refs": [{"id": "ref-for-Exposed\u2460"}], "title": "3.2. TaskAttributionTiming interface"}, {"refs": [{"id": "ref-for-Exposed\u2461"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-Exposed\u2462"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": true};
 window.dfnpanelData['dcf5fafa'] = {"dfnID": "dcf5fafa", "url": "https://webidl.spec.whatwg.org/#idl-frozen-array", "dfnText": "FrozenArray", "refSections": [{"refs": [{"id": "ref-for-idl-frozen-array"}], "title": "3.1. PerformanceLongTaskTiming interface"}, {"refs": [{"id": "ref-for-idl-frozen-array\u2460"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}], "external": true};
@@ -3191,7 +3191,7 @@ window.dfnpanelData['dom-performancelonganimationframetiming-blockingduration'] 
 window.dfnpanelData['dom-performancelonganimationframetiming-firstuieventtimestamp'] = {"dfnID": "dom-performancelonganimationframetiming-firstuieventtimestamp", "url": "#dom-performancelonganimationframetiming-firstuieventtimestamp", "dfnText": "firstUIEventTimestamp", "refSections": [{"refs": [{"id": "ref-for-dom-performancelonganimationframetiming-firstuieventtimestamp"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}], "external": false};
 window.dfnpanelData['dom-performancelonganimationframetiming-scripts'] = {"dfnID": "dom-performancelonganimationframetiming-scripts", "url": "#dom-performancelonganimationframetiming-scripts", "dfnText": "scripts", "refSections": [{"refs": [{"id": "ref-for-dom-performancelonganimationframetiming-scripts"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}], "external": false};
 window.dfnpanelData['performancelonganimationframetiming-timing-info'] = {"dfnID": "performancelonganimationframetiming-timing-info", "url": "#performancelonganimationframetiming-timing-info", "dfnText": "timing info", "refSections": [{"refs": [{"id": "ref-for-performancelonganimationframetiming-timing-info"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2460"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2461"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2462"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2463"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2464"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2465"}, {"id": "ref-for-performancelonganimationframetiming-timing-info\u2466"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-performancelonganimationframetiming-timing-info\u2467"}], "title": "5.3.1. Long Animation Frame Monitoring {#loaf-monitoring}"}], "external": false};
-window.dfnpanelData['enumdef-scripttimingtype'] = {"dfnID": "enumdef-scripttimingtype", "url": "#enumdef-scripttimingtype", "dfnText": "ScriptTimingType", "refSections": [{"refs": [{"id": "ref-for-enumdef-scripttimingtype"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-enumdef-scripttimingtype\u2460"}], "title": "5.2. Frame Timing Info"}, {"refs": [{"id": "ref-for-enumdef-scripttimingtype\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
+window.dfnpanelData['enumdef-scriptinvokertype'] = {"dfnID": "enumdef-scriptinvokertype", "url": "#enumdef-scriptinvokertype", "dfnText": "ScriptInvokerType", "refSections": [{"refs": [{"id": "ref-for-enumdef-scriptinvokertype"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-enumdef-scriptinvokertype\u2460"}], "title": "5.2. Frame Timing Info"}, {"refs": [{"id": "ref-for-enumdef-scriptinvokertype\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['enumdef-scriptwindowattribution'] = {"dfnID": "enumdef-scriptwindowattribution", "url": "#enumdef-scriptwindowattribution", "dfnText": "ScriptWindowAttribution", "refSections": [{"refs": [{"id": "ref-for-enumdef-scriptwindowattribution"}, {"id": "ref-for-enumdef-scriptwindowattribution\u2460"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
 window.dfnpanelData['dom-scriptwindowattribution-self'] = {"dfnID": "dom-scriptwindowattribution-self", "url": "#dom-scriptwindowattribution-self", "dfnText": "\"self\"", "refSections": [{"refs": [{"id": "ref-for-dom-scriptwindowattribution-self"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}], "external": false};
 window.dfnpanelData['dom-scriptwindowattribution-descendant'] = {"dfnID": "dom-scriptwindowattribution-descendant", "url": "#dom-scriptwindowattribution-descendant", "dfnText": "\"descendant\"", "refSections": [{"refs": [{"id": "ref-for-dom-scriptwindowattribution-descendant"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}], "external": false};
@@ -3203,7 +3203,8 @@ window.dfnpanelData['dom-performancescripttiming-starttime'] = {"dfnID": "dom-pe
 window.dfnpanelData['dom-performancescripttiming-duration'] = {"dfnID": "dom-performancescripttiming-duration", "url": "#dom-performancescripttiming-duration", "dfnText": "duration", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-duration"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
 window.dfnpanelData['dom-performancescripttiming-name'] = {"dfnID": "dom-performancescripttiming-name", "url": "#dom-performancescripttiming-name", "dfnText": "name", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-name"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
 window.dfnpanelData['dom-performancescripttiming-entrytype'] = {"dfnID": "dom-performancescripttiming-entrytype", "url": "#dom-performancescripttiming-entrytype", "dfnText": "entryType", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-entrytype"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
-window.dfnpanelData['dom-performancescripttiming-type'] = {"dfnID": "dom-performancescripttiming-type", "url": "#dom-performancescripttiming-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-type"}, {"id": "ref-for-dom-performancescripttiming-type\u2460"}, {"id": "ref-for-dom-performancescripttiming-type\u2461"}, {"id": "ref-for-dom-performancescripttiming-type\u2462"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
+window.dfnpanelData['dom-performancescripttiming-invokertype'] = {"dfnID": "dom-performancescripttiming-invokertype", "url": "#dom-performancescripttiming-invokertype", "dfnText": "invokerType", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-invokertype"}, {"id": "ref-for-dom-performancescripttiming-invokertype\u2460"}, {"id": "ref-for-dom-performancescripttiming-invokertype\u2461"}, {"id": "ref-for-dom-performancescripttiming-invokertype\u2462"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
+window.dfnpanelData['dom-performancescripttiming-invoker'] = {"dfnID": "dom-performancescripttiming-invoker", "url": "#dom-performancescripttiming-invoker", "dfnText": "invoker", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-invoker"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
 window.dfnpanelData['dom-performancescripttiming-executionstart'] = {"dfnID": "dom-performancescripttiming-executionstart", "url": "#dom-performancescripttiming-executionstart", "dfnText": "executionStart", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-executionstart"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
 window.dfnpanelData['dom-performancescripttiming-sourcelocation'] = {"dfnID": "dom-performancescripttiming-sourcelocation", "url": "#dom-performancescripttiming-sourcelocation", "dfnText": "sourceLocation", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-sourcelocation"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-dom-performancescripttiming-sourcelocation\u2460"}], "title": "7.4. PerformanceScriptTiming and opaque scripts"}], "external": false};
 window.dfnpanelData['dom-performancescripttiming-pauseduration'] = {"dfnID": "dom-performancescripttiming-pauseduration", "url": "#dom-performancescripttiming-pauseduration", "dfnText": "pauseDuration", "refSections": [{"refs": [{"id": "ref-for-dom-performancescripttiming-pauseduration"}], "title": "4.2. PerformanceScriptTiming interface"}], "external": false};
@@ -3223,7 +3224,7 @@ window.dfnpanelData['frame-timing-info-longest-task-duration'] = {"dfnID": "fram
 window.dfnpanelData['frame-timing-info-scripts'] = {"dfnID": "frame-timing-info-scripts", "url": "#frame-timing-info-scripts", "dfnText": "scripts", "refSections": [{"refs": [{"id": "ref-for-frame-timing-info-scripts"}], "title": "4.1. PerformanceLongAnimationFrameTiming interface"}, {"refs": [{"id": "ref-for-frame-timing-info-scripts\u2460"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['frame-timing-info-pending-script'] = {"dfnID": "frame-timing-info-pending-script", "url": "#frame-timing-info-pending-script", "dfnText": "pending script", "refSections": [{"refs": [{"id": "ref-for-frame-timing-info-pending-script"}, {"id": "ref-for-frame-timing-info-pending-script\u2460"}, {"id": "ref-for-frame-timing-info-pending-script\u2461"}, {"id": "ref-for-frame-timing-info-pending-script\u2462"}, {"id": "ref-for-frame-timing-info-pending-script\u2463"}, {"id": "ref-for-frame-timing-info-pending-script\u2464"}, {"id": "ref-for-frame-timing-info-pending-script\u2465"}, {"id": "ref-for-frame-timing-info-pending-script\u2466"}, {"id": "ref-for-frame-timing-info-pending-script\u2467"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['script-timing-info'] = {"dfnID": "script-timing-info", "url": "#script-timing-info", "dfnText": "script timing info", "refSections": [{"refs": [{"id": "ref-for-script-timing-info"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info\u2460"}, {"id": "ref-for-script-timing-info\u2461"}], "title": "5.2. Frame Timing Info"}, {"refs": [{"id": "ref-for-script-timing-info\u2462"}, {"id": "ref-for-script-timing-info\u2463"}, {"id": "ref-for-script-timing-info\u2464"}, {"id": "ref-for-script-timing-info\u2465"}, {"id": "ref-for-script-timing-info\u2466"}, {"id": "ref-for-script-timing-info\u2467"}, {"id": "ref-for-script-timing-info\u2468"}, {"id": "ref-for-script-timing-info\u2460\u24ea"}, {"id": "ref-for-script-timing-info\u2460\u2460"}, {"id": "ref-for-script-timing-info\u2460\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
-window.dfnpanelData['script-timing-info-type'] = {"dfnID": "script-timing-info-type", "url": "#script-timing-info-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-script-timing-info-type"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info-type\u2460"}, {"id": "ref-for-script-timing-info-type\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
+window.dfnpanelData['script-timing-info-invoker-type'] = {"dfnID": "script-timing-info-invoker-type", "url": "#script-timing-info-invoker-type", "dfnText": "invoker type", "refSections": [{"refs": [{"id": "ref-for-script-timing-info-invoker-type"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info-invoker-type\u2460"}, {"id": "ref-for-script-timing-info-invoker-type\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['script-timing-info-start-time'] = {"dfnID": "script-timing-info-start-time", "url": "#script-timing-info-start-time", "dfnText": "start time", "refSections": [{"refs": [{"id": "ref-for-script-timing-info-start-time"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info-start-time\u2460"}, {"id": "ref-for-script-timing-info-start-time\u2461"}, {"id": "ref-for-script-timing-info-start-time\u2462"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['script-timing-info-end-time'] = {"dfnID": "script-timing-info-end-time", "url": "#script-timing-info-end-time", "dfnText": "end time", "refSections": [{"refs": [{"id": "ref-for-script-timing-info-end-time"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info-end-time\u2460"}, {"id": "ref-for-script-timing-info-end-time\u2461"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
 window.dfnpanelData['script-timing-info-execution-start-time'] = {"dfnID": "script-timing-info-execution-start-time", "url": "#script-timing-info-execution-start-time", "dfnText": "execution start time", "refSections": [{"refs": [{"id": "ref-for-script-timing-info-execution-start-time"}, {"id": "ref-for-script-timing-info-execution-start-time\u2460"}], "title": "4.2. PerformanceScriptTiming interface"}, {"refs": [{"id": "ref-for-script-timing-info-execution-start-time\u2461"}, {"id": "ref-for-script-timing-info-execution-start-time\u2462"}], "title": "5.3.2. Long Script Monitoring"}], "external": false};
