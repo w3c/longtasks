@@ -352,14 +352,18 @@ The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's gett
 The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
-
-    1. Let |workDuration| be [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/longest task duration=].
-    1. Let |renderDuration| be the 0.
+    1. Let |sortedTaskDurations| be [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/task durations=], [=list/sort in descending order|sorted in descending order=].
     1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering  start time=] is not zero, then:
-        1. Set |renderDuration| to the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and
+        1. Let |renderDuration| be the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and
             the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=].
-    1. If |workDuration| + |renderDuration| is greater than 50, then return |workDuration| + |renderDuration| - 50 milliseconds.
-    1. Return 0.
+        1. Increment |sortedTaskDurations|[0] by |renderDuration|.
+
+            Note: This makes it so that the longest task duration + render duration would be considered blocking if their total
+            duration is >50ms.
+
+    1. Let |totalBlockingDuration| be 0.
+    1. [=list/iterate|For each=] |duration| in |sortedTaskDurations|, if |duration| is greater than 50 then increment |totalBlockingDuration| by |duration| - 50.
+    1. Return |totalBlockingDuration|.
 
 The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
     1. Let |scripts| be a [=/list=] « ».
@@ -626,8 +630,8 @@ It has the following [=struct/items=]:
         Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
         and should be [=coarsen time|coarsened=] when exposed via an API.
 
-    : <dfn>longest task duration</dfn>
-    :: A {{DOMHighResTimeStamp}}, initially 0.
+    : <dfn>task durations</dfn>
+    :: A [=/list=] of {{DOMHighResTimeStamp}}, initially empty.
 
     : <dfn>scripts</dfn>
     :: A [=/list=] of [=script timing info=], initially empty.
@@ -713,9 +717,7 @@ Report Long Animation Frames {#loaf-processing-model}
 
     1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |document|'s [=relevant global object=].
 
-    1. Let |currentTaskDuration| be the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime|.
-
-    1. If |currentTaskDuration| is greater than |timingInfo|'s [=frame timing info/longest task duration=], then set |timingInfo|'s [=frame timing info/longest task duration=] to |currentTaskDuration|.
+    1. [=list/Append=] the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime| to |timingInfo|'s [=task durations=].
 
     1. If the user agent believes that updating the rendering of |document|'s [=node navigable=] would have no visible effect, then [=flush frame timing=] given |document| and return.
 
