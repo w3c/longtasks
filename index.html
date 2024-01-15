@@ -1936,6 +1936,7 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
     </ol>
    </div>
    <h2 class="heading settled" data-level="6" id="other-standards"><span class="secno">6. </span><span class="content">Additions to existing standards</span><a class="self-link" href="#other-standards"></a></h2>
+   <p class="issue" id="issue-17f266d8"><a class="self-link" href="#issue-17f266d8"></a> these should be upstreamed upon formal positive signals from <a href="https://github.com/mozilla/standards-positions/issues/929">Gecko</a> /<a href="https://github.com/WebKit/standards-positions/issues/283">WebKit</a>.</p>
    <h3 class="heading settled" data-level="6.1" id="webidl-monkey-patches"><span class="secno">6.1. </span><span class="content">Monkey-patches to the WebIDL standard</span><a class="self-link" href="#webidl-monkey-patches"></a></h3>
    <div class="algorithm" data-algorithm="Monkey patches to promise handling">
      The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①">Promise</a></code> interface has an associated string <dfn class="dfn-paneled" data-dfn-for="Promise" data-dfn-type="dfn" data-noexport id="promise-invoker-name-when-created">invoker name when created</dfn>, initially "`Promise`".
@@ -2586,6 +2587,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <div class="issue"> this feels a bit custom, need to discuss name generation. <a class="issue-return" href="#issue-5d051999" title="Jump to section">↵</a></div>
    <div class="issue"> Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to <a data-link-type="dfn" href="#performancescripttiming-timing-info">timing info</a> once that’s resolved. <a class="issue-return" href="#issue-64d28a1e" title="Jump to section">↵</a></div>
    <div class="issue"> there is some ongoing discussion regarding the scope of which <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Documents</a></code> gain visibility over which long tasks, so this logic could change in the future. <a href="https://github.com/w3c/longtasks/issues/75">[Issue #75]</a> <a class="issue-return" href="#issue-63aa4f38" title="Jump to section">↵</a></div>
+   <div class="issue"> these should be upstreamed upon formal positive signals from <a href="https://github.com/mozilla/standards-positions/issues/929">Gecko</a> /<a href="https://github.com/WebKit/standards-positions/issues/283">WebKit</a>. <a class="issue-return" href="#issue-17f266d8" title="Jump to section">↵</a></div>
    <div class="issue"> this is quite handwavy, because this is difficult to do in a normative way. Need to see if
 that can be improved, or if the source location for promise handlers would remain a bit implementation-defined. <a class="issue-return" href="#issue-c02eb1bd" title="Jump to section">↵</a></div>
   </div>
