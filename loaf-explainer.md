@@ -1,8 +1,7 @@
 # Long Animation Frames (LoAF)
 Long Tasks Revamped
 
-## Disclaimer
-This is work in progress. Feedback welcome, lots of things might change etc.
+See also [Developer facing article](https://developer.chrome.com/docs/web-platform/long-animation-frames)
 
 ## Overview
 
@@ -206,18 +205,19 @@ while (true) {
 }
 ```
 
-## How a LoAF entry might look like
+## How a LoAF entry looks like
 ```js
 const someLongAnimationFrameEntry = {
     entryType: "long-animation-frame",
 
-    //
+    // The start time of the first task that initiated the long animation frame.
     startTime,
 
     // https://html.spec.whatwg.org/#event-loop-processing-model (17)
     // This is a well-specified and interoperable time, but doesn't include presentation time.
     // It's the time after all the animations and observers are done, style and layout are done,
-    // and all that's left is painting & compositing.
+    // and all that's left is painting & compositing. In the case of a task that didn't end up
+    // updating the rendering, this would be the long task duration.
     duration,
 
     // https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering
@@ -232,16 +232,6 @@ const someLongAnimationFrameEntry = {
     // Beginning of the time period spend in style and layout calculations. This includes
     // ResizeObserver callbacks
     styleAndLayoutStart,
-
-    // The time the animation frame was queued. This could be before startTime, which means that
-    // the animation frame was delayed, or after, which means that it was deferred - several updates
-    // were batched together before scheduling a frame.
-    desiredRenderStart,
-
-    // The implementation-specific time when the frame was actually presented. Should be anytime
-    // between the previous task's |paintTime| and this task's |taskStartTime|.
-    // (Not implemented yet)
-    presentationTime,
 
     // Time of the first UI event (mouse/keyboard etc.) to be handled during the course of this
     // frame. The timestamp is the event's
@@ -262,9 +252,13 @@ const someLongAnimationFrameEntry = {
     // Note that these scripts are entry points to JS: the place where the platform calls a script.
     scripts: [
         {
-            // The different script types help us understand the scenario from which the long script
+            // These are always "script"
+            name,
+            entryType,
+
+            // The different script invoker types help us understand the scenario from which the long script
             // was invoked
-            type:
+            invokerType:
                 // A known callback registered from a web platform API, e.g. setTimeout,
                 // requestAnimationFrame.
                 "user-callback" |
@@ -280,14 +274,14 @@ const someLongAnimationFrameEntry = {
                 "classic-script" |
                 "module-script"
 
-            // The name tries to give as much information about the *invoker* of the script.
+            // The invoker tries to give as much information about the *invoker* of the script.
             // For callbacks: Object.functionName of the invoker, e.g. Window.setTimeout
             // For element event listeners: TAGNAME#id.onevent, or TAGNAME[src=src].onevent
             // For script blocks: the script source URL
             // For promises: The invoker of the promise, e.g. Window.fetch.then
             // Note that for promise resolvers, all of the handlers of the promise are mixed
             // together as one long script.
-            name: "IMG#id.onload" | "Window.requestAnimationFrame" |
+            invoker: "IMG#id.onload" | "Window.requestAnimationFrame" |
                   "Response.json.then",
 
             // when the function was invoked. Note that this is the startTime of the script, not
@@ -305,9 +299,8 @@ const someLongAnimationFrameEntry = {
             // Total time spent in forced layout/style inside this function
             forcedStyleAndLayoutDuration,
 
-            // The time when the callback was queued, e.g. the event timeStamp or the time when
-            // the timeout was supposed to be invoked.
-            desiredExecutionStart,
+            // Total time spent in "pausing" synchronous operations (alert, synchronous XHR)
+            pauseDuration,
 
             // In the case of promise resolver this would be the invoker's source location
             // Note that we expose character position rather than line/column to avoid overhead of line splitting.
@@ -336,9 +329,13 @@ cross-origin (same-agent). The details about rendering the frame, such as
 rendered serially. That's because this information is already observable, by using
 `requestAnimationFrame` and `ResizeObserver` and measuring the delay between them. The premise is
 that global "update the rendering" timing information is already observable across same-agent
-windows, so exposing it directly does not leak new cross-origin information. However, the idea
-exposing less information to cross-origin same-agent subframes (as in, expose the rendering info
-only to the main frame) is open for discussion.
+windows, so exposing it directly does not leak new cross-origin information.
+
+On top of that, LoAF only exposes this timing when the animation frame is long, while using the
+existing techniques can measure this timing also for short animation frames.
+
+To conclude, this new API exposes cross-origin same-agent information that is currently already
+available and not protected, and in a lower fidelity than existing APIs.
 
 ### Notes, complexity, doubts, future ideas, TODOs
 
@@ -360,14 +357,8 @@ a bit different but relies on similar principles:
 or rely on "discarded rendering opportunities" as the qualifier for sluggishness alongside (or
 instead of) millisecond duration.
 
-1. Consider separating layout & style durations.
-
 1. Exposing source locations might be a bit tricky or implementation defined.
 This can be an optional field but in any case requires some research.
-
-1. Clarify how this correlates to [JS Profiler markers](https://github.com/WICG/js-self-profiling/blob/main/markers.md). In general performance observer aspire to be expose succinct important information with
-minimal overhead, while profiling exposes "everything" with some more overhead, but the differences
-and relationship can be further understood.
 
 ## Relationship with TBT
 
