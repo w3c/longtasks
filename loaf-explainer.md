@@ -252,6 +252,10 @@ const someLongAnimationFrameEntry = {
     // Note that these scripts are entry points to JS: the place where the platform calls a script.
     scripts: [
         {
+            // These are always "script"
+            name,
+            entryType,
+
             // The different script invoker types help us understand the scenario from which the long script
             // was invoked
             invokerType:
