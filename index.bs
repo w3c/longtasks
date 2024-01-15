@@ -900,6 +900,10 @@ Report Long Animation Frames {#loaf-processing-model}
 Additions to existing standards {#other-standards}
 ==================================================
 
+Issue: these should be upstreamed upon formal positive signals from
+<a href="https://github.com/mozilla/standards-positions/issues/929">Gecko</a>
+/<a href="https://github.com/WebKit/standards-positions/issues/283">WebKit</a>.
+
 Monkey-patches to the WebIDL standard {#webidl-monkey-patches}
 ----------------------------------------------------------
 <div algorithm="Monkey patches to promise handling">
