@@ -1,6 +1,8 @@
 # Long Animation Frames (LoAF)
 Long Tasks Revamped
 
+See also [Developer facing article](https://developer.chrome.com/docs/web-platform/long-animation-frames)
+
 ## Overview
 
 "Sluggishness" - the feeling that "this page is not responsive to interactions", is a common problem for users on the web today.
