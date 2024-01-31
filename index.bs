@@ -422,7 +422,9 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute ScriptInvokerType invokerType;
         readonly attribute DOMString invoker;
         readonly attribute DOMHighResTimeStamp executionStart;
-        readonly attribute DOMString sourceLocation;
+        readonly attribute DOMString sourceURL;
+        readonly attribute DOMString sourceFunctionName;
+        readonly attribute DOMString sourceCharPosition;
         readonly attribute DOMHighResTimeStamp pauseDuration;
         readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
         readonly attribute Window? window;
@@ -484,14 +486,9 @@ The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter 
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
-The {{PerformanceScriptTiming/sourceLocation}} attribute's getter steps are:
-    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=] is the empty string, return the empty string.
-    1. Let |serializedSourceLocation| be [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
-    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=] is not the empty string, then
-        set |serializedSourceLocation| to the [=concatenate|concatenation=] of « [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=], "@", |serializedSourceLocation| ».
-    1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] is greater than -1, then
-        set |serializedSourceLocation| to the [=concatenate|concatenation=] of «|serializedSourceLocation|, ":", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=] ».
-    1. Return |serializedSourceLocation|.
+The {{PerformanceScriptTiming/sourceURL}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
+The {{PerformanceScriptTiming/sourceFunctionName}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=].
+The {{PerformanceScriptTiming/sourceCharPosition}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=].
 
 The {{PerformanceScriptTiming/window}} attribute's getter steps are:
     1. Let |window| be the result of calling [=weakrefderef|deref=] on [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/window=].
