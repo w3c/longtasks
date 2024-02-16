@@ -304,7 +304,9 @@ const someLongAnimationFrameEntry = {
 
             // In the case of promise resolver this would be the invoker's source location
             // Note that we expose character position rather than line/column to avoid overhead of line splitting.
-            sourceLocation: "functionName@URL:characterPosition",
+            sourceURL: "https://example.com/big.js",
+            sourceFunctionName: "do_something_long",
+            sourceCharPosition: 10,
 
             // Relationship between the (same-origin) window where this script was executed and
             // this window.

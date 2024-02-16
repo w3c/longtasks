@@ -424,7 +424,7 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute DOMHighResTimeStamp executionStart;
         readonly attribute DOMString sourceURL;
         readonly attribute DOMString sourceFunctionName;
-        readonly attribute DOMString sourceCharPosition;
+        readonly attribute long long sourceCharPosition;
         readonly attribute DOMHighResTimeStamp pauseDuration;
         readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
         readonly attribute Window? window;
