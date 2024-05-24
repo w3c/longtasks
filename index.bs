@@ -47,7 +47,7 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #calling-scripts; text: calling scripts;
     type: dfn; url: #list-of-the-descendant-browsing-contexts; text: list of the descendant browsing contexts;
     type: dfn; url: #ancestor-browsing-context; text: ancestor;
-    type: dfn; url: #browsing-context-group-set; text: browsing-context-group-set
+    type: dfn; url: #browsing-context-group-set; text: browsing context group set
     type: dfn; url: #script-evaluation-environment-settings-object-set; text: script evaluation environment settings object set
     type: dfn; url: #integration-with-the-javascript-agent-cluster-formalism; text: agent cluster
     type: dfn; url: #concept-task-document; for: task; text: document;
