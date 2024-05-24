@@ -5,8 +5,10 @@
   <title>Long Tasks API</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version d5d58a306, updated Fri Jan 26 16:12:28 2024 -0800" name="generator">
+  <meta content="Bikeshed version d765c696b, updated Fri Mar 8 15:58:52 2024 -0800" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
 dl {
     margin-left: 2em;
@@ -942,7 +944,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Long Tasks API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-03-11">11 March 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-05-24">24 May 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1158,7 +1160,7 @@ These names are kept for backward compatibility reasons.</p>
    <h3 class="heading settled" data-level="3.3" id="sec-PointingToCulprit"><span class="secno">3.3. </span><span class="content">Pointing to the culprit</span><a class="self-link" href="#sec-PointingToCulprit"></a></h3>
    <div class="non-normative">
     <p><em>This section is non-normative.</em></p>
-    <p>A <a data-link-type="dfn" href="#long-task" id="ref-for-long-task①">long task</a> can involve different types of work (such as script, layout, style etc), and it could be executed within different <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#browsing-context" id="ref-for-browsing-context⑤">browsing contexts</a>, or it could be global in nature such as a long garbage collection that spans the entire <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism" id="ref-for-integration-with-the-javascript-agent-cluster-formalism">agent cluster</a> or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#unit-of-related-browsing-contexts" id="ref-for-unit-of-related-browsing-contexts">unit of related browsing contexts</a>.</p>
+    <p>A <a data-link-type="dfn" href="#long-task" id="ref-for-long-task①">long task</a> can involve different types of work (such as script, layout, style etc), and it could be executed within different <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#browsing-context" id="ref-for-browsing-context⑤">browsing contexts</a>, or it could be global in nature such as a long garbage collection that spans the entire <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism" id="ref-for-integration-with-the-javascript-agent-cluster-formalism">agent cluster</a> or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#browsing-context-group-set" id="ref-for-browsing-context-group-set">browsing context group set</a>.</p>
     <p>Thus <a data-link-type="dfn" href="#attribution" id="ref-for-attribution">attribution</a> has a couple of facets:</p>
     <ul>
      <li data-md>
@@ -1212,7 +1214,7 @@ When delivering this information the Web’s same-origin policy must be adhered 
      Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and <var>task</var>, perform the following algorithm: 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://w3c.github.io/longtasks/#report-task-end-time" id="ref-for-report-task-end-time">Report task end time</a> given <var>end time</var> and <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-task-document" id="ref-for-concept-task-document">document</a>.</p>
+      <p><a data-link-type="dfn" href="https://w3c.github.io/long-animation-frames/#record-task-end-time" id="ref-for-record-task-end-time">Record task end time</a> given <var>end time</var> and <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-task-document" id="ref-for-concept-task-document">document</a>.</p>
      <li data-md>
       <p>If <var>end time</var> minus <var>start time</var> is less than the long tasks threshold of 50 ms, abort these steps.</p>
      <li data-md>
@@ -1490,7 +1492,7 @@ showing task type or additional attribution to untrusted cross origin observers.
     Implementers are encouraged to optimize. </p>
    </section>
   </div>
-<script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -1579,6 +1581,7 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="ece2ee9d">ancestor navigables</span>
      <li><span class="dfn-paneled" id="83c1e4af">browsing context</span>
      <li><span class="dfn-paneled" id="6d88ab2e">browsing context <small>(for Window)</small></span>
+     <li><span class="dfn-paneled" id="79f73b5b">browsing context group set</span>
      <li><span class="dfn-paneled" id="762210c0">container</span>
      <li><span class="dfn-paneled" id="473036cd">cross-origin isolated capability</span>
      <li><span class="dfn-paneled" id="4468342f">data</span>
@@ -1604,13 +1607,12 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="deddc6fc">src <small>(for iframe)</small></span>
      <li><span class="dfn-paneled" id="e270bd2a">task</span>
      <li><span class="dfn-paneled" id="ae2a6342">top-level browsing context</span>
-     <li><span class="dfn-paneled" id="1c4b7879">unit of related browsing contexts</span>
      <li><span class="dfn-paneled" id="b815f411">update the rendering</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[LONGTASKS-1]</a> defines the following terms:
+    <a data-link-type="biblio">[LONG-ANIMATION-FRAMES]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="52b77d0c">report task end time</span>
+     <li><span class="dfn-paneled" id="443f9d33">record task end time</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PERFORMANCE-TIMELINE]</a> defines the following terms:
@@ -1646,8 +1648,8 @@ showing task type or additional attribution to untrusted cross origin observers.
    <dd>Yoav Weiss. <a href="https://w3c.github.io/hr-time/"><cite>High Resolution Time</cite></a>. URL: <a href="https://w3c.github.io/hr-time/">https://w3c.github.io/hr-time/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
-   <dt id="biblio-longtasks-1">[LONGTASKS-1]
-   <dd>Noam Rosenthal. <a href="https://w3c.github.io/longtasks/"><cite>Long Tasks API</cite></a>. URL: <a href="https://w3c.github.io/longtasks/">https://w3c.github.io/longtasks/</a>
+   <dt id="biblio-long-animation-frames">[LONG-ANIMATION-FRAMES]
+   <dd><a href="https://w3c.github.io/long-animation-frames/"><cite>Long Animation Frames API</cite></a>. Editor's Draft. URL: <a href="https://w3c.github.io/long-animation-frames/">https://w3c.github.io/long-animation-frames/</a>
    <dt id="biblio-performance-timeline">[PERFORMANCE-TIMELINE]
    <dd>Nicolas Pena Moreno. <a href="https://w3c.github.io/performance-timeline/"><cite>Performance Timeline</cite></a>. URL: <a href="https://w3c.github.io/performance-timeline/">https://w3c.github.io/performance-timeline/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -2035,17 +2037,16 @@ let dfnPanelData = {
 "08a90f22": {"dfnID":"08a90f22","dfnText":"entryType","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-performanceentry-entrytype"},{"id":"ref-for-dom-performanceentry-entrytype\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype"},
 "09c54b53": {"dfnID":"09c54b53","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-performanceentry-name"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-dom-performanceentry-name\u2460"},{"id":"ref-for-dom-performanceentry-name\u2461"},{"id":"ref-for-dom-performanceentry-name\u2462"}],"title":"3.3. Pointing to the culprit"},{"refs":[{"id":"ref-for-dom-performanceentry-name\u2463"},{"id":"ref-for-dom-performanceentry-name\u2464"},{"id":"ref-for-dom-performanceentry-name\u2465"}],"title":"4.1. Report long tasks"},{"refs":[{"id":"ref-for-dom-performanceentry-name\u2466"},{"id":"ref-for-dom-performanceentry-name\u2467"}],"title":"5. Security & privacy considerations"}],"url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-name"},
 "13dd6cae": {"dfnID":"13dd6cae","dfnText":"node navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-node-navigable"}],"title":"2. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
-"1c4b7879": {"dfnID":"1c4b7879","dfnText":"unit of related browsing contexts","external":true,"refSections":[{"refs":[{"id":"ref-for-unit-of-related-browsing-contexts"}],"title":"3.3. Pointing to the culprit"}],"url":"https://html.spec.whatwg.org/multipage/#unit-of-related-browsing-contexts"},
 "23bea91f": {"dfnID":"23bea91f","dfnText":"agent cluster","external":true,"refSections":[{"refs":[{"id":"ref-for-integration-with-the-javascript-agent-cluster-formalism"}],"title":"3.3. Pointing to the culprit"}],"url":"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism"},
 "2437ca5a": {"dfnID":"2437ca5a","dfnText":"event loop","external":true,"refSections":[{"refs":[{"id":"ref-for-event-loop"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-event-loop\u2460"}],"title":"3.1. PerformanceLongTaskTiming interface"}],"url":"https://html.spec.whatwg.org/multipage/#event-loop"},
 "35972864": {"dfnID":"35972864","dfnText":"active document","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-document"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-nav-document\u2460"},{"id":"ref-for-nav-document\u2461"},{"id":"ref-for-nav-document\u2462"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
 "3efa5dd7": {"dfnID":"3efa5dd7","dfnText":"queue the performanceentry","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-queue-a-performanceentry"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
 "41cd0b68": {"dfnID":"41cd0b68","dfnText":"DOMHighResTimeStamp","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460"},{"id":"ref-for-idl-def-domhighrestimestamp\u2461"},{"id":"ref-for-idl-def-domhighrestimestamp\u2462"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp\u2463"},{"id":"ref-for-idl-def-domhighrestimestamp\u2464"}],"title":"3.2. TaskAttributionTiming interface"}],"url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
 "43ac8374": {"dfnID":"43ac8374","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-origin"},{"id":"ref-for-concept-settings-object-origin\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
+"443f9d33": {"dfnID":"443f9d33","dfnText":"record task end time","external":true,"refSections":[{"refs":[{"id":"ref-for-record-task-end-time"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/long-animation-frames/#record-task-end-time"},
 "4468342f": {"dfnID":"4468342f","dfnText":"data","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-object-data"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data"},
 "473036cd": {"dfnID":"473036cd","dfnText":"cross-origin isolated capability","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-cross-origin-isolated-capability"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability"},
 "49a6cb20": {"dfnID":"49a6cb20","dfnText":"embed","external":true,"refSections":[{"refs":[{"id":"ref-for-the-embed-element"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element"},
-"52b77d0c": {"dfnID":"52b77d0c","dfnText":"report task end time","external":true,"refSections":[{"refs":[{"id":"ref-for-report-task-end-time"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/longtasks/#report-task-end-time"},
 "552c9d85": {"dfnID":"552c9d85","dfnText":"list of the descendant browsing contexts","external":true,"refSections":[{"refs":[{"id":"ref-for-list-of-the-descendant-browsing-contexts"},{"id":"ref-for-list-of-the-descendant-browsing-contexts\u2460"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-list-of-the-descendant-browsing-contexts\u2461"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts"},
 "5991ccfb": {"dfnID":"5991ccfb","dfnText":"relevant realm","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-realm"},{"id":"ref-for-concept-relevant-realm\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"4. Processing model"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
@@ -2056,6 +2057,7 @@ let dfnPanelData = {
 "7393da89": {"dfnID":"7393da89","dfnText":"same origin","external":true,"refSections":[{"refs":[{"id":"ref-for-same-origin"},{"id":"ref-for-same-origin\u2460"},{"id":"ref-for-same-origin\u2461"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-same-origin\u2463"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
 "762210c0": {"dfnID":"762210c0","dfnText":"container","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-container"}],"title":"2. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
 "7789c913": {"dfnID":"7789c913","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-task-document"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/#concept-task-document"},
+"79f73b5b": {"dfnID":"79f73b5b","dfnText":"browsing context group set","external":true,"refSections":[{"refs":[{"id":"ref-for-browsing-context-group-set"}],"title":"3.3. Pointing to the culprit"}],"url":"https://html.spec.whatwg.org/multipage/#browsing-context-group-set"},
 "80bf04ff": {"dfnID":"80bf04ff","dfnText":"coarsen time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-coarsen-time"},{"id":"ref-for-dfn-coarsen-time\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
 "83c1e4af": {"dfnID":"83c1e4af","dfnText":"browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-browsing-context"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-browsing-context\u2460"},{"id":"ref-for-browsing-context\u2461"},{"id":"ref-for-browsing-context\u2462"},{"id":"ref-for-browsing-context\u2463"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-browsing-context\u2464"}],"title":"3.3. Pointing to the culprit"}],"url":"https://html.spec.whatwg.org/multipage/#browsing-context"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"}],"title":"4.1. Report long tasks"}],"url":"https://dom.spec.whatwg.org/#document"},
@@ -2592,13 +2594,13 @@ let refsData = {
 "https://dom.spec.whatwg.org/#document": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
 "https://html.spec.whatwg.org/multipage/#ancestor-browsing-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"ancestor","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context"},
 "https://html.spec.whatwg.org/multipage/#browsing-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context"},
+"https://html.spec.whatwg.org/multipage/#browsing-context-group-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context group set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context-group-set"},
 "https://html.spec.whatwg.org/multipage/#concept-task-document": {"export":true,"for_":["task"],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#concept-task-document"},
 "https://html.spec.whatwg.org/multipage/#event-loop": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop"},
 "https://html.spec.whatwg.org/multipage/#event-loop-processing-model": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop processing model","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop-processing-model"},
 "https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"agent cluster","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism"},
 "https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"list of the descendant browsing contexts","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts"},
 "https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"script evaluation environment settings object set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set"},
-"https://html.spec.whatwg.org/multipage/#unit-of-related-browsing-contexts": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"unit of related browsing contexts","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#unit-of-related-browsing-contexts"},
 "https://html.spec.whatwg.org/multipage/browsers.html#same-origin": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"same origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables": {"export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"ancestor navigables","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container": {"export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"container","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
@@ -2627,7 +2629,7 @@ let refsData = {
 "https://tc39.github.io/ecma262/#sec-code-realms": {"export":true,"for_":[],"level":"","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"anchor-block","text":"javascript realms","type":"dfn","url":"https://tc39.github.io/ecma262/#sec-code-realms"},
 "https://w3c.github.io/hr-time/#dfn-coarsen-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"coarsen time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
 "https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
-"https://w3c.github.io/longtasks/#report-task-end-time": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"current","text":"report task end time","type":"dfn","url":"https://w3c.github.io/longtasks/#report-task-end-time"},
+"https://w3c.github.io/long-animation-frames/#record-task-end-time": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"long-animation-frames","spec":"long-animation-frames","status":"current","text":"record task end time","type":"dfn","url":"https://w3c.github.io/long-animation-frames/#record-task-end-time"},
 "https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"queue the performanceentry","type":"dfn","url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
 "https://w3c.github.io/performance-timeline/#dom-performanceentry-duration": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"duration","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-duration"},
 "https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"entryType","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype"},
@@ -2890,7 +2892,7 @@ function findAlgoContainer(el) {
     return null;
 }
 function nameFromVar(el) {
-    return el.textContent.replace(/(\s|\xa0)+/, " ").trim();
+    return el.textContent.replace(/(\s|\xa0)+/g, " ").trim();
 }
 function colorCountsFromContainer(container) {
     const namesFromColor = Array.from({length:COLOR_COUNT}, x=>new Set());
