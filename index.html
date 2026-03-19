@@ -5,8 +5,9 @@
   <title>Long Tasks API</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version d765c696b, updated Fri Mar 8 15:58:52 2024 -0800" name="generator">
+  <meta content="Bikeshed version 9e651ddb3, updated Fri Dec 12 15:40:37 2025 -0800" name="generator">
   <link href="https://w3c.github.io/longtasks/" rel="canonical">
+  <meta content="e0215aa507b22d4e3f4069efefc443c019078628" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -324,7 +325,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -660,7 +661,7 @@ a[href].issue-return {
 	background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg);
 }
 .mdn-anno > .feature > .support > .nodejs::before {
-	background-image: url(https://nodejs.org/static/images/favicons/favicon.ico);
+	background-image: url(https://nodejs.org/favicon.ico);
 }
 .mdn-anno > .feature > .support > .opera_android::before {
 	background-image: url(https://resources.whatwg.org/browser-logos/opera.svg);
@@ -930,21 +931,47 @@ D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
 4 = lab(85,5,15)
 5 = lab(85,-10,-50)
 6 = lab(85,35,-15)
+
+For darkmode:
+0 = oklab(50%   0%  108%)
+1 = oklab(50% -51%   51%)
+2 = oklab(50% -64%  -20%)
+3 = oklab(50%   6%   19%)
+4 = oklab(50% -12%  -64%)
+5 = oklab(50%  44%  -19%)  
+6 = oklab(50% 102%   38%)
 */
+
 [data-algorithm] var { cursor: pointer; }
-var[data-var-color="0"] { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
-var[data-var-color="1"] { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
-var[data-var-color="2"] { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
-var[data-var-color="3"] { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
-var[data-var-color="4"] { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
-var[data-var-color="5"] { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
-var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+var[data-var-color] { background-color: var(--var-bg); box-shadow: 0 0 0 2px var(--var-bg); }
+
+var[data-var-color] { --var-bg: #F4D200; }
+var[data-var-color="1"] { --var-bg: #FF87A2; }
+var[data-var-color="2"] { --var-bg: #96E885; }
+var[data-var-color="3"] { --var-bg: #3EEED2; }
+var[data-var-color="4"] { --var-bg: #EACFB6; }
+var[data-var-color="5"] { --var-bg: #82DDFF; }
+var[data-var-color="6"] { --var-vg: #FFBCF2; }
+
+@media (prefers-color-scheme: dark) {
+	var[data-var-color] { --var-bg: #bc1a00; }
+	var[data-var-color="1"] { --var-bg: #007f00; }
+	var[data-var-color="2"] { --var-bg: #008698; }
+	var[data-var-color="3"] { --var-bg: #7f5b2b; }
+	var[data-var-color="4"] { --var-bg: #004df3; }
+	var[data-var-color="5"] { --var-bg: #a1248a; }
+	var[data-var-color="6"] { --var-vg: #ff0000; }
+}
 </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
-   <h1 class="p-name no-ref" id="title">Long Tasks API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-05-24">24 May 2024</time></p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
+   <h1 class="no-ref p-name" id="title">Long Tasks API</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2026-03-19">19 March 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -957,37 +984,45 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
       <dd><a href="https://github.com/w3c/longtasks/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editor:
-      <dd class="editor p-author h-card vcard" data-editor-id="121539"><a class="p-name fn u-email email" href="mailto:nrosenthal@google.com">Noam Rosenthal</a> (<a class="p-org org" href="https://google.com">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="121539"><a class="email fn p-name u-email" href="mailto:nrosenthal@google.com">Noam Rosenthal</a> (<a class="org p-org" href="https://google.com">Google</a>)
       <dt class="editor">Former Editors:
-      <dd class="editor p-author h-card vcard" data-editor-id="92587"><a class="p-name fn u-email email" href="mailto:panicker@chromium.org">Shubhie Panicker</a> (<a class="p-org org" href="https://google.com">Google</a>)
-      <dd class="editor p-author h-card vcard" data-editor-id="56102"><a class="p-name fn u-email email" href="mailto:igrigorik@chromium.org">Ilya Grigorik</a> (<a class="p-org org" href="https://google.com">Google</a>)
-      <dd class="editor p-author h-card vcard" data-editor-id="52873"><a class="p-name fn u-email email" href="mailto:domenic@chromium.org">Domenic Denicola</a> (<a class="p-org org" href="https://google.com">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="92587"><a class="email fn p-name u-email" href="mailto:panicker@chromium.org">Shubhie Panicker</a> (<a class="org p-org" href="https://google.com">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="56102"><a class="email fn p-name u-email" href="mailto:igrigorik@chromium.org">Ilya Grigorik</a> (<a class="org p-org" href="https://google.com">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="52873"><a class="email fn p-name u-email" href="mailto:domenic@chromium.org">Domenic Denicola</a> (<a class="org p-org" href="https://google.com">Google</a>)
      </dl>
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This document defines an API that web page authors can use to detect presence of "long tasks" that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> This is a public copy of the editors’ draft.
+   <p>
+	This is a public copy of the editors’ draft.
 	It is provided for discussion only and may change at any moment.
 	Its publication here does not imply endorsement of its contents by W3C.
-	Don’t cite this document other than as work in progress. </p>
-   <p><a href="https://github.com/w3c/longtasks/issues">GitHub Issues</a> are preferred for discussion of this specification. </p>
-   <p>This document is governed by the <a href="https://www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
-   <p></p>
-   <p>If you wish to make comments regarding this document, please send them to <a href="mailto:public-web-perf@w3.org?subject=%5BLongTasks%5D">public-web-perf@w3.org</a> (<a href="mailto:public-web-perf-request@w3.org?subject=subscribe">subscribe</a>, <a href="https://lists.w3.org/Archives/Public/public-web-perf/">archives</a>) with <code>[LongTasks]</code> at the start of your email’s subject.</p>
+	Don’t cite this document other than as work in progress.
+
+</p>
+   <p><a href="https://github.com/w3c/longtasks/issues">GitHub Issues</a> are preferred for discussion of this specification.
+
+</p>
+   <p>This document is governed by the
+	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
+
+</p>
+   <p>If you wish to make comments regarding this document, please send them to  <a href="mailto:public-web-perf@w3.org?subject=%5BLongTasks%5D">public-web-perf@w3.org</a> (<a href="mailto:public-web-perf-request@w3.org?subject=subscribe">subscribe</a>, <a href="https://lists.w3.org/Archives/Public/public-web-perf/">archives</a>) with <code>[LongTasks]</code> at the start of your email’s subject.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
     <li>
      <a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
@@ -1076,14 +1111,14 @@ observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"longtask"</c-><c
     <li data-md>
      <p>A pause between the last step and the next first step of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#event-loop-processing-model" id="ref-for-event-loop-processing-model①">event loop processing model</a>. This captures any work that the user agent performs in its UI thread outside of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#event-loop" id="ref-for-event-loop">event loop</a>.</p>
    </ul>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="browsing-context-container">browsing context container</dfn> for a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#browsing-context" id="ref-for-browsing-context">browsing context</a> <var>bc</var> is <var>bc</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container" id="ref-for-nav-container">container</a>.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="browsing-context-container">browsing context container</dfn> for a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#browsing-context" id="ref-for-browsing-context">browsing context</a> <var>bc</var> is <var>bc</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container" id="ref-for-nav-container">container</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This term is outdated, and the new terms should be reused when revamping this.</p>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="culprit-browsing-context-container">Culprit browsing context container</dfn> refers to the <a data-link-type="dfn" href="#browsing-context-container" id="ref-for-browsing-context-container">browsing context container</a> (<code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code>, <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element">object</a></code>, etc.) that is being implicated, on the whole, for a <a data-link-type="dfn" href="#long-task" id="ref-for-long-task">long task</a>.</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="culprit-browsing-context-container">Culprit browsing context container</dfn> refers to the <a data-link-type="dfn" href="#browsing-context-container" id="ref-for-browsing-context-container">browsing context container</a> (<code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code>, <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element">object</a></code>, etc.) that is being implicated, on the whole, for a <a data-link-type="dfn" href="#long-task" id="ref-for-long-task">long task</a>.</p>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="attribution">Attribution</dfn> refers to identifying the type of work (such as script, layout etc.) that contributed significantly to the long task, as well as identifying which <a data-link-type="dfn" href="#culprit-browsing-context-container" id="ref-for-culprit-browsing-context-container">culprit browsing context container</a> is responsible for that work.</p>
    <h2 class="heading settled" data-level="3" id="sec-longtask-timing"><span class="secno">3. </span><span class="content">Long Task Timing</span><a class="self-link" href="#sec-longtask-timing"></a></h2>
    <p>Long Task timing involves the following new interfaces:</p>
    <h3 class="heading settled" data-level="3.1" id="sec-PerformanceLongTaskTiming"><span class="secno">3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancelongtasktiming" id="ref-for-performancelongtasktiming">PerformanceLongTaskTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceLongTaskTiming"></a></h3>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="performancelongtasktiming"><code class="highlight"><c- g>PerformanceLongTaskTiming</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface"><c- n>PerformanceEntry</c-></a> {
     /* Overloading PerformanceEntry */
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceLongTaskTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-performancelongtasktiming-starttime"><code class="highlight"><c- g>startTime</c-></code></dfn>;
@@ -1133,7 +1168,7 @@ These names are kept for backward compatibility reasons.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-duration" id="ref-for-dom-performancelongtasktiming-duration">duration</a></code> attribute’s getter step is to return a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp③">DOMHighResTimeStamp</a></code> equal to the elapsed time between the start and end of task, with a 1 ms granularity.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceLongTaskTiming" data-dfn-type="attribute" data-export id="dom-performancelongtasktiming-attribution"><code class="highlight">attribution</code></dfn> attribute’s getter will return a frozen array of <code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming①">TaskAttributionTiming</a></code> entries.</p>
    <h3 class="heading settled" data-level="3.2" id="sec-TaskAttributionTiming"><span class="secno">3.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#taskattributiontiming" id="ref-for-taskattributiontiming②">TaskAttributionTiming</a></code> interface</span><a class="self-link" href="#sec-TaskAttributionTiming"></a></h3>
-<pre class="def idl highlight">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="taskattributiontiming"><code class="highlight"><c- g>TaskAttributionTiming</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface①"><c- n>PerformanceEntry</c-></a> {
     /* Overloading PerformanceEntry */
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp④"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="TaskAttributionTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-taskattributiontiming-starttime"><code class="highlight"><c- g>startTime</c-></code></dfn>;
@@ -1178,40 +1213,62 @@ When delivering this information the Web’s same-origin policy must be adhered 
        <th><a data-link-type="dfn" href="#culprit-browsing-context-container" id="ref-for-culprit-browsing-context-container①①">Culprit browsing context container</a> implicated by <code class="idl"><a data-link-type="idl" href="#dom-performancelongtasktiming-attribution" id="ref-for-dom-performancelongtasktiming-attribution③">attribution</a></code>
      <tbody>
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#self" id="ref-for-self">self</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#self" id="ref-for-self">self</a></code>"
+            
+       <td>empty
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin-ancestor" id="ref-for-same-origin-ancestor">same<c- o>-</c->origin<c- o>-</c->ancestor</a></code>" 
-       <td>same-origin culprit 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin-ancestor" id="ref-for-same-origin-ancestor">same<c- o>-</c->origin<c- o>-</c->ancestor</a></code>"
+            
+       <td>same-origin culprit
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin-descendant" id="ref-for-same-origin-descendant">same<c- o>-</c->origin<c- o>-</c->descendant</a></code>" 
-       <td>same-origin culprit 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin-descendant" id="ref-for-same-origin-descendant">same<c- o>-</c->origin<c- o>-</c->descendant</a></code>"
+            
+       <td>same-origin culprit
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin③">same<c- o>-</c->origin</a></code>" 
-       <td>same-origin culprit 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin③">same<c- o>-</c->origin</a></code>"
+            
+       <td>same-origin culprit
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-ancestor" id="ref-for-cross-origin-ancestor">cross<c- o>-</c->origin<c- o>-</c->ancestor</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-ancestor" id="ref-for-cross-origin-ancestor">cross<c- o>-</c->origin<c- o>-</c->ancestor</a></code>"
+            
+       <td>empty
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-descendant" id="ref-for-cross-origin-descendant">cross<c- o>-</c->origin<c- o>-</c->descendant</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-descendant" id="ref-for-cross-origin-descendant">cross<c- o>-</c->origin<c- o>-</c->descendant</a></code>"
+            
+       <td>empty
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-unreachable" id="ref-for-cross-origin-unreachable">cross<c- o>-</c->origin<c- o>-</c->unreachable</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#cross-origin-unreachable" id="ref-for-cross-origin-unreachable">cross<c- o>-</c->origin<c- o>-</c->unreachable</a></code>"
+            
+       <td>empty
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts">multiple<c- o>-</c->contexts</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts">multiple<c- o>-</c->contexts</a></code>"
+            
+       <td>empty
+        
       <tr>
-       <td>"<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown">unknown</a></code>" 
-       <td>empty 
+       <td>"<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown">unknown</a></code>"
+            
+       <td>empty
+
     </table>
    </div>
    <h2 class="heading settled" data-level="4" id="sec-processing-model"><span class="secno">4. </span><span class="content">Processing model</span><a class="self-link" href="#sec-processing-model"></a></h2>
-   <p class="note" role="note"><span class="marker">Note:</span> A user agent implementing the Long Tasks API would need to include <code class="highlight"><c- u>"longtask"</c-></code> in <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute" id="ref-for-supportedentrytypes-attribute">supportedEntryTypes</a></code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code> contexts, respectively.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> A user agent implementing the Long Tasks API would need to include <code class="highlight"><c- u>"longtask"</c-></code>
+    in <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute" id="ref-for-supportedentrytypes-attribute">supportedEntryTypes</a></code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code> contexts, respectively.</p>
    <p>This allows developers to detect support for long tasks.</p>
    <h3 class="heading settled" data-level="4.1" id="report-long-tasks"><span class="secno">4.1. </span><span class="content">Report long tasks</span><a class="self-link" href="#report-long-tasks"></a></h3>
    <div class="algorithm" data-algorithm="Report long tasks">
-     Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and <var>task</var>, perform the following algorithm: 
+    
+    Given <var>start time</var>, <var>end time</var>, <var>top-level browsing contexts</var>, and <var>task</var>, perform the following algorithm:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://w3c.github.io/long-animation-frames/#record-task-end-time" id="ref-for-record-task-end-time">Record task end time</a> given <var>end time</var> and <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-task-document" id="ref-for-concept-task-document">document</a>.</p>
@@ -1224,13 +1281,13 @@ When delivering this information the Web’s same-origin policy must be adhered 
       <p>For each <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a> <var>topmostBC</var> in <var>top-level browsing contexts</var>:</p>
       <ol>
        <li data-md>
-        <p>Add <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document①">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a> to <var>destinationRealms</var>.</p>
+        <p>Add <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document①">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a> to <var>destinationRealms</var>.</p>
        <li data-md>
-        <p>Let <var>descendantBCs</var> be <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document②">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts②">list of the descendant browsing contexts</a>.</p>
+        <p>Let <var>descendantBCs</var> be <var>topmostBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document②">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts" id="ref-for-list-of-the-descendant-browsing-contexts②">list of the descendant browsing contexts</a>.</p>
        <li data-md>
         <p>Let <var>document</var> be <var>descendantBC</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document③">active document</a>.</p>
        <li data-md>
-        <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add (<var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>, <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability" id="ref-for-concept-settings-object-cross-origin-isolated-capability">cross-origin isolated capability</a>) to <var>destinationRealms</var>.</p>
+        <p>For each <var>descendantBC</var> in <var>descendantBCs</var>, add (<var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>, <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability" id="ref-for-concept-settings-object-cross-origin-isolated-capability">cross-origin isolated capability</a>) to <var>destinationRealms</var>.</p>
       </ol>
      <li data-md>
       <p>A user agent may remove some <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#sec-code-realms" id="ref-for-sec-code-realms①">JavaScript Realms</a> from <var>destinationRealms</var>.</p>
@@ -1251,9 +1308,9 @@ When delivering this information the Web’s same-origin policy must be adhered 
          <li data-md>
           <p>If <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set①">script evaluation environment settings object set</a> is empty: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#unknown" id="ref-for-unknown①">unknown</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
          <li data-md>
-          <p>Otherwise, if <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a>'s length is greater than one: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts①">multiple<c- o>-</c->contexts</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
+          <p>Otherwise, if <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set②">script evaluation environment settings object set</a>’s length is greater than one: set <var>name</var> to "<code class="highlight"><a data-link-type="dfn" href="#multiple-contexts" id="ref-for-multiple-contexts①">multiple<c- o>-</c->contexts</a></code>" and <var>culpritSettings</var> to <code class="highlight"><c- kc>null</c-></code>.</p>
          <li data-md>
-          <p>Otherwise, i.e. if <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a>'s length is one:</p>
+          <p>Otherwise, i.e. if <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set③">script evaluation environment settings object set</a>’s length is one:</p>
           <ol>
            <li data-md>
             <p>Set <var>culpritSettings</var> to the single item in <var>task</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set" id="ref-for-script-evaluation-environment-settings-object-set④">script evaluation environment settings object set</a>.</p>
@@ -1262,9 +1319,9 @@ When delivering this information the Web’s same-origin policy must be adhered 
            <li data-md>
             <p>Let <var>destinationOrigin</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a>.</p>
            <li data-md>
-            <p>Let <var>destinationBC</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global">global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc">browsing context</a>.</p>
+            <p>Let <var>destinationBC</var> be <var>destinationSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global">global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc">browsing context</a>.</p>
            <li data-md>
-            <p>Let <var>culpritBC</var> be <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global①">global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc①">browsing context</a>.</p>
+            <p>Let <var>culpritBC</var> be <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global①">global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc①">browsing context</a>.</p>
            <li data-md>
             <p class="assertion">Assert: <var>culpritBC</var> is not <code class="highlight"><c- kc>null</c-></code>.</p>
            <li data-md>
@@ -1314,7 +1371,7 @@ When delivering this information the Web’s same-origin policy must be adhered 
           <p>If <var>culpritSettings</var> is not <code class="highlight"><c- kc>null</c-></code>:</p>
           <ol>
            <li data-md>
-            <p>Let <var>culpritBC</var> be <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global②">global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc②">browsing context</a>.</p>
+            <p>Let <var>culpritBC</var> be <var>culpritSettings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global②">global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc②">browsing context</a>.</p>
            <li data-md>
             <p class="assertion">Assert: <var>culpritBC</var> is not <code class="highlight"><c- kc>null</c-></code>.</p>
            <li data-md>
@@ -1324,18 +1381,18 @@ When delivering this information the Web’s same-origin policy must be adhered 
            <li data-md>
             <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containerid" id="ref-for-dom-taskattributiontiming-containerid①">containerId</a></code> attribute to the value of <var>container</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-id" id="ref-for-concept-id">ID</a>, or the empty string if the ID is unset.</p>
            <li data-md>
-            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element:</p>
+            <p>If <var>container</var> is an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> element:</p>
             <ol>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype②">containerType</a></code> attribute to "<code class="highlight">iframe</code>".</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername②">containerName</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername②">containerName</a></code> attribute to the value of <var>container</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name" id="ref-for-attr-iframe-name">name</a></code> content attribute, or the empty string if the attribute is absent.</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc②">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc②">containerSrc</a></code> attribute to the value of <var>container</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
             </ol>
-            <p class="note" role="note"><span class="marker">NOTE:</span> it is intentional that we record the frame’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src①">src</a></code> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
+            <p class="note" role="note"><span class="marker">NOTE:</span> it is intentional that we record the frame’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src" id="ref-for-attr-iframe-src①">src</a></code> attribute here, and not its current URL, as this is meant primarily to help identify frames, and allowing discovery of the current URL of a cross-origin iframe is a security problem.</p>
            <li data-md>
-            <p>If <var>container</var> is a <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/obsolete.html#frame" id="ref-for-frame">frame</a></code> element:</p>
+            <p>If <var>container</var> is a <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/obsolete.html#frame" id="ref-for-frame">frame</a></code> element:</p>
             <ol>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype③">containerType</a></code> attribute to "<code class="highlight">frame</code>".</p>
@@ -1345,24 +1402,24 @@ When delivering this information the Web’s same-origin policy must be adhered 
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc③">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight">src</code> content attribute, or the empty string if the attribute is absent.</p>
             </ol>
            <li data-md>
-            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element①">object</a></code> element:</p>
+            <p>If <var>container</var> is an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element" id="ref-for-the-object-element①">object</a></code> element:</p>
             <ol>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype④">containerType</a></code> attribute to "<code class="highlight">object</code>".</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername④">containerName</a></code> attribute to the value of <var>container</var>’s <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">name</a> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername④">containerName</a></code> attribute to the value of  <var>container</var>’s <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-name">name</a> content attribute, or the empty string if the attribute is absent.</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc④">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data">data</a></code> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc④">containerSrc</a></code> attribute to the value of <var>container</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data" id="ref-for-attr-object-data">data</a></code> content attribute, or the empty string if the attribute is absent.</p>
             </ol>
            <li data-md>
-            <p>If <var>container</var> is an <code class="highlight"><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element" id="ref-for-the-embed-element">embed</a></code> element:</p>
+            <p>If <var>container</var> is an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element" id="ref-for-the-embed-element">embed</a></code> element:</p>
             <ol>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containertype" id="ref-for-dom-taskattributiontiming-containertype⑤">containerType</a></code> attribute to "<code class="highlight">embed</code>".</p>
              <li data-md>
               <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containername" id="ref-for-dom-taskattributiontiming-containername⑤">containerName</a></code> attribute to the empty string.</p>
              <li data-md>
-              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc⑤">containerSrc</a></code> attribute to the value of <var>container</var>’s <code class="highlight"><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src" id="ref-for-attr-embed-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
+              <p>Set <var>attribution</var>’s <code class="idl"><a data-link-type="idl" href="#dom-taskattributiontiming-containersrc" id="ref-for-dom-taskattributiontiming-containersrc⑤">containerSrc</a></code> attribute to the value of <var>container</var>’s <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src" id="ref-for-attr-embed-src">src</a></code> content attribute, or the empty string if the attribute is absent.</p>
             </ol>
           </ol>
         </ol>
@@ -1442,7 +1499,8 @@ valid, etc. See an <a href="http://crypto.stanford.edu/~dabo/papers/webtiming.pd
     <li data-md>
      <p><b>Side-channel timing attacks</b>: using time for video parsing, script parsing, App Cache reads
 or Cache API (service workers) usage to uniquely identify a user, or to create a profile of the
-user’s age, gender, location, and interests etc. For <a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
+user’s age, gender, location, and interests etc. For
+<a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
 a social network can be limited to certain demographic (eg. females of age 20-30) the file size of
 the permalink page can be used to determine whether the user is in the target demographic.</p>
    </ol>
@@ -1450,8 +1508,8 @@ the permalink page can be used to determine whether the user is in the target de
 showing task type or additional attribution to untrusted cross origin observers.</p>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1459,42 +1517,55 @@ showing task type or additional attribution to untrusted cross origin observers.
     in the normative parts of this document
     are to be interpreted as described in RFC 2119.
     However, for readability,
-    these words do not appear in all uppercase letters in this specification. </p>
+    these words do not appear in all uppercase letters in this specification.
+
+    </p>
    <p>All of the text of this specification is normative
-    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a> </p>
+    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>
+
+    </p>
    <p>Examples in this specification are introduced with the words “for example”
     or are set apart from the normative text
     with <code class="highlight"><c- a>class</c-><c- o>=</c-><c- u>"example"</c-></code>,
-    like this: </p>
+    like this:
+
+    </p>
    <div class="example" id="w3c-example">
-    <a class="self-link" href="#w3c-example"></a> 
-    <p>This is an example of an informative example. </p>
+    <a class="self-link" href="#w3c-example"></a>
+        
+    <p>This is an example of an informative example.
+    </p>
    </div>
    <p>Informative notes begin with the word “Note”
     and are set apart from the normative text
     with <code class="highlight"><c- a>class</c-><c- o>=</c-><c- u>"note"</c-></code>,
-    like this: </p>
+    like this:
+
+    </p>
    <p class="note" role="note">Note, this is an informative note.</p>
    <section>
-    <h3 class="no-ref no-num heading settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
+    <h3 class="heading no-num no-ref settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
     <p>Requirements phrased in the imperative as part of algorithms
     (such as "strip any leading space characters"
     or "return false and abort these steps")
     are to be interpreted with the meaning of the key word
     ("must", "should", "may", etc)
-    used in introducing the algorithm. </p>
+    used in introducing the algorithm.
+
+    </p>
     <p>Conformance requirements phrased as algorithms or specific steps
     can be implemented in any manner,
     so long as the end result is equivalent.
     In particular, the algorithms defined in this specification
     are intended to be easy to understand
     and are not intended to be performant.
-    Implementers are encouraged to optimize. </p>
+    Implementers are encouraged to optimize.
+</p>
    </section>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#attribution">Attribution</a><span>, in § 2</span>
    <li><a href="#dom-performancelongtasktiming-attribution">attribution</a><span>, in § 3.1</span>
@@ -1548,18 +1619,18 @@ showing task type or additional attribution to untrusted cross origin observers.
     </ul>
    <li><a href="#unknown">unknown</a><span>, in § 3.1</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="85394472">Document</span>
-     <li><span class="dfn-paneled" id="6ea37aa1">id</span>
+     <li><span class="dfn-paneled" id="6ea37aa1">ID</span>
     </ul>
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="a117ab2c">javascript realms</span>
+     <li><span class="dfn-paneled" id="a117ab2c">JavaScript Realms</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HR-TIME-2]</a> defines the following terms:
@@ -1621,7 +1692,7 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="fabd3046">duration</span>
      <li><span class="dfn-paneled" id="08a90f22">entryType</span>
      <li><span class="dfn-paneled" id="09c54b53">name</span>
-     <li><span class="dfn-paneled" id="3efa5dd7">queue the performanceentry</span>
+     <li><span class="dfn-paneled" id="3efa5dd7">Queue the PerformanceEntry</span>
      <li><span class="dfn-paneled" id="cc7c9b78">startTime</span>
      <li><span class="dfn-paneled" id="de4bb79b">supportedEntryTypes</span>
     </ul>
@@ -1635,8 +1706,8 @@ showing task type or additional attribution to untrusted cross origin observers.
      <li><span class="dfn-paneled" id="efd1ec5d">object</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
@@ -1657,8 +1728,8 @@ showing task type or additional attribution to untrusted cross origin observers.
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+  <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#performancelongtasktiming"><code class="highlight"><c- g>PerformanceLongTaskTiming</c-></code></a> : <a data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface"><c- n>PerformanceEntry</c-></a> {
     /* Overloading PerformanceEntry */
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <a data-readonly data-type="DOMHighResTimeStamp" href="#dom-performancelongtasktiming-starttime"><code class="highlight"><c- g>startTime</c-></code></a>;
@@ -1686,7 +1757,7 @@ showing task type or additional attribution to untrusted cross origin observers.
 };
 
 </pre>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> there is some ongoing discussion regarding the scope of which <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Documents</a></code> gain visibility over which long tasks, so this logic could change in the future. <a href="https://github.com/w3c/longtasks/issues/75">[Issue #75]</a> <a class="issue-return" href="#issue-63aa4f38" title="Jump to section">↵</a></div>
   </div>
@@ -1696,13 +1767,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming/attribution" title="The attribution readonly property of the PerformanceLongTaskTiming interface returns an array of TaskAttributionTiming objects.">PerformanceLongTaskTiming/attribution</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1712,13 +1783,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming/toJSON" title="The toJSON() method of the PerformanceLongTaskTiming interface is a serializer; it returns a JSON representation of the PerformanceLongTaskTiming object.">PerformanceLongTaskTiming/toJSON</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1728,13 +1799,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming" title="The PerformanceLongTaskTiming interface provides information about tasks that occupy the UI thread for 50 milliseconds or more.">PerformanceLongTaskTiming</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1744,13 +1815,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming/containerId" title="The containerId readonly property of the TaskAttributionTiming interface returns the container&apos;s id attribute. A container is the iframe, embed or object etc. that is being implicated, on the whole, for a long task.">TaskAttributionTiming/containerId</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1760,13 +1831,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming/containerName" title="The containerName readonly property of the TaskAttributionTiming interface returns the container&apos;s name attribute. A container is the iframe, embed or object etc. that is being implicated, on the whole, for a long task.">TaskAttributionTiming/containerName</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1776,13 +1847,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming/containerSrc" title="The containerSrc readonly property of the TaskAttributionTiming interface returns the container&apos;s src attribute. A container is the iframe, embed or object etc. that is being implicated, on the whole, for a long task.">TaskAttributionTiming/containerSrc</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1792,13 +1863,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming/containerType" title="The containerType readonly property of the TaskAttributionTiming interface returns the type of the container, one of iframe, embed, or object.">TaskAttributionTiming/containerType</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1808,13 +1879,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming/toJSON" title="The toJSON() method of the TaskAttributionTiming interface is a serializer; it returns a JSON representation of the TaskAttributionTiming object.">TaskAttributionTiming/toJSON</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -1824,13 +1895,13 @@ showing task type or additional attribution to untrusted cross origin observers.
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TaskAttributionTiming" title="The TaskAttributionTiming interface returns information about the work involved in a long task and its associate frame context. The frame context, also called the container, is the iframe, embed or object that is being implicated, on the whole, for a long task.">TaskAttributionTiming</a></p>
     <p class="less-than-two-engines-text">In only one current engine.</p>
     <div class="support">
-     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari no"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
      <hr>
-     <span class="opera no"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
      <hr>
      <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
      <hr>
-     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>?</span></span><span class="opera_android no"><span>Opera Mobile</span><span>?</span></span>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
     </div>
    </div>
   </details>
@@ -2040,7 +2111,7 @@ let dfnPanelData = {
 "23bea91f": {"dfnID":"23bea91f","dfnText":"agent cluster","external":true,"refSections":[{"refs":[{"id":"ref-for-integration-with-the-javascript-agent-cluster-formalism"}],"title":"3.3. Pointing to the culprit"}],"url":"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism"},
 "2437ca5a": {"dfnID":"2437ca5a","dfnText":"event loop","external":true,"refSections":[{"refs":[{"id":"ref-for-event-loop"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-event-loop\u2460"}],"title":"3.1. PerformanceLongTaskTiming interface"}],"url":"https://html.spec.whatwg.org/multipage/#event-loop"},
 "35972864": {"dfnID":"35972864","dfnText":"active document","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-document"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-nav-document\u2460"},{"id":"ref-for-nav-document\u2461"},{"id":"ref-for-nav-document\u2462"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
-"3efa5dd7": {"dfnID":"3efa5dd7","dfnText":"queue the performanceentry","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-queue-a-performanceentry"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
+"3efa5dd7": {"dfnID":"3efa5dd7","dfnText":"Queue the PerformanceEntry","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-queue-a-performanceentry"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
 "41cd0b68": {"dfnID":"41cd0b68","dfnText":"DOMHighResTimeStamp","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460"},{"id":"ref-for-idl-def-domhighrestimestamp\u2461"},{"id":"ref-for-idl-def-domhighrestimestamp\u2462"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp\u2463"},{"id":"ref-for-idl-def-domhighrestimestamp\u2464"}],"title":"3.2. TaskAttributionTiming interface"}],"url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
 "43ac8374": {"dfnID":"43ac8374","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-origin"},{"id":"ref-for-concept-settings-object-origin\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
 "443f9d33": {"dfnID":"443f9d33","dfnText":"record task end time","external":true,"refSections":[{"refs":[{"id":"ref-for-record-task-end-time"}],"title":"4.1. Report long tasks"}],"url":"https://w3c.github.io/long-animation-frames/#record-task-end-time"},
@@ -2053,7 +2124,7 @@ let dfnPanelData = {
 "60596594": {"dfnID":"60596594","dfnText":"ancestor","external":true,"refSections":[{"refs":[{"id":"ref-for-ancestor-browsing-context"},{"id":"ref-for-ancestor-browsing-context\u2460"},{"id":"ref-for-ancestor-browsing-context\u2461"},{"id":"ref-for-ancestor-browsing-context\u2462"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context"},
 "6a288f2a": {"dfnID":"6a288f2a","dfnText":"microtask","external":true,"refSections":[{"refs":[{"id":"ref-for-microtask"}],"title":"2. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#microtask"},
 "6d88ab2e": {"dfnID":"6d88ab2e","dfnText":"browsing context (for Window)","external":true,"refSections":[{"refs":[{"id":"ref-for-window-bc"},{"id":"ref-for-window-bc\u2460"},{"id":"ref-for-window-bc\u2461"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc"},
-"6ea37aa1": {"dfnID":"6ea37aa1","dfnText":"id","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-id"}],"title":"4.1. Report long tasks"}],"url":"https://dom.spec.whatwg.org/#concept-id"},
+"6ea37aa1": {"dfnID":"6ea37aa1","dfnText":"ID","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-id"}],"title":"4.1. Report long tasks"}],"url":"https://dom.spec.whatwg.org/#concept-id"},
 "7393da89": {"dfnID":"7393da89","dfnText":"same origin","external":true,"refSections":[{"refs":[{"id":"ref-for-same-origin"},{"id":"ref-for-same-origin\u2460"},{"id":"ref-for-same-origin\u2461"}],"title":"3.1. PerformanceLongTaskTiming interface"},{"refs":[{"id":"ref-for-same-origin\u2463"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
 "762210c0": {"dfnID":"762210c0","dfnText":"container","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-container"}],"title":"2. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
 "7789c913": {"dfnID":"7789c913","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-task-document"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/#concept-task-document"},
@@ -2069,7 +2140,7 @@ let dfnPanelData = {
 "8a30477b": {"dfnID":"8a30477b","dfnText":"global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-global"},{"id":"ref-for-concept-settings-object-global\u2460"},{"id":"ref-for-concept-settings-object-global\u2461"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global"},
 "99b5cef6": {"dfnID":"99b5cef6","dfnText":"object","external":true,"refSections":[{"refs":[{"id":"ref-for-the-object-element"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-the-object-element\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element"},
 "9c4c1e66": {"dfnID":"9c4c1e66","dfnText":"relevant settings object","external":true,"refSections":[{"refs":[{"id":"ref-for-relevant-settings-object"},{"id":"ref-for-relevant-settings-object\u2460"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object"},
-"a117ab2c": {"dfnID":"a117ab2c","dfnText":"javascript realms","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-code-realms"},{"id":"ref-for-sec-code-realms\u2460"},{"id":"ref-for-sec-code-realms\u2461"}],"title":"4.1. Report long tasks"}],"url":"https://tc39.github.io/ecma262/#sec-code-realms"},
+"a117ab2c": {"dfnID":"a117ab2c","dfnText":"JavaScript Realms","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-code-realms"},{"id":"ref-for-sec-code-realms\u2460"},{"id":"ref-for-sec-code-realms\u2461"}],"title":"4.1. Report long tasks"}],"url":"https://tc39.github.io/ecma262/#sec-code-realms"},
 "aa16a049": {"dfnID":"aa16a049","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-iframe-name"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name"},
 "ae2a6342": {"dfnID":"ae2a6342","dfnText":"top-level browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-top-level-browsing-context"}],"title":"4.1. Report long tasks"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
 "attribution": {"dfnID":"attribution","dfnText":"Attribution","external":false,"refSections":[{"refs":[{"id":"ref-for-attribution"}],"title":"3.3. Pointing to the culprit"}],"url":"#attribution"},
@@ -2562,96 +2633,98 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
-"#attribution": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"attribution","type":"dfn","url":"#attribution"},
-"#browsing-context-container": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"browsing context container","type":"dfn","url":"#browsing-context-container"},
-"#cross-origin-ancestor": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-ancestor","type":"dfn","url":"#cross-origin-ancestor"},
-"#cross-origin-descendant": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-descendant","type":"dfn","url":"#cross-origin-descendant"},
-"#cross-origin-unreachable": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-unreachable","type":"dfn","url":"#cross-origin-unreachable"},
-"#culprit-browsing-context-container": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"culprit browsing context container","type":"dfn","url":"#culprit-browsing-context-container"},
-"#dom-performancelongtasktiming-attribution": {"export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"attribution","type":"attribute","url":"#dom-performancelongtasktiming-attribution"},
-"#dom-performancelongtasktiming-duration": {"export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"duration","type":"attribute","url":"#dom-performancelongtasktiming-duration"},
-"#dom-performancelongtasktiming-entrytype": {"export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"entryType","type":"attribute","url":"#dom-performancelongtasktiming-entrytype"},
-"#dom-performancelongtasktiming-starttime": {"export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"startTime","type":"attribute","url":"#dom-performancelongtasktiming-starttime"},
-"#dom-taskattributiontiming-containerid": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerId","type":"attribute","url":"#dom-taskattributiontiming-containerid"},
-"#dom-taskattributiontiming-containername": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerName","type":"attribute","url":"#dom-taskattributiontiming-containername"},
-"#dom-taskattributiontiming-containersrc": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerSrc","type":"attribute","url":"#dom-taskattributiontiming-containersrc"},
-"#dom-taskattributiontiming-containertype": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerType","type":"attribute","url":"#dom-taskattributiontiming-containertype"},
-"#dom-taskattributiontiming-duration": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"duration","type":"attribute","url":"#dom-taskattributiontiming-duration"},
-"#dom-taskattributiontiming-entrytype": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"entryType","type":"attribute","url":"#dom-taskattributiontiming-entrytype"},
-"#dom-taskattributiontiming-name": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"name","type":"attribute","url":"#dom-taskattributiontiming-name"},
-"#dom-taskattributiontiming-starttime": {"export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"startTime","type":"attribute","url":"#dom-taskattributiontiming-starttime"},
-"#long-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"long task","type":"dfn","url":"#long-task"},
-"#minimal-culprit-attribution": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"minimal culprit attribution","type":"dfn","url":"#minimal-culprit-attribution"},
-"#multiple-contexts": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"multiple-contexts","type":"dfn","url":"#multiple-contexts"},
-"#performancelongtasktiming": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"PerformanceLongTaskTiming","type":"interface","url":"#performancelongtasktiming"},
-"#same-origin": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin","type":"dfn","url":"#same-origin"},
-"#same-origin-ancestor": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin-ancestor","type":"dfn","url":"#same-origin-ancestor"},
-"#same-origin-descendant": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin-descendant","type":"dfn","url":"#same-origin-descendant"},
-"#self": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"self","type":"dfn","url":"#self"},
-"#taskattributiontiming": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"TaskAttributionTiming","type":"interface","url":"#taskattributiontiming"},
-"#unknown": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"unknown","type":"dfn","url":"#unknown"},
-"https://dom.spec.whatwg.org/#concept-id": {"export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"id","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-id"},
-"https://dom.spec.whatwg.org/#document": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
-"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"ancestor","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context"},
-"https://html.spec.whatwg.org/multipage/#browsing-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context"},
-"https://html.spec.whatwg.org/multipage/#browsing-context-group-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context group set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context-group-set"},
-"https://html.spec.whatwg.org/multipage/#concept-task-document": {"export":true,"for_":["task"],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#concept-task-document"},
-"https://html.spec.whatwg.org/multipage/#event-loop": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop"},
-"https://html.spec.whatwg.org/multipage/#event-loop-processing-model": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop processing model","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop-processing-model"},
-"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"agent cluster","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism"},
-"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"list of the descendant browsing contexts","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts"},
-"https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"script evaluation environment settings object set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set"},
-"https://html.spec.whatwg.org/multipage/browsers.html#same-origin": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"same origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
-"https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables": {"export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"ancestor navigables","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables"},
-"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container": {"export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"container","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
-"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document": {"export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"active document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
-"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"node navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
-"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"top-level browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src": {"export":true,"for_":["embed"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name": {"export":true,"for_":["iframe"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"name","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src": {"export":true,"for_":["iframe"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data": {"export":true,"for_":["object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"data","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"embed","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"iframe","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
-"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"object","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element"},
-"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
-"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc"},
-"https://html.spec.whatwg.org/multipage/obsolete.html#frame": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"frame","type":"element","url":"https://html.spec.whatwg.org/multipage/obsolete.html#frame"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant realm","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability": {"export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"cross-origin isolated capability","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global": {"export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin": {"export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#microtask": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"microtask","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#microtask"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"perform a microtask checkpoint","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"update the rendering","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering"},
-"https://tc39.github.io/ecma262/#sec-code-realms": {"export":true,"for_":[],"level":"","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"anchor-block","text":"javascript realms","type":"dfn","url":"https://tc39.github.io/ecma262/#sec-code-realms"},
-"https://w3c.github.io/hr-time/#dfn-coarsen-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"coarsen time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
-"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
-"https://w3c.github.io/long-animation-frames/#record-task-end-time": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"long-animation-frames","spec":"long-animation-frames","status":"current","text":"record task end time","type":"dfn","url":"https://w3c.github.io/long-animation-frames/#record-task-end-time"},
-"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"queue the performanceentry","type":"dfn","url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
-"https://w3c.github.io/performance-timeline/#dom-performanceentry-duration": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"duration","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-duration"},
-"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"entryType","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype"},
-"https://w3c.github.io/performance-timeline/#dom-performanceentry-name": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"name","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-name"},
-"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"startTime","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime"},
-"https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute": {"export":true,"for_":["PerformanceObserver"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"supportedEntryTypes","type":"attribute","url":"https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute"},
-"https://w3c.github.io/performance-timeline/#the-performanceentry-interface": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"PerformanceEntry","type":"interface","url":"https://w3c.github.io/performance-timeline/#the-performanceentry-interface"},
-"https://webidl.spec.whatwg.org/#Default": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Default","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Default"},
-"https://webidl.spec.whatwg.org/#Exposed": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
-"https://webidl.spec.whatwg.org/#idl-DOMString": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
-"https://webidl.spec.whatwg.org/#idl-frozen-array": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
-"https://webidl.spec.whatwg.org/#idl-object": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"object","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-object"},
+"#attribution": {"displayText":"attribution","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"attribution","type":"dfn","url":"#attribution"},
+"#browsing-context-container": {"displayText":"browsing context container","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"browsing context container","type":"dfn","url":"#browsing-context-container"},
+"#cross-origin-ancestor": {"displayText":"cross-origin-ancestor","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-ancestor","type":"dfn","url":"#cross-origin-ancestor"},
+"#cross-origin-descendant": {"displayText":"cross-origin-descendant","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-descendant","type":"dfn","url":"#cross-origin-descendant"},
+"#cross-origin-unreachable": {"displayText":"cross-origin-unreachable","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"cross-origin-unreachable","type":"dfn","url":"#cross-origin-unreachable"},
+"#culprit-browsing-context-container": {"displayText":"culprit browsing context container","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"culprit browsing context container","type":"dfn","url":"#culprit-browsing-context-container"},
+"#dom-performancelongtasktiming-attribution": {"displayText":"attribution","export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"attribution","type":"attribute","url":"#dom-performancelongtasktiming-attribution"},
+"#dom-performancelongtasktiming-duration": {"displayText":"duration","export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"duration","type":"attribute","url":"#dom-performancelongtasktiming-duration"},
+"#dom-performancelongtasktiming-entrytype": {"displayText":"entryType","export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"entryType","type":"attribute","url":"#dom-performancelongtasktiming-entrytype"},
+"#dom-performancelongtasktiming-starttime": {"displayText":"startTime","export":true,"for_":["PerformanceLongTaskTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"startTime","type":"attribute","url":"#dom-performancelongtasktiming-starttime"},
+"#dom-taskattributiontiming-containerid": {"displayText":"containerId","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerId","type":"attribute","url":"#dom-taskattributiontiming-containerid"},
+"#dom-taskattributiontiming-containername": {"displayText":"containerName","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerName","type":"attribute","url":"#dom-taskattributiontiming-containername"},
+"#dom-taskattributiontiming-containersrc": {"displayText":"containerSrc","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerSrc","type":"attribute","url":"#dom-taskattributiontiming-containersrc"},
+"#dom-taskattributiontiming-containertype": {"displayText":"containerType","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"containerType","type":"attribute","url":"#dom-taskattributiontiming-containertype"},
+"#dom-taskattributiontiming-duration": {"displayText":"duration","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"duration","type":"attribute","url":"#dom-taskattributiontiming-duration"},
+"#dom-taskattributiontiming-entrytype": {"displayText":"entryType","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"entryType","type":"attribute","url":"#dom-taskattributiontiming-entrytype"},
+"#dom-taskattributiontiming-name": {"displayText":"name","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"name","type":"attribute","url":"#dom-taskattributiontiming-name"},
+"#dom-taskattributiontiming-starttime": {"displayText":"startTime","export":true,"for_":["TaskAttributionTiming"],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"startTime","type":"attribute","url":"#dom-taskattributiontiming-starttime"},
+"#long-task": {"displayText":"long task","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"long task","type":"dfn","url":"#long-task"},
+"#minimal-culprit-attribution": {"displayText":"minimal culprit attribution","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"minimal culprit attribution","type":"dfn","url":"#minimal-culprit-attribution"},
+"#multiple-contexts": {"displayText":"multiple-contexts","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"multiple-contexts","type":"dfn","url":"#multiple-contexts"},
+"#performancelongtasktiming": {"displayText":"PerformanceLongTaskTiming","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"PerformanceLongTaskTiming","type":"interface","url":"#performancelongtasktiming"},
+"#same-origin": {"displayText":"same-origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin","type":"dfn","url":"#same-origin"},
+"#same-origin-ancestor": {"displayText":"same-origin-ancestor","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin-ancestor","type":"dfn","url":"#same-origin-ancestor"},
+"#same-origin-descendant": {"displayText":"same-origin-descendant","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"same-origin-descendant","type":"dfn","url":"#same-origin-descendant"},
+"#self": {"displayText":"self","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"self","type":"dfn","url":"#self"},
+"#taskattributiontiming": {"displayText":"TaskAttributionTiming","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"TaskAttributionTiming","type":"interface","url":"#taskattributiontiming"},
+"#unknown": {"displayText":"unknown","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"local","text":"unknown","type":"dfn","url":"#unknown"},
+"https://dom.spec.whatwg.org/#concept-id": {"displayText":"ID","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"id","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-id"},
+"https://dom.spec.whatwg.org/#document": {"displayText":"Document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
+"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context": {"displayText":"ancestor","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"ancestor","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#ancestor-browsing-context"},
+"https://html.spec.whatwg.org/multipage/#browsing-context": {"displayText":"browsing context","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context"},
+"https://html.spec.whatwg.org/multipage/#browsing-context-group-set": {"displayText":"browsing context group set","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"browsing context group set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#browsing-context-group-set"},
+"https://html.spec.whatwg.org/multipage/#concept-task-document": {"displayText":"document","export":true,"for_":["task"],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#concept-task-document"},
+"https://html.spec.whatwg.org/multipage/#event-loop": {"displayText":"event loop","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop"},
+"https://html.spec.whatwg.org/multipage/#event-loop-processing-model": {"displayText":"event loop processing model","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"event loop processing model","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#event-loop-processing-model"},
+"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism": {"displayText":"agent cluster","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"agent cluster","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#integration-with-the-javascript-agent-cluster-formalism"},
+"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts": {"displayText":"list of the descendant browsing contexts","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"list of the descendant browsing contexts","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#list-of-the-descendant-browsing-contexts"},
+"https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set": {"displayText":"script evaluation environment settings object set","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"script evaluation environment settings object set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#script-evaluation-environment-settings-object-set"},
+"https://html.spec.whatwg.org/multipage/browsers.html#same-origin": {"displayText":"same origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"same origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables": {"displayText":"ancestor navigables","export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"ancestor navigables","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container": {"displayText":"container","export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"container","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document": {"displayText":"active document","export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"active document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable": {"displayText":"node navigable","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"node navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context": {"displayText":"top-level browsing context","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"top-level browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src": {"displayText":"src","export":true,"for_":["embed"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name": {"displayText":"name","export":true,"for_":["iframe"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"name","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src": {"displayText":"src","export":true,"for_":["iframe"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"src","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data": {"displayText":"data","export":true,"for_":["object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"data","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-object-data"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element": {"displayText":"embed","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"embed","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element": {"displayText":"iframe","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"iframe","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element": {"displayText":"object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"object","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"displayText":"Window","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc": {"displayText":"browsing context","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc"},
+"https://html.spec.whatwg.org/multipage/obsolete.html#frame": {"displayText":"frame","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"frame","type":"element","url":"https://html.spec.whatwg.org/multipage/obsolete.html#frame"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm": {"displayText":"relevant realm","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant realm","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability": {"displayText":"cross-origin isolated capability","export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"cross-origin isolated capability","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-cross-origin-isolated-capability"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global": {"displayText":"global object","export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin": {"displayText":"origin","export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task": {"displayText":"task","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#microtask": {"displayText":"microtask","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"microtask","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#microtask"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint": {"displayText":"perform a microtask checkpoint","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"perform a microtask checkpoint","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object": {"displayText":"relevant settings object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering": {"displayText":"update the rendering","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"update the rendering","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering"},
+"https://tc39.github.io/ecma262/#sec-code-realms": {"displayText":"JavaScript Realms","export":true,"for_":[],"level":"","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"anchor-block","text":"javascript realms","type":"dfn","url":"https://tc39.github.io/ecma262/#sec-code-realms"},
+"https://w3c.github.io/hr-time/#dfn-coarsen-time": {"displayText":"coarsen time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"coarsen time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
+"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"displayText":"DOMHighResTimeStamp","export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
+"https://w3c.github.io/long-animation-frames/#record-task-end-time": {"displayText":"record task end time","export":true,"for_":[],"level":"1","normative":true,"shortname":"long-animation-frames","spec":"long-animation-frames","status":"current","text":"record task end time","type":"dfn","url":"https://w3c.github.io/long-animation-frames/#record-task-end-time"},
+"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry": {"displayText":"Queue the PerformanceEntry","export":true,"for_":[],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"queue the performanceentry","type":"dfn","url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
+"https://w3c.github.io/performance-timeline/#dom-performanceentry-duration": {"displayText":"duration","export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"duration","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-duration"},
+"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype": {"displayText":"entryType","export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"entryType","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype"},
+"https://w3c.github.io/performance-timeline/#dom-performanceentry-name": {"displayText":"name","export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"name","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-name"},
+"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime": {"displayText":"startTime","export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"startTime","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime"},
+"https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute": {"displayText":"supportedEntryTypes","export":true,"for_":["PerformanceObserver"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"supportedEntryTypes","type":"attribute","url":"https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute"},
+"https://w3c.github.io/performance-timeline/#the-performanceentry-interface": {"displayText":"PerformanceEntry","export":true,"for_":[],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"PerformanceEntry","type":"interface","url":"https://w3c.github.io/performance-timeline/#the-performanceentry-interface"},
+"https://webidl.spec.whatwg.org/#Default": {"displayText":"Default","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Default","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Default"},
+"https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
+"https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"https://webidl.spec.whatwg.org/#idl-frozen-array": {"displayText":"FrozenArray","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"https://webidl.spec.whatwg.org/#idl-object": {"displayText":"object","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"object","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-object"},
 };
 
 function mkRefHint(link, ref) {
     const linkText = link.textContent;
     let dfnTextElements = '';
-    if (ref.text != linkText) {
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
         dfnTextElements =
             mk.li({},
                 mk.b({}, "Term: "),
-                mk.span({}, ref.text)
+                mk.span({}, ref.displayText)
             );
     }
     const forList = ref.for_;
@@ -2721,7 +2794,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
